@@ -46,7 +46,7 @@
     "title": "Todos table schema and migration",
     "category": "data-model",
     "specFilePath": ".agent/tasks/TASK-7.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-8",

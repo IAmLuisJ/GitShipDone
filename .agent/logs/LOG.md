@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-20
-**Tasks Completed:** 6
-**Current Task:** TASK-6 Complete
+**Tasks Completed:** 7
+**Current Task:** TASK-7 Complete
 
 ----------------------------------------------
 
@@ -74,3 +74,14 @@
 - Migration runs successfully, table verified in PostgreSQL
 - Fixed server esbuild binary (SIGILL on ARM emulation)
 - 47 unit tests passing (14 new for milestones schema), type checks clean
+
+### 2026-03-20 — TASK-7: Todos table schema and migration
+- Created `server/src/db/schema/todos.ts` with all required columns
+- FK to `projects.id` with cascade delete, optional FK to `milestones.id` with set null on delete
+- `is_completed` and `is_urgent` boolean fields (default false)
+- `sort_order` integer (default 0), `due_date` nullable date, `completed_at` nullable timestamp
+- Composite index on `(project_id, is_completed)` for progress calculation queries
+- Exported `Todo` and `NewTodo` types, added to schema barrel
+- Hand-wrote migration SQL `0003_create_todos.sql`
+- Migration runs successfully, table verified in PostgreSQL
+- 61 unit tests passing (14 new for todos schema), type checks clean

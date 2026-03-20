@@ -21,7 +21,8 @@ gitshipdone/
 │   │   │       ├── index.ts
 │   │   │       ├── users.ts
 │   │   │       ├── projects.ts
-│   │   │       └── milestones.ts
+│   │   │       ├── milestones.ts
+│   │   │       └── todos.ts
 │   │   ├── routes/
 │   │   │   └── health.ts
 │   │   └── middleware/
@@ -30,6 +31,7 @@ gitshipdone/
 │   │   ├── 0000_create_users.sql
 │   │   ├── 0001_create_projects.sql
 │   │   ├── 0002_create_milestones.sql
+│   │   ├── 0003_create_todos.sql
 │   │   └── meta/
 │   │       ├── _journal.json
 │   │       └── 0000_snapshot.json
