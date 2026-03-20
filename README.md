@@ -1,73 +1,175 @@
-# React + TypeScript + Vite
+# GitShipDone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A solo-builder-first project tracking platform. Think of it as a personal project journal meets changelog generator meets AI product manager — built for developers and makers running multiple projects in parallel.
 
-Currently, two official plugins are available:
+You start a project with a vision, log updates, hit milestones, and watch your project's full history unfold in a timeline. Connect a GitHub repo and get automatic changelogs. Add ideas to a parking lot and let AI generate pathways to implement them. Share progress with anyone via a read-only public URL.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Projects** — Create projects with a name, type (software, design, physical, etc.), and vision statement
+- **Milestones & Todos** — Set goals and track to-dos; progress auto-calculates from completion
+- **Journal / Update Log** — Rich-text journal entries with mood tags to document the journey
+- **Timeline View** — Full project history: journal entries, milestones, GitHub commits, progress changes, points
+- **Points & Levels** — Earn points for todos, milestones, and commits; level up from Seed to Launched
+- **GitHub Integration** — Connect a repo via GitHub OAuth; auto-import commits and releases as timeline events
+- **AI PM Copilot** — Context-aware AI assistant (OpenAI or Anthropic) for next steps and milestone suggestions
+- **Parking Lot** — Capture ideas; AI generates step-by-step implementation pathways
+- **Alerts & Reminders** — In-app notification center + email reminders for upcoming milestones
+- **Project Sharing** — Read-only public URLs; anyone can view without an account
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Layer | Technology |
+|---|---|
+| Frontend | React 19 + TypeScript + Vite |
+| Styling | Tailwind CSS + shadcn/ui |
+| Backend | Express.js + Node.js + TypeScript |
+| ORM | Drizzle ORM |
+| Database | PostgreSQL 15 |
+| Auth | JWT + Passport.js (Email, Google OAuth, GitHub OAuth) |
+| AI | OpenAI GPT-4o / Anthropic Claude (user-supplied API key) |
+| Email | Resend |
+| Local dev | Docker Compose |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- Docker (for PostgreSQL)
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/your-username/gitshipdone.git
+cd gitshipdone
+
+# Install frontend dependencies
+npm install
+
+# Install backend dependencies
+cd server && npm install && cd ..
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Configure environment
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp server/.env.example server/.env
 ```
+
+Fill in `server/.env`:
+
+```env
+DATABASE_URL=postgresql://gitshipdone:gitshipdone@localhost:5432/gitshipdone
+JWT_SECRET=your-jwt-secret
+JWT_REFRESH_SECRET=your-refresh-secret
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GITHUB_REPO_CLIENT_ID=
+GITHUB_REPO_CLIENT_SECRET=
+RESEND_API_KEY=
+ENCRYPTION_KEY=                 # exactly 32 characters
+FRONTEND_URL=http://localhost:5173
+PORT=3000
+```
+
+### 3. Start the database
+
+```bash
+docker compose up -d
+```
+
+### 4. Run migrations
+
+```bash
+cd server && npm run db:migrate
+```
+
+### 5. Start development servers
+
+In two terminals:
+
+```bash
+# Terminal 1 — backend
+cd server && npm run dev
+
+# Terminal 2 — frontend
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173).
+
+---
+
+## Project Structure
+
+```
+gitshipdone/
+├── src/                  # Frontend (React + TypeScript)
+│   ├── components/       # Shared and feature components
+│   ├── pages/            # Route-level page components
+│   ├── hooks/            # Custom React hooks
+│   ├── stores/           # Zustand state stores
+│   └── lib/              # API client, query client
+├── server/               # Backend (Express + TypeScript)
+│   ├── src/
+│   │   ├── routes/       # API route handlers
+│   │   ├── services/     # Business logic (points, progress, timeline, AI)
+│   │   ├── db/           # Drizzle schema and database client
+│   │   ├── middleware/   # Auth, rate limiting, error handling
+│   │   ├── jobs/         # Cron jobs (GitHub sync, reminders)
+│   │   └── utils/        # JWT, encryption utilities
+│   └── drizzle/          # Database migrations
+├── docker-compose.yml    # PostgreSQL for local dev
+└── .agent/               # PRD, task specs, and project docs
+    ├── prd/PRD.md        # Full product requirements document
+    ├── prd/SUMMARY.md    # Executive summary
+    └── tasks.json        # Implementation task index (120 tasks)
+```
+
+---
+
+## Scripts
+
+### Frontend
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start Vite dev server |
+| `npm run build` | Build for production |
+| `npm run lint` | Run ESLint |
+
+### Backend (`cd server`)
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start Express server with hot reload |
+| `npm run build` | Compile TypeScript |
+| `npm run db:migrate` | Apply database schema |
+| `npm run db:studio` | Open Drizzle Studio (DB browser) |
+
+### Docker
+
+| Command | Description |
+|---|---|
+| `docker compose up -d` | Start PostgreSQL |
+| `docker compose down` | Stop PostgreSQL |
+| `docker compose down -v` | Stop and remove all data |
+
+---
+
+## Documentation
+
+Full product requirements and implementation tasks live in `.agent/`:
+
+- **[PRD](.agent/prd/PRD.md)** — Complete product requirements, data model, user flows, and technical decisions
+- **[Task Index](.agent/tasks.json)** — 120 implementation tasks with categories and dependencies
+- **[Task Specs](.agent/tasks/)** — Detailed spec for each task with acceptance criteria and steps
