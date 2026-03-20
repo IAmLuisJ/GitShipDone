@@ -41,7 +41,7 @@ You start a project with a vision, log updates, hit milestones, and watch your p
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 22+
 - Docker (for PostgreSQL)
 
 ### 1. Clone and install
@@ -146,6 +146,11 @@ gitshipdone/
 | `npm run dev` | Start Vite dev server |
 | `npm run build` | Build for production |
 | `npm run lint` | Run ESLint |
+| `npm run test` | Run unit tests with Vitest |
+| `npm run coverage` | Run tests with coverage report |
+| `npm run db:up` | Start PostgreSQL via Docker Compose |
+| `npm run db:down` | Stop PostgreSQL |
+| `npm run db:reset` | Stop, wipe, and restart PostgreSQL |
 
 ### Backend (`cd server`)
 
