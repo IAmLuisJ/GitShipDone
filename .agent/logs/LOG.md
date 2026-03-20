@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-20
-**Tasks Completed:** 7
-**Current Task:** TASK-7 Complete
+**Tasks Completed:** 8
+**Current Task:** TASK-8 Complete
 
 ----------------------------------------------
 
@@ -85,3 +85,14 @@
 - Hand-wrote migration SQL `0003_create_todos.sql`
 - Migration runs successfully, table verified in PostgreSQL
 - 61 unit tests passing (14 new for todos schema), type checks clean
+
+### 2026-03-20 — TASK-8: Journal entries table schema and migration
+- Created `server/src/db/schema/journalEntries.ts` with all required columns
+- Defined `journalMoodEnum` (excited, blocked, steady, win, learning) as Drizzle pgEnum
+- FK to `projects.id` with cascade delete, index on `project_id`
+- `body` as TEXT for Tiptap JSON serialized content
+- Soft delete via nullable `deleted_at` timestamp
+- Exported `JournalEntry` and `NewJournalEntry` types, added to schema barrel
+- Hand-wrote migration SQL `0004_create_journal_entries.sql`
+- Migration runs successfully, table verified in PostgreSQL
+- 73 unit tests passing (12 new for journal entries schema), type checks clean
