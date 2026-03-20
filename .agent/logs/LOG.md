@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-20
-**Tasks Completed:** 1
-**Current Task:** TASK-1 Complete
+**Tasks Completed:** 2
+**Current Task:** TASK-2 Complete
 
 ----------------------------------------------
 
@@ -19,3 +19,13 @@
 - Fixed sandbox native binaries (esbuild, rollup, rolldown, lightningcss)
 - Downgraded Vite 8→7 due to Rolldown SIGILL on ARM emulation
 - Screenshot: `.agent/screenshots/initial-setup.png`
+
+### 2026-03-20 — TASK-2: Initialize Express.js + TypeScript backend
+- Created `server/` directory with its own `package.json` and `tsconfig.json`
+- Set up Express.js with TypeScript: `app.ts` (app config) and `index.ts` (entry point)
+- Added health check route at `GET /api/health` returning `{ status, timestamp }`
+- Added global error handler with `AppError` class, returns JSON (not HTML)
+- Configured morgan logging, CORS, Helmet, express.json middleware
+- Added vitest + supertest for unit testing, 2 tests passing
+- Updated `.env.example` PORT to 3001 (Vite uses 3000)
+- Fixed corrupted `@vitest/spy` null-byte issue from `--ignore-scripts`

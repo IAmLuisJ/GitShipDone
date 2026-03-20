@@ -10,6 +10,17 @@ gitshipdone/
 │   ├── assets/
 │   ├── playwright.config.ts
 │   └── vitest.config.ts
+├── server/
+│   ├── src/
+│   │   ├── index.ts
+│   │   ├── app.ts
+│   │   ├── routes/
+│   │   │   └── health.ts
+│   │   └── middleware/
+│   │       └── errorHandler.ts
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vitest.config.ts
 ├── public/
 ├── docker-compose.yml
 ├── package.json
