@@ -1,17 +1,21 @@
 {
   "name": "gitshipdone",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "test": "vitest",
+    "coverage": "vitest run --coverage",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "db:reset": "docker compose down -v && docker compose up -d"
+  },
+  "engines": {
+    "node": "^22"
   },
   "dependencies": {
     "react": "^19.2.4",
