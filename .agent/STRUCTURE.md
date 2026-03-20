@@ -19,13 +19,15 @@ gitshipdone/
 │   │   │   ├── migrate.ts
 │   │   │   └── schema/
 │   │   │       ├── index.ts
-│   │   │       └── users.ts
+│   │   │       ├── users.ts
+│   │   │       └── projects.ts
 │   │   ├── routes/
 │   │   │   └── health.ts
 │   │   └── middleware/
 │   │       └── errorHandler.ts
 │   ├── drizzle/
 │   │   ├── 0000_create_users.sql
+│   │   ├── 0001_create_projects.sql
 │   │   └── meta/
 │   │       ├── _journal.json
 │   │       └── 0000_snapshot.json

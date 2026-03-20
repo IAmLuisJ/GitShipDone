@@ -32,7 +32,7 @@
     "title": "Projects table schema and migration",
     "category": "data-model",
     "specFilePath": ".agent/tasks/TASK-5.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-6",

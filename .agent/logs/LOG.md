@@ -52,3 +52,13 @@
 - Hand-wrote migration SQL (drizzle-kit Go binary crashes on ARM emulation)
 - Migration runs successfully, table verified in PostgreSQL
 - 14 unit tests passing, type checks clean
+
+### 2026-03-20 — TASK-5: Projects table schema and migration
+- Created `server/src/db/schema/projects.ts` with all required columns
+- Defined `projectTypeEnum` (software, design, physical, content, learning, other) and `projectStatusEnum` (active, on_hold, completed, archived) as Drizzle pgEnums
+- FK to `users.id` with cascade delete, UNIQUE constraint on `share_token`
+- Indexes on `user_id` and `share_token`
+- Exported `Project` and `NewProject` types, added to schema barrel
+- Hand-wrote migration SQL `0001_create_projects.sql` (drizzle-kit Go binary crashes on ARM)
+- Migration runs successfully, table verified in PostgreSQL
+- 33 unit tests passing (18 new for projects schema), type checks clean
