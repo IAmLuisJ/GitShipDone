@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-20
-**Tasks Completed:** 2
-**Current Task:** TASK-2 Complete
+**Tasks Completed:** 3
+**Current Task:** TASK-3 Complete
 
 ----------------------------------------------
 
@@ -29,3 +29,15 @@
 - Added vitest + supertest for unit testing, 2 tests passing
 - Updated `.env.example` PORT to 3001 (Vite uses 3000)
 - Fixed corrupted `@vitest/spy` null-byte issue from `--ignore-scripts`
+
+### 2026-03-20 — TASK-3: Configure Drizzle ORM with PostgreSQL connection
+- Installed `drizzle-orm`, `pg`, `drizzle-kit`, `@types/pg` in server/
+- Created `server/src/db/index.ts` with Pool + Drizzle client, exports `db` and `pool`
+- Created `server/src/db/schema/index.ts` as empty barrel for future table definitions
+- Created `server/drizzle.config.ts` with PostgreSQL dialect config
+- Added `db:generate`, `db:migrate`, `db:push`, `db:studio` scripts to server/package.json
+- Used programmatic migrator (`src/db/migrate.ts`) instead of drizzle-kit CLI (Go binary crashes on ARM emulation)
+- Added DB connection verification on server startup via `pool.query('SELECT 1')`
+- Switched docker-compose to tmpfs volume (named volumes not shared on this host)
+- Fixed corrupted drizzle-kit binary via npm pack
+- 4 unit tests passing, type checks clean

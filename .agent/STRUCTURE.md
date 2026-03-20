@@ -14,10 +14,19 @@ gitshipdone/
 │   ├── src/
 │   │   ├── index.ts
 │   │   ├── app.ts
+│   │   ├── db/
+│   │   │   ├── index.ts
+│   │   │   ├── migrate.ts
+│   │   │   └── schema/
+│   │   │       └── index.ts
 │   │   ├── routes/
 │   │   │   └── health.ts
 │   │   └── middleware/
 │   │       └── errorHandler.ts
+│   ├── drizzle/
+│   │   └── meta/
+│   │       └── _journal.json
+│   ├── drizzle.config.ts
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── vitest.config.ts

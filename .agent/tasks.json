@@ -1,7 +1,7 @@
 [
   { "id": "TASK-1",  "title": "Docker Compose setup with PostgreSQL", "category": "integration", "specFilePath": ".agent/tasks/TASK-1.json", "passes": true },
   { "id": "TASK-2",  "title": "Initialize Express.js + TypeScript backend", "category": "functional", "specFilePath": ".agent/tasks/TASK-2.json", "passes": true },
-  { "id": "TASK-3",  "title": "Configure Drizzle ORM with PostgreSQL connection", "category": "functional", "specFilePath": ".agent/tasks/TASK-3.json", "passes": false },
+  { "id": "TASK-3",  "title": "Configure Drizzle ORM with PostgreSQL connection", "category": "functional", "specFilePath": ".agent/tasks/TASK-3.json", "passes": true },
   { "id": "TASK-4",  "title": "Users table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-4.json", "passes": false },
   { "id": "TASK-5",  "title": "Projects table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-5.json", "passes": false },
   { "id": "TASK-6",  "title": "Milestones table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-6.json", "passes": false },
