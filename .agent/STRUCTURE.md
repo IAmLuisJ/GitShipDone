@@ -20,7 +20,8 @@ gitshipdone/
 │   │   │   └── schema/
 │   │   │       ├── index.ts
 │   │   │       ├── users.ts
-│   │   │       └── projects.ts
+│   │   │       ├── projects.ts
+│   │   │       └── milestones.ts
 │   │   ├── routes/
 │   │   │   └── health.ts
 │   │   └── middleware/
@@ -28,6 +29,7 @@ gitshipdone/
 │   ├── drizzle/
 │   │   ├── 0000_create_users.sql
 │   │   ├── 0001_create_projects.sql
+│   │   ├── 0002_create_milestones.sql
 │   │   └── meta/
 │   │       ├── _journal.json
 │   │       └── 0000_snapshot.json

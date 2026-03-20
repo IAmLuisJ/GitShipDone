@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-20
-**Tasks Completed:** 4
-**Current Task:** TASK-4 Complete
+**Tasks Completed:** 6
+**Current Task:** TASK-6 Complete
 
 ----------------------------------------------
 
@@ -62,3 +62,15 @@
 - Hand-wrote migration SQL `0001_create_projects.sql` (drizzle-kit Go binary crashes on ARM)
 - Migration runs successfully, table verified in PostgreSQL
 - 33 unit tests passing (18 new for projects schema), type checks clean
+
+### 2026-03-20 — TASK-6: Milestones table schema and migration
+- Created `server/src/db/schema/milestones.ts` with all required columns
+- Defined `milestoneStatusEnum` (pending, in_progress, completed) as Drizzle pgEnum
+- FK to `projects.id` with cascade delete, index on `project_id`
+- `sort_order` integer (default 0) for drag-and-drop reordering
+- `due_date` as nullable date, `completed_at` as nullable timestamp
+- Exported `Milestone` and `NewMilestone` types, added to schema barrel
+- Hand-wrote migration SQL `0002_create_milestones.sql`
+- Migration runs successfully, table verified in PostgreSQL
+- Fixed server esbuild binary (SIGILL on ARM emulation)
+- 47 unit tests passing (14 new for milestones schema), type checks clean
