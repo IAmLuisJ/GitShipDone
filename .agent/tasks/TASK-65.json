@@ -1,0 +1,28 @@
+{
+  "id": "TASK-65",
+  "title": "PATCH /api/notifications/:nid/read — mark notification as read",
+  "category": "api-endpoint",
+  "description": "Mark a single notification as read. Also support PATCH /api/notifications/read-all to mark all as read.",
+  "acceptanceCriteria": [
+    "PATCH /api/notifications/:nid/read sets is_read = true",
+    "Returns 404 if notification doesn't belong to user",
+    "POST /api/notifications/read-all marks all user notifications as read",
+    "Returns 200 on success"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement mark-read endpoints",
+      "details": "PATCH /:nid/read: Find notification WHERE id = nid AND user_id = userId. Set is_read = true. Return 200. POST /read-all: UPDATE notifications SET is_read = true WHERE user_id = userId AND is_read = false. Return 200 { updated: rowCount }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Mark one notification read — verify is_read = true. Call read-all — verify all are read.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-64"],
+  "estimatedComplexity": "low"
+}

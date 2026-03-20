@@ -1,0 +1,46 @@
+{
+  "id": "TASK-7",
+  "title": "Todos table schema and migration",
+  "category": "data-model",
+  "description": "Define the todos table for project to-do items with completion tracking, urgency, due dates, sort order, and optional grouping under milestones.",
+  "acceptanceCriteria": [
+    "todos table defined in src/db/schema/todos.ts",
+    "Foreign key to projects.id with cascade delete",
+    "Optional foreign key to milestones.id (nullable)",
+    "is_completed and is_urgent boolean fields present",
+    "sort_order and completed_at fields present",
+    "Migration runs successfully"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define todos table",
+      "details": "Create server/src/db/schema/todos.ts. Define todos table: id (uuid pk defaultRandom), project_id (uuid notNull FK → projects.id cascade delete), milestone_id (uuid nullable FK → milestones.id set null on delete), title (varchar 500 notNull), is_completed (boolean notNull default false), is_urgent (boolean notNull default false), due_date (date nullable), sort_order (integer notNull default 0), completed_at (timestamp nullable), created_at (timestamp notNull defaultNow()), updated_at (timestamp notNull defaultNow()).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add indexes",
+      "details": "Add index on project_id and composite index on (project_id, is_completed) for efficient progress calculation queries.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export types and update schema barrel",
+      "details": "Export type Todo and type NewTodo. Add 'export * from ./todos' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Verify the todos table has all columns, FK constraints, and the composite index.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-6"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "milestone_id uses 'set null' on delete so todos survive milestone deletion",
+    "The composite index on (project_id, is_completed) powers the progress calculation query: SELECT COUNT(*) WHERE project_id = x (total) and WHERE is_completed = true (done)"
+  ]
+}

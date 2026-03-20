@@ -1,0 +1,35 @@
+{
+  "id": "TASK-61",
+  "title": "POST /api/projects/:id/share/enable — generate public share token",
+  "category": "api-endpoint",
+  "description": "Enable project sharing by generating a unique UUID share token and setting is_public = true on the project.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Generates a UUID v4 share_token if one doesn't exist",
+    "Sets is_public = true on the project",
+    "Returns 200 { shareUrl: 'FRONTEND_URL/share/TOKEN', shareToken }",
+    "If already public with a token, returns existing token (idempotent)"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create share router and enable endpoint",
+      "details": "Create server/src/routes/share.ts with mergeParams: true. POST /enable: 1) getOwnedProject. 2) If project.shareToken is null, generate new UUID: crypto.randomUUID(). 3) Update project: is_public = true, share_token = token (if not already set). 4) Return 200 { shareToken, shareUrl: FRONTEND_URL + '/share/' + token }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Mount share router",
+      "details": "Mount at /api/projects/:id/share with requireAuth.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test",
+      "details": "Enable sharing — verify is_public=true and share_token set. Enable again — verify same token returned (idempotent). Share URL is correct format.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-29"],
+  "estimatedComplexity": "low"
+}

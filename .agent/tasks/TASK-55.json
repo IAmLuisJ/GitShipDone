@@ -1,0 +1,29 @@
+{
+  "id": "TASK-55",
+  "title": "POST /api/projects/:id/parking-lot/:pid/promote — promote to milestone or todo",
+  "category": "api-endpoint",
+  "description": "Promote a parking lot item into an actual milestone or todo, then archive the original item.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Accepts { targetType: 'milestone' | 'todo' }",
+    "Creates a milestone or todo from the parking lot item's title + description",
+    "Archives the parking lot item after promotion",
+    "Returns 200 with { created: milestone|todo }"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement POST /:pid/promote handler",
+      "details": "1) getOwnedProject. 2) Find parking lot item. 3) Validate { targetType: z.enum(['milestone','todo']) }. 4) If 'milestone': insert into milestones with name = item.title, description = item.description, sort_order = max+1. If 'todo': insert into todos with title = item.title. 5) Set item.archived_at = NOW(). 6) Return 200 { created: newRecord }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Promote parking lot item to milestone — verify milestone created, item archived. Promote another to todo — verify todo created.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-54", "TASK-33", "TASK-38"],
+  "estimatedComplexity": "low"
+}

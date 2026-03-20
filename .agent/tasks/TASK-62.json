@@ -1,0 +1,29 @@
+{
+  "id": "TASK-62",
+  "title": "POST /api/projects/:id/share/revoke — revoke and regenerate share token",
+  "category": "api-endpoint",
+  "description": "Revoke the current share token (making the old URL invalid) and generate a new one. Sets is_public = false as well.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Generates a new UUID share_token (old one is no longer valid)",
+    "Sets is_public = false",
+    "Returns 200 { message: 'Share link revoked' }",
+    "Old share URL (/share/OLD_TOKEN) now returns 404"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement POST /revoke handler",
+      "details": "getOwnedProject. Generate new UUID token. Update project: share_token = newToken, is_public = false. Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Enable sharing, get share URL, then revoke. Try the old share URL — expect 404. Enable sharing again — get a different URL.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-61"],
+  "estimatedComplexity": "low"
+}

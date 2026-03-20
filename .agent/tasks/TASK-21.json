@@ -1,0 +1,33 @@
+{
+  "id": "TASK-21",
+  "title": "POST /api/auth/reset-password — apply new password",
+  "category": "api-endpoint",
+  "description": "Implement the password reset completion: verify the reset token, update the password, invalidate the token, and return success.",
+  "acceptanceCriteria": [
+    "POST /api/auth/reset-password accepts { token, newPassword }",
+    "Returns 400 if token is invalid or expired",
+    "Returns 400 if newPassword is < 8 characters",
+    "Updates password_hash for the user on success",
+    "Marks the reset token as used (cannot be reused)",
+    "Invalidates all existing refresh tokens for the user (force re-login)"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement reset-password handler",
+      "details": "1) Validate { token: string, newPassword: string min(8) }. 2) Find all unused, non-expired password_reset_tokens. 3) For each, compare bcrypt.compare(token, token_hash). Find the matching one. If none, return 400 'Invalid or expired token'. 4) Hash newPassword with bcrypt cost 12. 5) Update user.password_hash. 6) Mark reset token as used (set used_at = NOW()). 7) Delete all refresh_tokens for the user (force re-login everywhere). 8) Return 200 { message: 'Password updated successfully' }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test reset flow end-to-end",
+      "details": "1. Forgot-password → get email with token. 2. POST /api/auth/reset-password with token + new password → 200. 3. Login with new password → 200. 4. Try same reset token again → 400. 5. Try old password → 401.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-20"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "Deleting all refresh tokens on password reset is a security measure: invalidates all sessions"
+  ]
+}

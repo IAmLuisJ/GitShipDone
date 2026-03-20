@@ -1,0 +1,36 @@
+{
+  "id": "TASK-92",
+  "title": "Frontend: Software project milestone template wizard step",
+  "category": "ui-ux",
+  "description": "The milestone template selection step within the create project wizard, specifically for software projects. Shows predefined milestones with descriptions that users can check/uncheck.",
+  "acceptanceCriteria": [
+    "Shows only for 'software' project type",
+    "Lists 7 predefined milestones as styled checkboxes with descriptions",
+    "All milestones checked by default",
+    "User can uncheck any they don't want",
+    "'Skip this step' option available",
+    "Selected templates are passed to the project creation API call"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create MilestoneTemplatesStep component",
+      "details": "Create src/components/projects/MilestoneTemplatesStep.tsx. Show list of PREDEFINED_SOFTWARE_MILESTONES as Checkbox + Label pairs with descriptions. Initialize all as checked. Pass selected array up to parent via onChange prop.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Integrate into CreateProjectModal step 3",
+      "details": "In step 3 of wizard: if type === 'software', render MilestoneTemplatesStep. Otherwise, render a 'Ready to create!' confirmation message.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Verify in browser",
+      "details": "Select 'software' type, reach step 3 — verify templates shown. Uncheck 2 — verify only selected templates created on submit.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-91"],
+  "estimatedComplexity": "low"
+}

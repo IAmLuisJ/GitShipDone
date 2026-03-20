@@ -1,0 +1,45 @@
+{
+  "id": "TASK-97",
+  "title": "Frontend: Todos tab — list, create, check/uncheck, reorder, mark urgent",
+  "category": "ui-ux",
+  "description": "Build the Todos tab with a sortable, filterable todo list with inline creation.",
+  "acceptanceCriteria": [
+    "Lists todos sorted by sort_order",
+    "Checkbox toggles completion — updates progress bar in real time",
+    "Urgent todos shown with a warning/fire icon",
+    "Filter by: all, active, completed, urgent",
+    "Drag-and-drop reorder",
+    "Inline 'Add todo' input at bottom",
+    "Points change shown as a brief toast on completion",
+    "Group by milestone option",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create TodosTab with sortable list",
+      "details": "Create src/components/project/tabs/TodosTab.tsx. Similar drag-and-drop pattern to milestones using @dnd-kit/sortable. State: filter ('all'|'active'|'completed'|'urgent'). Filter tabs at top.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create TodoItem component",
+      "details": "Create src/components/project/TodoItem.tsx. Drag handle, checkbox (toggles is_completed), title, urgent badge (if is_urgent), due date. On completion toggle: call PATCH API, show toast '+10 pts' or '-10 pts'. Long-press or hover → show delete button.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Add inline create form",
+      "details": "Input at bottom of list. Enter to submit. Optional: due date picker and urgent toggle before creating. POST /api/projects/:id/todos.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify in browser using Playwright",
+      "details": "Add 5 todos. Check one — verify progress bar updates, toast shows +10 pts. Filter by 'active' — verify completed hidden. Drag to reorder — verify order persists after reload.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-38", "TASK-39", "TASK-40", "TASK-41", "TASK-42", "TASK-108"],
+  "estimatedComplexity": "high"
+}

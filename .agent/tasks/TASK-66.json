@@ -1,0 +1,28 @@
+{
+  "id": "TASK-66",
+  "title": "PATCH /api/notifications/:nid/snooze — snooze notification until date",
+  "category": "api-endpoint",
+  "description": "Snooze a notification until a specified date/time. Snoozed notifications are hidden from the notification center until the snooze expires.",
+  "acceptanceCriteria": [
+    "PATCH /api/notifications/:nid/snooze accepts { snoozeUntil: ISO datetime string }",
+    "snoozeUntil must be in the future",
+    "Sets snoozed_until on the notification",
+    "Returns 200 with updated notification"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement snooze endpoint",
+      "details": "PATCH /:nid/snooze: Validate { snoozeUntil: z.string().datetime() }. Verify snoozeUntil > NOW() (return 400 if not). Find notification by id AND user_id. Set snoozed_until = new Date(snoozeUntil). Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Snooze notification for 1 hour. GET notifications — verify it's excluded. Try snooze with past date — expect 400.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-65"],
+  "estimatedComplexity": "low"
+}

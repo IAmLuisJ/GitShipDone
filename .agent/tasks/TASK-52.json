@@ -1,0 +1,34 @@
+{
+  "id": "TASK-52",
+  "title": "GET /api/projects/:id/parking-lot — list parking lot items",
+  "category": "api-endpoint",
+  "description": "Return all non-archived parking lot items for a project.",
+  "acceptanceCriteria": [
+    "GET requires auth and project ownership",
+    "Excludes archived items (archived_at IS NULL) by default",
+    "Supports ?includeArchived=true query param",
+    "Returns items ordered by created_at DESC"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create parking lot router and GET / handler",
+      "details": "Create server/src/routes/parkingLot.ts with mergeParams: true. GET /: getOwnedProject. Build query WHERE project_id = id. Unless includeArchived=true, add AND archived_at IS NULL. ORDER BY created_at DESC. Return 200 with items.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Mount router",
+      "details": "Mount at /api/projects/:id/parking-lot with requireAuth.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test",
+      "details": "Create 2 items, archive 1. GET without param — verify 1 returned. GET ?includeArchived=true — verify 2 returned.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-11", "TASK-27"],
+  "estimatedComplexity": "low"
+}

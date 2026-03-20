@@ -1,0 +1,45 @@
+{
+  "id": "TASK-10",
+  "title": "Points log table schema and migration",
+  "category": "data-model",
+  "description": "Define the points_log table for tracking every points transaction on a project — both automatic (from todos/milestones) and manual adjustments.",
+  "acceptanceCriteria": [
+    "points_log table defined in src/db/schema/pointsLog.ts",
+    "FK to projects.id with cascade delete",
+    "source ENUM covers all point sources",
+    "delta can be positive or negative",
+    "Migration runs successfully"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define point source enum and points_log table",
+      "details": "Create server/src/db/schema/pointsLog.ts. Define pointSourceEnum = pgEnum('point_source', ['todo', 'milestone', 'journal', 'github_commit', 'github_release', 'manual']). Define points_log table: id (uuid pk), project_id (uuid notNull FK → projects cascade delete), delta (integer notNull — positive or negative), reason (varchar 255 notNull), source (pointSourceEnum notNull), created_at (timestamp notNull defaultNow()).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add index on project_id",
+      "details": "Add index on points_log.project_id for efficient aggregation queries.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export types and update schema barrel",
+      "details": "Export type PointsLog and type NewPointsLog. Add 'export * from ./pointsLog' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Verify points_log table with correct columns.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-5"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "delta is the change amount — e.g., +10 for completing a todo, -10 for unchecking it",
+    "points_total on the projects table is the running sum of all points_log entries for that project"
+  ]
+}

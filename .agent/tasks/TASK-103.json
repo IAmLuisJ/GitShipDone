@@ -1,0 +1,41 @@
+{
+  "id": "TASK-103",
+  "title": "Frontend: AI pathway display panel for parking lot items",
+  "category": "ui-ux",
+  "description": "Dedicated pathway display component that renders AI-generated implementation steps in a formatted, readable way.",
+  "acceptanceCriteria": [
+    "Pathway displayed as formatted markdown (numbered list)",
+    "Loading spinner shown while generating",
+    "Error message if generation fails",
+    "Regenerate button to re-fetch pathway",
+    "Pathway content is copyable"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install react-markdown",
+      "details": "npm install react-markdown.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create AiPathwayPanel component",
+      "details": "Create src/components/project/AiPathwayPanel.tsx. Props: itemId, projectId, existingPathway? Renders: loading state, error state, or markdown content via ReactMarkdown. 'Regenerate' button calls the API again and updates.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Add copy button",
+      "details": "Copy icon button that calls navigator.clipboard.writeText(pathway). Show 'Copied!' toast on success.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify in browser",
+      "details": "Generate pathway — verify markdown renders with numbered steps. Click copy — verify content is in clipboard. Click Regenerate — verify new pathway is fetched.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-77", "TASK-81"],
+  "estimatedComplexity": "low"
+}

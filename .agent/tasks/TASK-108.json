@@ -1,0 +1,36 @@
+{
+  "id": "TASK-108",
+  "title": "Frontend: Progress bar component — auto vs manual progress, override input",
+  "category": "ui-ux",
+  "description": "Create a reusable project progress bar that shows auto-calculated and manual override progress, with an inline input to set the manual override.",
+  "acceptanceCriteria": [
+    "Shows progress bar filled to effectiveProgress (manual if set, else auto)",
+    "Shows percentage label",
+    "If progressManual is set, shows a 'Manual override active' indicator with a reset button",
+    "Pencil icon to open inline override input (number 0-100)",
+    "On submit: calls PATCH /api/projects/:id/progress",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create ProjectProgressBar component",
+      "details": "Create src/components/project/ProjectProgressBar.tsx. Props: project. Compute effectiveProgress = project.progressManual ?? project.progressAuto. Use shadcn/ui Progress. Show label: 'N%'. If progressManual set, show yellow/orange indicator.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add manual override input",
+      "details": "Pencil icon button → shows inline Input (0-100). Submit on Enter or checkmark button. Calls PATCH /api/projects/:id/progress. On success: invalidate project query. Reset button (x) → sets progressManual to null.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Verify in browser using Playwright",
+      "details": "Set manual override to 75 — verify progress bar shows 75% even if auto is 20%. Reset — verify bar returns to auto. Complete more todos — verify auto progress updates independently.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-79", "TASK-81"],
+  "estimatedComplexity": "low"
+}

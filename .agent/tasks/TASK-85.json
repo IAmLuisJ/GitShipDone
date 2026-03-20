@@ -1,0 +1,37 @@
+{
+  "id": "TASK-85",
+  "title": "Frontend: Login page with email/password and OAuth buttons",
+  "category": "ui-ux",
+  "description": "Build the login page. Similar to register but with existing account fields and link to forgot password.",
+  "acceptanceCriteria": [
+    "Form has: email and password fields",
+    "Submit shows loading, handles errors inline",
+    "On success: stores auth, redirects to /dashboard",
+    "Link to /forgot-password",
+    "Link to /register",
+    "Google and GitHub OAuth buttons",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create LoginPage with form",
+      "details": "src/pages/LoginPage.tsx. React Hook Form with email + password. On submit: POST /api/auth/login. On success: setAuth + navigate('/dashboard'). On error: show error message.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add links and OAuth buttons",
+      "details": "Add 'Forgot password?' link to /forgot-password. 'Don't have an account? Sign up' link to /register. Google and GitHub OAuth buttons.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Verify in browser using Playwright",
+      "details": "Login with valid credentials — redirect to dashboard. Login with wrong password — see error. Click forgot password — navigate to correct page.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-17", "TASK-81"],
+  "estimatedComplexity": "low"
+}

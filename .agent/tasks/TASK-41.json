@@ -1,0 +1,28 @@
+{
+  "id": "TASK-41",
+  "title": "DELETE /api/projects/:id/todos/:tid — delete to-do",
+  "category": "api-endpoint",
+  "description": "Delete a todo permanently and recalculate project progress.",
+  "acceptanceCriteria": [
+    "DELETE requires auth and project ownership",
+    "Returns 404 if todo not found",
+    "Returns 200 on success",
+    "Progress is recalculated after deletion"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement DELETE /:tid handler",
+      "details": "1) getOwnedProject. 2) Find todo by id AND project_id. 3) Delete todo. 4) Call recalculateProgress(projectId). 5) Return 200 { message: 'Todo deleted', progress: newProgress }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test deletion",
+      "details": "Create 2 todos, complete 1, delete it — verify progress updates from 50% to 0% (1 todo remaining, uncompleted).",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-40"],
+  "estimatedComplexity": "low"
+}

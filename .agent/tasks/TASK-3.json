@@ -1,0 +1,64 @@
+{
+  "id": "TASK-3",
+  "title": "Configure Drizzle ORM with PostgreSQL connection",
+  "category": "functional",
+  "description": "Install and configure Drizzle ORM in the server with a PostgreSQL connection using the pg driver. Set up the Drizzle client, schema directory, and drizzle-kit for migrations. Verify a test query can connect to the database.",
+  "acceptanceCriteria": [
+    "drizzle-orm and pg packages are installed in server/",
+    "db.ts exports a Drizzle database client connected to PostgreSQL",
+    "drizzle.config.ts is configured for drizzle-kit migrations",
+    "Running 'npm run db:migrate' applies all pending migrations",
+    "A test query (SELECT 1) succeeds when server starts"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install Drizzle ORM and PostgreSQL driver",
+      "details": "In server/: npm install drizzle-orm pg. npm install -D drizzle-kit @types/pg. These provide the ORM, the pg driver, and the CLI for migrations.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create database client in src/db/index.ts",
+      "details": "Create server/src/db/index.ts: import { drizzle } from 'drizzle-orm/node-postgres'; import { Pool } from 'pg'; import * as schema from './schema'; const pool = new Pool({ connectionString: process.env.DATABASE_URL }); export const db = drizzle(pool, { schema }); export { pool };",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Create schema barrel file src/db/schema/index.ts",
+      "details": "Create server/src/db/schema/index.ts as an empty barrel that will re-export all table definitions added in subsequent tasks. Start with: // Schema exports will be added here as tables are defined.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Create drizzle.config.ts at server root",
+      "details": "Create server/drizzle.config.ts: import type { Config } from 'drizzle-kit'; import * as dotenv from 'dotenv'; dotenv.config(); export default { schema: './src/db/schema/index.ts', out: './drizzle', driver: 'pg', dbCredentials: { connectionString: process.env.DATABASE_URL! }, verbose: true, strict: true } satisfies Config;",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Add migration scripts to server/package.json",
+      "details": "Add: 'db:generate': 'drizzle-kit generate:pg', 'db:migrate': 'drizzle-kit push:pg', 'db:studio': 'drizzle-kit studio'. The push command applies schema directly for development; generate+migrate for production.",
+      "pass": false
+    },
+    {
+      "step": 6,
+      "description": "Add database connection verification on server startup",
+      "details": "In server/src/index.ts, before app.listen, add: pool.query('SELECT 1').then(() => console.log('[DB] Connected to PostgreSQL')).catch(err => { console.error('[DB] Connection failed:', err); process.exit(1); });",
+      "pass": false
+    },
+    {
+      "step": 7,
+      "description": "Verify connection works",
+      "details": "Start Docker Compose (npm run db:up from root), copy .env.example to server/.env and fill in values, then run 'npm run dev' in server/. Verify '[DB] Connected to PostgreSQL' appears in logs.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-1", "TASK-2"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "Use Pool from pg (not Client) for connection pooling — important for concurrent requests",
+    "DATABASE_URL format: postgresql://user:password@localhost:5432/dbname",
+    "drizzle-kit push:pg is fine for development; use generate + migrate for production migrations"
+  ]
+}

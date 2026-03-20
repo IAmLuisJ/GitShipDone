@@ -1,0 +1,32 @@
+{
+  "id": "TASK-42",
+  "title": "PATCH /api/projects/:id/todos/reorder — update todo sort order",
+  "category": "api-endpoint",
+  "description": "Accept an ordered list of todo IDs and update their sort_order values to reflect the new order from drag-and-drop.",
+  "acceptanceCriteria": [
+    "PATCH /api/projects/:id/todos/reorder requires auth and project ownership",
+    "Accepts { orderedIds: string[] }",
+    "Updates sort_order for each todo based on array position",
+    "Returns 200 { message: 'Order updated' }",
+    "Returns 400 if any ID does not belong to this project"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement reorder handler",
+      "details": "1) getOwnedProject. 2) Validate body: orderedIds = z.array(z.string().uuid()). 3) Fetch all todos for project, extract their IDs. Verify all orderedIds are present (return 400 if any are foreign). 4) In a transaction, for each id at index i, UPDATE todos SET sort_order = i WHERE id = id. 5) Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test reorder",
+      "details": "Create 3 todos with sort_orders 0,1,2. Send reorder with reversed IDs. Verify sort_orders are now 0,1,2 in reverse order.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-39"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "This route must be defined BEFORE /:tid in the router to avoid Express matching 'reorder' as a :tid value"
+  ]
+}

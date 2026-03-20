@@ -1,0 +1,43 @@
+{
+  "id": "TASK-57",
+  "title": "POST /api/projects/:id/github/connect — link GitHub repo to project",
+  "category": "integration",
+  "description": "Allow users to link a specific GitHub repository to a project. Triggers initial import of commits and releases.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Requires user to have github_access_token set (return 400 if not)",
+    "Accepts { repoOwner: string, repoName: string }",
+    "Fetches available repos from GitHub API to validate the repo exists and user has access",
+    "Stores github_repo_id and github_repo_name on the project",
+    "Triggers background import of last 90 days of commits (non-blocking)",
+    "Returns 200 with { repoName, importStatus: 'importing' }"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install Octokit",
+      "details": "npm install @octokit/rest. This is the official GitHub API client.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create GitHub API service",
+      "details": "Create server/src/services/githubService.ts. Export function getOctokit(encryptedToken: string): Octokit — decrypt token, return new Octokit({ auth: decryptedToken }). Export async function getRepo(octokit, owner, repo): Promise<RepoData>. Export async function importCommits(projectId, octokit, owner, repo): Promise<void>.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Implement POST /:id/github/connect handler",
+      "details": "Create server/src/routes/github.ts. POST /connect: 1) getOwnedProject. 2) Fetch user — check github_access_token exists. 3) Decrypt token, get Octokit instance. 4) Call octokit.repos.get({ owner, repo }) — if 404, return 400 'Repo not found or no access'. 5) Update project: github_repo_id = repo.id, github_repo_name = 'owner/repo'. 6) Fire and forget: importCommitsForProject(projectId, octokit, owner, repo). 7) Return 200 { repoName: 'owner/repo', importStatus: 'importing' }.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Test the connect flow",
+      "details": "Connect GitHub account (TASK-56). Link a real public repo. Verify project has github_repo_name set. Wait 5 seconds, check github_commits table — verify commits imported.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-56", "TASK-58", "TASK-73"],
+  "estimatedComplexity": "medium"
+}

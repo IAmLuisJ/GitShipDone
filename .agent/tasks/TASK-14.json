@@ -1,0 +1,46 @@
+{
+  "id": "TASK-14",
+  "title": "Notifications table schema and migration",
+  "category": "data-model",
+  "description": "Define the notifications table for in-app notification center entries, with support for read state, snooze, and project association.",
+  "acceptanceCriteria": [
+    "notifications table defined in src/db/schema/notifications.ts",
+    "FK to users.id with cascade delete",
+    "Optional FK to projects.id (set null on delete)",
+    "type ENUM: milestone_due, todo_due, milestone_completed, system",
+    "is_read and snoozed_until fields present",
+    "Migration runs successfully"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define notification type enum and notifications table",
+      "details": "Create server/src/db/schema/notifications.ts. Define notificationTypeEnum = pgEnum('notification_type', ['milestone_due', 'todo_due', 'milestone_completed', 'system']). Define notifications table: id (uuid pk), user_id (uuid notNull FK → users cascade delete), project_id (uuid nullable FK → projects set null), type (notificationTypeEnum notNull), message (text notNull), is_read (boolean notNull default false), snoozed_until (timestamp nullable), created_at (timestamp notNull defaultNow()).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add indexes",
+      "details": "Add index on (user_id, is_read) for the notification bell unread count query. Add index on user_id for listing all notifications.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export types and update schema barrel",
+      "details": "Export type Notification and type NewNotification. Add 'export * from ./notifications' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Verify the notifications table and both FK constraints.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-4", "TASK-5"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "snoozed_until allows deferring notifications — the bell should not count snoozed notifications as unread when current time < snoozed_until",
+    "Notifications are created by the reminder cron job and by server-side events (e.g., milestone completion)"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "TASK-50",
+  "title": "Timeline events service — log all project events to timeline_events table",
+  "category": "functional",
+  "description": "Create a reusable service function to insert timeline events. All significant project actions call this service to maintain a complete history.",
+  "acceptanceCriteria": [
+    "logTimelineEvent(projectId, type, payload, refId?) function exists",
+    "Inserts record into timeline_events table",
+    "payload is serialized as JSONB",
+    "Function does not throw if event logging fails (logs error, continues)",
+    "All relevant actions (journal, milestone, points, etc.) call this function"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create timeline service",
+      "details": "Create server/src/services/timelineService.ts. Export async function logTimelineEvent(projectId: string, type: TimelineEventType, payload: Record<string, unknown>, refId?: string): Promise<void>. Insert into timeline_events. Wrap in try/catch — on error, console.error but do NOT re-throw (timeline logging is non-critical).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test timeline logging",
+      "details": "Call logTimelineEvent with a test project and type 'journal' — verify record in DB. Verify payload is stored as JSONB and queryable.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-9"],
+  "estimatedComplexity": "low"
+}

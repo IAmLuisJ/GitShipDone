@@ -1,0 +1,29 @@
+{
+  "id": "TASK-31",
+  "title": "DELETE /api/projects/:id — soft delete project",
+  "category": "api-endpoint",
+  "description": "Soft delete a project by setting deleted_at. The project and its data remain in the database for potential recovery.",
+  "acceptanceCriteria": [
+    "DELETE /api/projects/:id requires auth and ownership",
+    "Sets deleted_at = NOW() on the project",
+    "Returns 200 { message: 'Project deleted' }",
+    "Deleted project no longer appears in GET /api/projects list",
+    "Returns 404 if project not found or already deleted"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement DELETE /:id handler",
+      "details": "1) getOwnedProject(id, userId). 2) Update project set deleted_at = new Date() where id = project.id. 3) Return 200 { message: 'Project deleted' }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test soft delete",
+      "details": "Create project, delete it, verify it's gone from GET /api/projects. Check DB directly — verify deleted_at is set, data still exists.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-29"],
+  "estimatedComplexity": "low"
+}

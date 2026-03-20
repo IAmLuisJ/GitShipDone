@@ -1,0 +1,30 @@
+{
+  "id": "TASK-72",
+  "title": "PATCH /api/users/me/ai-settings — save AI provider and encrypted API key",
+  "category": "api-endpoint",
+  "description": "Save the user's AI provider choice (openai or anthropic) and their API key. The key is encrypted before storage.",
+  "acceptanceCriteria": [
+    "PATCH requires auth",
+    "Accepts { provider: 'openai' | 'anthropic', apiKey: string }",
+    "Validates that the API key format looks plausible (basic check)",
+    "Encrypts the API key using AES-256 before storage",
+    "Returns 200 { message: 'AI settings saved', provider }",
+    "Returns 400 if provider is invalid"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement PATCH /me/ai-settings",
+      "details": "aiSettingsSchema = z.object({ provider: z.enum(['openai','anthropic']), apiKey: z.string().min(10).max(500) }). Encrypt apiKey using encrypt(apiKey) from encryption utility (TASK-73). Update user: ai_provider = provider, ai_api_key = encryptedKey. Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Save OpenAI key — verify provider and encrypted key stored. GET /me — verify hasAiKey = true, raw key not returned.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-73", "TASK-69"],
+  "estimatedComplexity": "low"
+}

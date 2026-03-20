@@ -1,0 +1,36 @@
+{
+  "id": "TASK-30",
+  "title": "PATCH /api/projects/:id — update project fields",
+  "category": "api-endpoint",
+  "description": "Update editable project fields (name, description, type, status). Log a status_change timeline event when status changes.",
+  "acceptanceCriteria": [
+    "PATCH /api/projects/:id requires auth and ownership",
+    "Accepts partial body: { name?, description?, type?, status? }",
+    "Returns 404 if project not found or unauthorized",
+    "Returns 200 with updated project",
+    "When status changes, a status_change timeline event is logged",
+    "updated_at is refreshed on every update"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create update project Zod schema",
+      "details": "In validators/projects.ts, add updateProjectSchema = z.object({ name: z.string().min(1).max(255).optional(), description: z.string().max(5000).optional(), type: z.enum([...]).optional(), status: z.enum(['active','on_hold','completed','archived']).optional() }).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Implement PATCH /:id handler",
+      "details": "1) getOwnedProject(id, userId). 2) Validate body. 3) Detect status change: if body.status && body.status !== project.status, save oldStatus. 4) Update project with new fields + updated_at = NOW(). 5) If status changed, log timeline event type='status_change', payload={from: oldStatus, to: newStatus}. 6) Return 200 with updated project.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test the endpoint",
+      "details": "PATCH with new name — verify updated. Change status from active to completed — verify timeline event created. Try updating another user's project — expect 404.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-29", "TASK-50"],
+  "estimatedComplexity": "low"
+}

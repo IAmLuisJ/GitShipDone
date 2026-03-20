@@ -1,0 +1,45 @@
+{
+  "id": "TASK-13",
+  "title": "GitHub releases table schema and migration",
+  "category": "data-model",
+  "description": "Define the github_releases table for storing GitHub release records, including raw release notes and optional AI-generated summaries.",
+  "acceptanceCriteria": [
+    "github_releases table defined in src/db/schema/githubReleases.ts",
+    "FK to projects.id with cascade delete",
+    "ai_summary nullable TEXT for optional AI changelog",
+    "published_at timestamp field present",
+    "Migration runs successfully"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define github_releases table",
+      "details": "Create server/src/db/schema/githubReleases.ts. Define github_releases: id (uuid pk), project_id (uuid notNull FK → projects cascade delete), tag_name (varchar 255 notNull), name (varchar 255 nullable), body (text nullable — raw GitHub release notes), ai_summary (text nullable — AI-generated summary), published_at (timestamp notNull), url (text notNull), created_at (timestamp notNull defaultNow()).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add index on project_id",
+      "details": "Add composite index on (project_id, published_at DESC) for timeline ordering.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export types and update schema barrel",
+      "details": "Export type GithubRelease and type NewGithubRelease. Add 'export * from ./githubReleases' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Verify github_releases table.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-12"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "tag_name (e.g., 'v1.0.0') is the release identifier from GitHub",
+    "ai_summary is populated later via the AI summarize endpoint — it starts as null"
+  ]
+}

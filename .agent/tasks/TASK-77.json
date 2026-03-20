@@ -1,0 +1,30 @@
+{
+  "id": "TASK-77",
+  "title": "POST /api/projects/:id/parking-lot/:pid/ai-pathway — generate AI pathway for parking lot item",
+  "category": "api-endpoint",
+  "description": "Generate a step-by-step AI pathway for implementing a parking lot idea. Saves the result to the item's ai_pathway field.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Returns 400 if user has no AI API key",
+    "Returns 404 if item not found",
+    "Calls AI with item title + description + project context",
+    "Saves generated pathway to parking_lot_items.ai_pathway",
+    "Returns 200 { pathway: string }"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement POST /:pid/ai-pathway in parking lot router",
+      "details": "1) getOwnedProject. 2) Fetch user — check ai_api_key. 3) Find parking lot item. 4) Build prompt: 'Generate a step-by-step implementation pathway for this idea: TITLE. Description: DESCRIPTION. Project context: CONTEXT. Return a numbered list of clear, actionable steps.' 5) Call AI (same pattern as TASK-75). 6) Update item.ai_pathway = response. 7) Return 200 { pathway }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Create a parking lot item with title 'Add dark mode'. Call ai-pathway. Verify ai_pathway is set on the item and response is a numbered list.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-75", "TASK-54"],
+  "estimatedComplexity": "low"
+}

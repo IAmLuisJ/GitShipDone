@@ -1,0 +1,28 @@
+{
+  "id": "TASK-49",
+  "title": "DELETE /api/projects/:id/journal/:jid — soft delete journal entry",
+  "category": "api-endpoint",
+  "description": "Soft delete a journal entry by setting deleted_at.",
+  "acceptanceCriteria": [
+    "DELETE requires auth and project ownership",
+    "Sets deleted_at on the entry",
+    "Returns 200 on success",
+    "Entry no longer appears in journal list"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement DELETE /:jid",
+      "details": "getOwnedProject. Find entry WHERE id = jid AND project_id = id AND deleted_at IS NULL. Set deleted_at = NOW(). Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Create entry, delete it, verify it's gone from list. Check DB — deleted_at is set.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-48"],
+  "estimatedComplexity": "low"
+}

@@ -1,0 +1,31 @@
+{
+  "id": "TASK-87",
+  "title": "Frontend: Reset password page",
+  "category": "ui-ux",
+  "description": "Build the reset password page. Reads the token from the URL query parameter and submits it with the new password.",
+  "acceptanceCriteria": [
+    "Reads ?token= from URL query params",
+    "Shows error if no token present",
+    "Form with newPassword and confirmNewPassword fields",
+    "Validates passwords match and meet minimum length",
+    "On success: shows success message with link to login",
+    "On error (invalid/expired token): shows error message",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create ResetPasswordPage",
+      "details": "src/pages/ResetPasswordPage.tsx. useSearchParams to get token. Form: newPassword + confirmPassword with validation (min 8, must match). POST /api/auth/reset-password with { token, newPassword }. On success: show 'Password updated! Sign in.' On error: show error.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Verify in browser",
+      "details": "Navigate to /reset-password with valid token — submit new password — verify success. Try with expired/invalid token — verify error. Try without token in URL — verify error shown immediately.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-21", "TASK-81"],
+  "estimatedComplexity": "low"
+}

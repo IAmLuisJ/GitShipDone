@@ -1,0 +1,30 @@
+{
+  "id": "TASK-79",
+  "title": "PATCH /api/projects/:id/progress — manual progress override",
+  "category": "api-endpoint",
+  "description": "Allow users to manually set a progress override percentage. Logs a progress_change timeline event.",
+  "acceptanceCriteria": [
+    "PATCH requires auth and project ownership",
+    "Accepts { progressManual: number | null }",
+    "progressManual must be 0-100 if provided",
+    "null clears the manual override",
+    "Logs a progress_change timeline event",
+    "Returns 200 { progressAuto, progressManual }"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement PATCH /:id/progress handler",
+      "details": "progressSchema = z.object({ progressManual: z.number().int().min(0).max(100).nullable() }). getOwnedProject. Update project.progress_manual = progressManual. Log timeline event 'progress_change' with { isManual: true, to: progressManual }. Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Set progressManual to 75. Verify DB updated. Clear it (null) — verify cleared. Pass 150 — expect 400.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-29", "TASK-50"],
+  "estimatedComplexity": "low"
+}

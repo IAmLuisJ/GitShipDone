@@ -1,0 +1,45 @@
+{
+  "id": "TASK-25",
+  "title": "Rate limiting on auth endpoints",
+  "category": "security",
+  "description": "Apply rate limiting to authentication endpoints to prevent brute force attacks. Login should be strictly limited; other auth endpoints more leniently.",
+  "acceptanceCriteria": [
+    "Login endpoint limited to 5 requests per 15 minutes per IP",
+    "Register endpoint limited to 10 requests per hour per IP",
+    "Password reset limited to 3 requests per hour per IP",
+    "Rate limit exceeded returns 429 with Retry-After header",
+    "Rate limits reset after the window expires"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install express-rate-limit",
+      "details": "npm install express-rate-limit.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create rate limiter configurations",
+      "details": "Create server/src/middleware/rateLimit.ts. Export: loginLimiter = rateLimit({ windowMs: 15*60*1000, max: 5, message: { error: 'Too many login attempts, try again later' }, standardHeaders: true, legacyHeaders: false }). registerLimiter = rateLimit({ windowMs: 60*60*1000, max: 10 }). forgotPasswordLimiter = rateLimit({ windowMs: 60*60*1000, max: 3 }).",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Apply rate limiters to auth routes",
+      "details": "In auth router: router.post('/login', loginLimiter, loginHandler). router.post('/register', registerLimiter, registerHandler). router.post('/forgot-password', forgotPasswordLimiter, forgotPasswordHandler).",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Test rate limiting",
+      "details": "Send 6 POST /api/auth/login requests rapidly — the 6th should return 429. Check response headers for RateLimit-Remaining and Retry-After.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-17"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "express-rate-limit uses in-memory store by default — fine for single-instance dev",
+    "standardHeaders: true adds RateLimit-Policy header per RFC 6585"
+  ]
+}

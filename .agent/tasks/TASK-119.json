@@ -1,0 +1,50 @@
+{
+  "id": "TASK-119",
+  "title": "Frontend: Mobile-responsive layout for all pages",
+  "category": "ui-ux",
+  "description": "Audit and fix all pages and components to work correctly on mobile viewports (375px+). Focus on layout, touch interactions, and readability.",
+  "acceptanceCriteria": [
+    "Dashboard: single-column card grid on mobile",
+    "Sidebar: hidden on mobile, accessible via hamburger → Sheet drawer",
+    "Project detail: tabs scroll horizontally on mobile (no wrapping)",
+    "Milestones/Todos: full-width on mobile, drag-drop still works",
+    "Timeline: readable and usable on mobile",
+    "All modals/dialogs fit within mobile viewport",
+    "No horizontal scroll on any page",
+    "Verify in browser using Playwright at 375px viewport"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Audit all pages at 375px",
+      "details": "Use Playwright or DevTools to check each page at 375x812 viewport. Log any overflow, cut-off content, or unusable interactions. Create a fix list.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Fix sidebar mobile behavior",
+      "details": "In AppLayout: on mobile (< lg breakpoint), hide sidebar. Add hamburger menu button in a top header bar. Clicking opens sidebar as Sheet (shadcn/ui) from the left.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Fix tab overflow on project detail",
+      "details": "Wrap Tabs list in a horizontally scrollable container: overflow-x-auto whitespace-nowrap. This allows all 7 tabs to be accessible via swipe.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Fix dialogs and modals for mobile",
+      "details": "Ensure all Dialog components use max-h-[90vh] overflow-y-auto for mobile. The create project wizard should be full-screen on mobile.",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Verify in browser using Playwright at 375px",
+      "details": "Run through all main user flows at 375px viewport. Verify no horizontal scroll. Verify all actions are usable without zooming.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-82", "TASK-93"],
+  "estimatedComplexity": "medium"
+}

@@ -1,0 +1,36 @@
+{
+  "id": "TASK-112",
+  "title": "Frontend: Notification item actions — mark read, snooze, dismiss",
+  "category": "ui-ux",
+  "description": "Build the individual notification item with action buttons for mark read, snooze, and project link.",
+  "acceptanceCriteria": [
+    "Each notification shows: type icon, message text, project name (if applicable), time ago",
+    "Unread notifications have a blue dot indicator",
+    "Click on notification marks it as read",
+    "Snooze button opens a time picker (1 hour, 3 hours, tomorrow, custom date)",
+    "Dismiss button marks as read",
+    "Clicking notification with project navigates to that project"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create NotificationItem component",
+      "details": "Create src/components/notifications/NotificationItem.tsx. Show: type icon (Bell for system, Calendar for due dates, Trophy for milestones), message, project name link, time ago. Blue dot if !is_read. On click: PATCH /read, navigate to project if projectId.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Build snooze dropdown",
+      "details": "Three-dot menu on each notification. Options: 'Snooze 1 hour', 'Snooze 3 hours', 'Snooze until tomorrow'. Each calls PATCH /snooze with the appropriate datetime. Custom snooze: date picker.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Verify in browser",
+      "details": "Click a notification — verify marked read, unread count decreases. Snooze one — verify it disappears. Navigate to project from notification.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-111", "TASK-66"],
+  "estimatedComplexity": "low"
+}

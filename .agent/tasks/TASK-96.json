@@ -1,0 +1,40 @@
+{
+  "id": "TASK-96",
+  "title": "Frontend: Milestone completion confetti animation",
+  "category": "ui-ux",
+  "description": "Show a confetti celebration animation when a milestone is marked complete.",
+  "acceptanceCriteria": [
+    "Confetti animation fires on milestone completion",
+    "Animation lasts ~2-3 seconds",
+    "Does not block UI interaction",
+    "Works on both desktop and mobile"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install canvas-confetti",
+      "details": "npm install canvas-confetti. npm install -D @types/canvas-confetti.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create useConfetti hook",
+      "details": "Create src/hooks/useConfetti.ts. Export function fireConfetti(): void. Call confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }). Export the hook.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Call fireConfetti on milestone completion",
+      "details": "In MilestoneItem, after the complete API call succeeds, call fireConfetti().",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify in browser",
+      "details": "Complete a milestone — verify confetti fires. Verify it doesn't interfere with clicking other elements.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-81"],
+  "estimatedComplexity": "low"
+}

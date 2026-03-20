@@ -1,0 +1,45 @@
+{
+  "id": "TASK-24",
+  "title": "Auth middleware — verify JWT access token on protected routes",
+  "category": "security",
+  "description": "Create middleware that validates the JWT access token from the Authorization header and attaches the decoded user ID to the request. All protected routes use this middleware.",
+  "acceptanceCriteria": [
+    "Middleware reads Bearer token from Authorization header",
+    "Returns 401 if token is missing, malformed, or expired",
+    "Attaches req.userId (string) on success",
+    "Protected routes return 401 without valid token",
+    "Public routes (auth, share) are excluded"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create requireAuth middleware",
+      "details": "Create server/src/middleware/requireAuth.ts. Extract token from req.headers.authorization ('Bearer TOKEN'). If missing, return res.status(401).json({ error: 'Authentication required' }). Call verifyAccessToken(token) — catch errors and return 401. Attach req.userId = decoded.sub. Call next().",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Extend Express Request type",
+      "details": "Create server/src/types/express.d.ts: declare global { namespace Express { interface Request { userId: string; } } }. This avoids TypeScript errors when accessing req.userId.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Apply middleware to protected routes",
+      "details": "In index.ts, apply requireAuth to all /api routes EXCEPT /api/auth/* and /api/share/*. Either use router-level middleware or apply selectively per router.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify middleware works",
+      "details": "Call GET /api/users/me without token — expect 401. Call with valid token — expect 200. Call with expired token — expect 401.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-16"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "Access tokens expire in 15 minutes — the frontend must call /api/auth/refresh before they expire",
+    "Never check the database on every request — JWT is self-contained; use DB only for refresh tokens"
+  ]
+}

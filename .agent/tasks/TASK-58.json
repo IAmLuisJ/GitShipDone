@@ -1,0 +1,41 @@
+{
+  "id": "TASK-58",
+  "title": "GitHub commit import service — fetch and store last 90 days on connect",
+  "category": "integration",
+  "description": "Create a service that fetches commits and releases from a GitHub repo and stores them in the database. Uses ON CONFLICT DO NOTHING for idempotent imports.",
+  "acceptanceCriteria": [
+    "importCommitsForProject(projectId, octokit, owner, repo) function exists",
+    "Fetches commits from the last 90 days",
+    "Skips commits already in DB (via SHA unique constraint + ON CONFLICT)",
+    "Awards +2 points per new commit",
+    "Logs each new commit as a github_commit timeline event",
+    "Also imports releases (stores in github_releases table)",
+    "New releases log a github_release timeline event"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement commit import logic",
+      "details": "In githubService.ts, implement importCommitsForProject: 1) Set since = 90 days ago ISO string. 2) Use octokit.repos.listCommits({ owner, repo, since, per_page: 100 }) — handle pagination with octokit.paginate. 3) For each commit: try INSERT into github_commits (project_id, sha, message, author_name, committed_at, url) ON CONFLICT (sha) DO NOTHING. If inserted (rowCount > 0), award 2 points and log timeline event 'github_commit'.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Implement release import logic",
+      "details": "After commits, call octokit.repos.listReleases({ owner, repo }). Filter to releases within last 90 days. For each: INSERT into github_releases ON CONFLICT (tag_name, project_id) DO NOTHING. If new, award +25 points and log 'github_release' timeline event.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test import",
+      "details": "Connect a repo with known commits. After import, verify commits appear in github_commits table and timeline. Run import again — verify no duplicate records.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-12", "TASK-13", "TASK-43", "TASK-50"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "Use octokit.paginate for repos with many commits (handles multi-page responses automatically)",
+    "GitHub API rate limit: 5000 requests/hour for authenticated users — paginating 90 days of commits is fine for typical repos"
+  ]
+}

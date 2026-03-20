@@ -1,0 +1,46 @@
+{
+  "id": "TASK-68",
+  "title": "Email service setup with Resend — transactional email templates",
+  "category": "integration",
+  "description": "Set up Resend for sending transactional emails. Create reusable email templates for: password reset, milestone reminders, todo reminders.",
+  "acceptanceCriteria": [
+    "Resend SDK installed and configured with RESEND_API_KEY",
+    "sendEmail(to, subject, html) utility function exists",
+    "Password reset email template renders correctly",
+    "Milestone reminder email template renders correctly",
+    "All emails include unsubscribe footer with link to update notification preferences",
+    "Test email sends successfully to a real address"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install Resend SDK",
+      "details": "npm install resend.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create email service",
+      "details": "Create server/src/services/emailService.ts. Initialize Resend: const resend = new Resend(process.env.RESEND_API_KEY). Export async function sendEmail({ to, subject, html }): wrap resend.emails.send in try/catch, log errors but don't throw.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Create email templates",
+      "details": "Create server/src/emails/passwordReset.ts exporting function passwordResetEmail(resetUrl: string): string — returns HTML string. Create milestoneReminder.ts: function milestoneReminderEmail(milestoneName, projectName, dueDate, settingsUrl): string. Include unsubscribe link: settingsUrl + '?tab=notifications'.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Test email delivery",
+      "details": "Set RESEND_API_KEY and FROM_EMAIL in .env. Call sendEmail with test address. Verify email arrives. Check Resend dashboard for delivery confirmation.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-2"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "Resend requires a verified domain in production — use onboarding@resend.dev for development",
+    "Always add an unsubscribe mechanism to comply with CAN-SPAM"
+  ]
+}

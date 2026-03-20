@@ -1,0 +1,54 @@
+{
+  "id": "TASK-4",
+  "title": "Users table schema and migration",
+  "category": "data-model",
+  "description": "Define the users table schema using Drizzle ORM. The table must support email/password auth, Google OAuth, GitHub OAuth, AI provider settings (encrypted), and soft deletion.",
+  "acceptanceCriteria": [
+    "users table is defined in src/db/schema/users.ts",
+    "Table exported from schema barrel index.ts",
+    "Running db:migrate creates the users table in PostgreSQL",
+    "Email field has UNIQUE constraint",
+    "Indexes exist on email and created_at",
+    "All nullable fields correctly typed as nullable in Drizzle schema"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create server/src/db/schema/users.ts",
+      "details": "Define the users table using Drizzle pgTable: id (uuid, primaryKey, defaultRandom()), email (varchar 255, notNull, unique), name (varchar 255, notNull), avatar_url (text, nullable), password_hash (text, nullable — null for OAuth-only users), github_id (varchar 255, nullable, unique), google_id (varchar 255, nullable, unique), github_access_token (text, nullable — encrypted), ai_provider (text, nullable — 'openai' | 'anthropic'), ai_api_key (text, nullable — encrypted), email_notifications_enabled (boolean, notNull, default true), created_at (timestamp, notNull, defaultNow()), updated_at (timestamp, notNull, defaultNow()), deleted_at (timestamp, nullable).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add indexes to the users table",
+      "details": "Export indexes: emailIdx = index('users_email_idx').on(users.email), createdAtIdx = index('users_created_at_idx').on(users.createdAt). Add these as named exports from users.ts.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export users from schema barrel",
+      "details": "In server/src/db/schema/index.ts, add: export * from './users';",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Export TypeScript types for users",
+      "details": "At the bottom of users.ts, add: export type User = typeof users.$inferSelect; export type NewUser = typeof users.$inferInsert;",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Run migration and verify table",
+      "details": "Run 'npm run db:migrate' in server/. Then connect to the database and run: \\d users — verify all columns, types, nullability, and indexes are correct.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-3"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "Use uuid().defaultRandom() from drizzle-orm/pg-core for UUID primary keys",
+    "password_hash must be nullable to support OAuth-only users who have no password",
+    "github_access_token and ai_api_key are stored encrypted — do NOT store plaintext tokens",
+    "deleted_at is the soft-delete mechanism — queries must filter WHERE deleted_at IS NULL"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "TASK-17",
+  "title": "POST /api/auth/login — email/password login",
+  "category": "api-endpoint",
+  "description": "Implement login with email and password. Verify credentials, issue new access and refresh tokens.",
+  "acceptanceCriteria": [
+    "POST /api/auth/login accepts { email, password }",
+    "Returns 401 with generic message for invalid credentials (do not reveal which field is wrong)",
+    "Returns 401 if user is soft-deleted",
+    "Returns 200 with { user: { id, email, name }, accessToken } and sets refresh token cookie on success",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create login Zod schema",
+      "details": "In server/src/validators/auth.ts, add: loginSchema = z.object({ email: z.string().email(), password: z.string().min(1) }).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Implement POST /api/auth/login handler",
+      "details": "In server/src/routes/auth.ts, add POST /login: 1) Validate body. 2) Find user by email WHERE deleted_at IS NULL. 3) If not found OR password_hash is null, return 401 'Invalid credentials'. 4) Compare password with bcrypt.compare(password, user.password_hash). If false, return 401. 5) Sign new access + refresh tokens. 6) Delete old refresh tokens for this user (optional: keep last 5 for multi-device). 7) Store new hashed refresh token. 8) Set cookie and return 200 with user and accessToken.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test login endpoint",
+      "details": "POST /api/auth/login with correct credentials — expect 200 with accessToken. Try wrong password — expect 401. Try non-existent email — expect 401 (same message, not 'user not found').",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-16"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "Always return the same error message for wrong email vs wrong password — prevents user enumeration",
+    "Use bcrypt.compare() which is timing-safe",
+    "cookie-parser middleware must be installed and applied in index.ts for cookie reading"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "TASK-98",
+  "title": "Frontend: Journal tab — list entries, create entry with mood picker",
+  "category": "ui-ux",
+  "description": "Build the Journal tab showing all journal entries in reverse-chronological order with a prominent 'Log Update' button to create new entries.",
+  "acceptanceCriteria": [
+    "Lists journal entries newest first",
+    "Each entry shows: title, mood emoji, body preview (first 150 chars), date",
+    "Click entry to expand full content",
+    "'Log Update' button opens entry creation form",
+    "Pagination or infinite scroll for entries",
+    "Edit and delete actions on each entry",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create JournalTab component",
+      "details": "Create src/components/project/tabs/JournalTab.tsx. Fetch entries with useInfiniteQuery (paginated). 'Log Update' button fixed/prominent. Map entries to JournalEntryCard.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create JournalEntryCard component",
+      "details": "Card showing title, mood emoji (excited=🚀, blocked=🚧, steady=⚡, win=🏆, learning=📚), date, body truncated to 150 chars. Click to expand full Tiptap render. Edit/delete actions in dropdown.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Connect edit/delete actions",
+      "details": "Edit: open the create/edit dialog prefilled. Delete: shadcn/ui AlertDialog confirmation → DELETE API call → invalidate query.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify in browser using Playwright",
+      "details": "Create 3 journal entries. Verify listed newest first. Expand one — verify full content visible. Delete one — verify removed.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-46", "TASK-47", "TASK-48", "TASK-49", "TASK-99"],
+  "estimatedComplexity": "medium"
+}

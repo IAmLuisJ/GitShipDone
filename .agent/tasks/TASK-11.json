@@ -1,0 +1,45 @@
+{
+  "id": "TASK-11",
+  "title": "Parking lot items table schema and migration",
+  "category": "data-model",
+  "description": "Define the parking_lot_items table for storing project ideas that are not yet prioritized, with support for AI-generated pathways and soft archiving.",
+  "acceptanceCriteria": [
+    "parking_lot_items table defined in src/db/schema/parkingLotItems.ts",
+    "FK to projects.id with cascade delete",
+    "ai_pathway TEXT field for storing AI-generated steps",
+    "archived_at nullable for soft archiving",
+    "Migration runs successfully"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define parking_lot_items table",
+      "details": "Create server/src/db/schema/parkingLotItems.ts. Define parking_lot_items table: id (uuid pk), project_id (uuid notNull FK → projects cascade delete), title (varchar 500 notNull), description (text nullable), ai_pathway (text nullable — AI-generated step-by-step plan), archived_at (timestamp nullable), created_at (timestamp notNull defaultNow()), updated_at (timestamp notNull defaultNow()).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add index on project_id",
+      "details": "Add index on parking_lot_items.project_id.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export types and update schema barrel",
+      "details": "Export type ParkingLotItem and type NewParkingLotItem. Add 'export * from ./parkingLotItems' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Verify table exists with correct schema.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-5"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "archived_at is used instead of deleted_at since items are never truly deleted, just hidden",
+    "ai_pathway stores the AI response as a formatted string (markdown or plain text)"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "TASK-54",
+  "title": "PATCH /api/projects/:id/parking-lot/:pid — update or archive parking lot item",
+  "category": "api-endpoint",
+  "description": "Update a parking lot item's title, description, or archive/unarchive it.",
+  "acceptanceCriteria": [
+    "PATCH requires auth and project ownership",
+    "Accepts partial: { title?, description?, archived? }",
+    "archived=true sets archived_at, archived=false clears it",
+    "Returns 200 with updated item"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement PATCH /:pid handler",
+      "details": "updateParkingLotSchema = z.object({ title: z.string().min(1).max(500).optional(), description: z.string().max(2000).optional(), archived: z.boolean().optional() }). Find item WHERE id = pid AND project_id. Update fields. If archived = true, set archived_at = NOW(). If archived = false, set archived_at = null. Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Archive item — verify archived_at set. Unarchive — verify archived_at null.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-53"],
+  "estimatedComplexity": "low"
+}

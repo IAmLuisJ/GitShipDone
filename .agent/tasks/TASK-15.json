@@ -1,0 +1,46 @@
+{
+  "id": "TASK-15",
+  "title": "Refresh tokens table schema and migration",
+  "category": "data-model",
+  "description": "Define the refresh_tokens table for storing hashed refresh tokens used in JWT-based auth. Each token has an expiry and is linked to a user.",
+  "acceptanceCriteria": [
+    "refresh_tokens table defined in src/db/schema/refreshTokens.ts",
+    "FK to users.id with cascade delete",
+    "token_hash stored (not plaintext token)",
+    "expires_at timestamp for token expiry",
+    "Migration runs successfully"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define refresh_tokens table",
+      "details": "Create server/src/db/schema/refreshTokens.ts. Define refresh_tokens table: id (uuid pk), user_id (uuid notNull FK → users cascade delete), token_hash (text notNull — bcrypt hash of the actual token), expires_at (timestamp notNull), created_at (timestamp notNull defaultNow()).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add index on user_id",
+      "details": "Add index on refresh_tokens.user_id for querying/deleting tokens by user (logout all devices).",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export types and update schema barrel",
+      "details": "Export type RefreshToken and type NewRefreshToken. Add 'export * from ./refreshTokens' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Verify refresh_tokens table exists with correct schema.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-4"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "NEVER store the plaintext refresh token — store bcrypt hash only",
+    "On logout, delete all refresh_tokens for the user (or just the one matching the current token)",
+    "Periodically clean up expired tokens: DELETE FROM refresh_tokens WHERE expires_at < NOW()"
+  ]
+}

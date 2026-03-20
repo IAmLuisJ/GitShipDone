@@ -1,0 +1,65 @@
+{
+  "id": "TASK-2",
+  "title": "Initialize Express.js + TypeScript backend",
+  "category": "functional",
+  "description": "Set up a separate backend package (server/) inside the monorepo using Express.js and TypeScript. The server should start on PORT from environment, have structured routing, global error handling, and a health check endpoint.",
+  "acceptanceCriteria": [
+    "server/ directory exists with its own package.json and tsconfig.json",
+    "Running 'npm run dev' in server/ starts the Express server with ts-node-dev hot reload",
+    "GET /api/health returns { status: 'ok', timestamp: ISO string }",
+    "TypeScript compiles without errors via 'npm run build'",
+    "Global error handler returns JSON error responses (not HTML)",
+    "Request logging is enabled via morgan"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create server/ directory and initialize package.json",
+      "details": "Run: mkdir server && cd server && npm init -y. Install dependencies: npm install express cors helmet morgan dotenv. Install dev dependencies: npm install -D typescript @types/node @types/express @types/cors @types/morgan ts-node-dev.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create tsconfig.json for server",
+      "details": "Create server/tsconfig.json: { compilerOptions: { target: 'ES2020', module: 'commonjs', lib: ['ES2020'], outDir: './dist', rootDir: './src', strict: true, esModuleInterop: true, skipLibCheck: true, resolveJsonModule: true }, include: ['src/**/*'], exclude: ['node_modules', 'dist'] }",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Create server entry point src/index.ts",
+      "details": "Create server/src/index.ts that: imports dotenv/config, creates Express app, applies morgan('dev') logging middleware, applies cors() with FRONTEND_URL from env, applies express.json(), mounts routes at /api, adds global error handler (4 params: err, req, res, next), starts listening on process.env.PORT || 3000.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Create health check route",
+      "details": "Create server/src/routes/health.ts with a router that handles GET / returning { status: 'ok', timestamp: new Date().toISOString() }. Mount it in index.ts at /api/health.",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Create global error handler middleware",
+      "details": "Create server/src/middleware/errorHandler.ts that accepts (err: Error, req, res, next) and returns res.status(err.status || 500).json({ error: err.message || 'Internal server error' }). Create a custom AppError class with status and message.",
+      "pass": false
+    },
+    {
+      "step": 6,
+      "description": "Add npm scripts to server/package.json",
+      "details": "Add scripts: 'dev': 'ts-node-dev --respawn --transpile-only src/index.ts', 'build': 'tsc', 'start': 'node dist/index.js'",
+      "pass": false
+    },
+    {
+      "step": 7,
+      "description": "Verify server starts and health check works",
+      "details": "Run 'npm run dev' in server/. Then run: curl http://localhost:3000/api/health — should return {\"status\":\"ok\",\"timestamp\":\"...\"}. Verify a bad route returns JSON error, not HTML.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-1"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "Use ts-node-dev instead of nodemon for TypeScript hot-reload without a separate compile step",
+    "The CORS middleware must be applied before routes to ensure preflight OPTIONS requests work",
+    "Global error handler must have exactly 4 parameters for Express to recognize it as an error handler"
+  ]
+}

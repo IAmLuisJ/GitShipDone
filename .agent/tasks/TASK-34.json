@@ -1,0 +1,28 @@
+{
+  "id": "TASK-34",
+  "title": "GET /api/projects/:id/milestones — list milestones",
+  "category": "api-endpoint",
+  "description": "Return all milestones for a project, ordered by sort_order ascending.",
+  "acceptanceCriteria": [
+    "GET /api/projects/:id/milestones requires auth and ownership",
+    "Returns milestones ordered by sort_order ASC",
+    "Returns empty array if no milestones exist",
+    "Returns 404 if project not found or unauthorized"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement GET / handler",
+      "details": "getOwnedProject(id, userId). Query milestones WHERE project_id = id ORDER BY sort_order ASC. Return 200 with array.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test endpoint",
+      "details": "Create 3 milestones, GET them — verify correct order. Try for another user's project — expect 404.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-33"],
+  "estimatedComplexity": "low"
+}

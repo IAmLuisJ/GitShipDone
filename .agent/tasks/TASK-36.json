@@ -1,0 +1,31 @@
+{
+  "id": "TASK-36",
+  "title": "POST /api/projects/:id/milestones/:mid/complete — complete milestone and award points",
+  "category": "api-endpoint",
+  "description": "Mark a milestone as completed, award 50 points, log a milestone_completed timeline event, and update the project level if a threshold is crossed.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Returns 400 if milestone is already completed",
+    "Sets milestone status = completed, completed_at = NOW()",
+    "Awards +50 points to the project and logs in points_log",
+    "Logs a milestone_completed timeline event with milestone name",
+    "Updates project level if points cross a threshold",
+    "Returns 200 with { milestone, project }"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement POST /:mid/complete handler",
+      "details": "1) getOwnedProject. 2) Find milestone, verify it belongs to project and is not already completed (return 400 if so). 3) Update milestone: status='completed', completed_at=NOW(). 4) Call awardPoints(projectId, 50, 'Milestone completed: NAME', 'milestone'). 5) Call logTimelineEvent(projectId, 'milestone_completed', { milestoneId: mid, milestoneName: name, points: 50 }). 6) Fetch updated project. 7) Return 200 with { milestone, project }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test completion flow",
+      "details": "Create and complete a milestone — verify status=completed, points_total increased by 50, timeline event created. Try completing again — expect 400.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-43", "TASK-50", "TASK-35"],
+  "estimatedComplexity": "medium"
+}

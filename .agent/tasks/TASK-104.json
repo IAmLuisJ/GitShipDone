@@ -1,0 +1,42 @@
+{
+  "id": "TASK-104",
+  "title": "Frontend: Project settings tab — name/type/status edit, danger zone",
+  "category": "ui-ux",
+  "description": "Build the project Settings tab with sections for general settings and a danger zone for deletion.",
+  "acceptanceCriteria": [
+    "General section: edit project name, description, type, status with a Save button",
+    "Sharing section (delegates to TASK-106 component)",
+    "GitHub section (delegates to TASK-105 component)",
+    "Danger zone: 'Delete Project' button with AlertDialog confirmation",
+    "Changes saved show success toast",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create ProjectSettingsTab",
+      "details": "Create src/components/project/tabs/ProjectSettingsTab.tsx. Sections: General (form with name, description, type, status), Sharing (SharingPanel component), GitHub (GithubConnectPanel component), Danger Zone.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Build general settings form",
+      "details": "Pre-fill with current project values. On Save: PATCH /api/projects/:id. Invalidate project query. Show success toast.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Build danger zone",
+      "details": "Red-bordered Card section. 'Delete Project' button opens AlertDialog: 'This will delete your project. Type the project name to confirm.' Input must match project name before enabling Delete button. On confirm: DELETE /api/projects/:id, navigate to /dashboard.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify in browser using Playwright",
+      "details": "Change project name — verify saves. Change status to 'on_hold' — verify badge updates. Delete project with correct name confirmation — verify navigates to dashboard.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-30", "TASK-31", "TASK-105", "TASK-106"],
+  "estimatedComplexity": "medium"
+}

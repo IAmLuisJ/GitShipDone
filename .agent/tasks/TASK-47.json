@@ -1,0 +1,29 @@
+{
+  "id": "TASK-47",
+  "title": "GET /api/projects/:id/journal — list journal entries",
+  "category": "api-endpoint",
+  "description": "Return all non-deleted journal entries for a project, paginated and ordered newest-first.",
+  "acceptanceCriteria": [
+    "GET requires auth and project ownership",
+    "Returns entries ordered by created_at DESC",
+    "Excludes soft-deleted entries",
+    "Supports pagination: ?page=1&limit=20",
+    "Returns { entries, total, page, limit }"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement GET / handler with pagination",
+      "details": "Parse query: page = parseInt(req.query.page) || 1, limit = Math.min(parseInt(req.query.limit) || 20, 100). offset = (page-1)*limit. Query: SELECT from journal_entries WHERE project_id = id AND deleted_at IS NULL ORDER BY created_at DESC LIMIT limit OFFSET offset. Also query total count. Return { entries, total, page, limit }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test pagination",
+      "details": "Create 25 entries, GET page 1 (20) — verify 20 returned, total=25. GET page 2 — verify 5 returned.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-46"],
+  "estimatedComplexity": "low"
+}

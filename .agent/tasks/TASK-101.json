@@ -1,0 +1,45 @@
+{
+  "id": "TASK-101",
+  "title": "Frontend: Timeline event components for all event types",
+  "category": "ui-ux",
+  "description": "Create individual timeline event renderers for each of the 8 event types: journal, milestone_completed, todo_batch, github_commit, github_release, progress_change, points_change, status_change.",
+  "acceptanceCriteria": [
+    "Each event type has a distinct icon and color",
+    "journal: BookOpen icon, renders title and mood emoji",
+    "milestone_completed: Trophy icon, renders milestone name and points awarded",
+    "github_commit: GitCommit icon, renders SHA, message (truncated), author",
+    "github_release: Tag icon, renders version tag and AI summary if available",
+    "progress_change: TrendingUp icon, renders from% → to% with manual indicator",
+    "points_change: Star icon, renders delta (+/-) and reason",
+    "status_change: Circle icon, renders old status → new status",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create TimelineEventRenderer component",
+      "details": "Create src/components/project/timeline/TimelineEventRenderer.tsx. Takes event: TimelineEvent as prop. Switch on event.type to render the appropriate sub-component.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create individual event sub-components",
+      "details": "Create one component per event type in src/components/project/timeline/events/: JournalEvent.tsx, MilestoneCompletedEvent.tsx, GithubCommitEvent.tsx, GithubReleaseEvent.tsx, ProgressChangeEvent.tsx, PointsChangeEvent.tsx, StatusChangeEvent.tsx. Each receives event.payload as typed props.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Apply icon colors",
+      "details": "Icon color per type: journal=blue, milestone=yellow, github_commit=gray, github_release=purple, progress=green, points=orange, status=gray. Use Tailwind text-* classes.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify in browser using Playwright",
+      "details": "Perform actions to generate each event type. Open timeline — verify all 8 types render with correct icons and data.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-100"],
+  "estimatedComplexity": "medium"
+}

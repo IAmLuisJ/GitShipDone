@@ -1,0 +1,30 @@
+{
+  "id": "TASK-71",
+  "title": "PATCH /api/users/me/password — change password with current password verification",
+  "category": "api-endpoint",
+  "description": "Allow users to change their password by verifying the current password first. Not available for OAuth-only accounts.",
+  "acceptanceCriteria": [
+    "PATCH requires auth",
+    "Accepts { currentPassword, newPassword }",
+    "Returns 400 if user has no password (OAuth-only account)",
+    "Returns 401 if currentPassword is incorrect",
+    "Returns 400 if newPassword < 8 characters",
+    "Returns 200 on success, invalidates all refresh tokens (force re-login)"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement PATCH /me/password",
+      "details": "Validate { currentPassword: string, newPassword: string.min(8) }. Fetch user. If user.passwordHash is null, return 400 'Password login not available for OAuth accounts'. bcrypt.compare(currentPassword, user.passwordHash) — if false, 401. Hash newPassword. Update user. Delete all refresh_tokens for user. Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Change password with correct current — verify new password works. Try with wrong current — expect 401. Try on OAuth user — expect 400.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-69"],
+  "estimatedComplexity": "low"
+}

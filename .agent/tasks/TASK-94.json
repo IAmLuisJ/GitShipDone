@@ -1,0 +1,47 @@
+{
+  "id": "TASK-94",
+  "title": "Frontend: Project overview tab — vision, stats, recent activity summary",
+  "category": "ui-ux",
+  "description": "The Overview tab shows the project vision, key stats (progress, points, level), and a summary of recent activity.",
+  "acceptanceCriteria": [
+    "Vision/description displayed in a card (with placeholder if empty)",
+    "Stats section: progress bar (auto + manual), points total, level badge, milestone completion rate",
+    "Recent activity: last 5 timeline events as a mini timeline",
+    "Quick actions: 'Log Update' button (opens journal entry dialog), 'Add Todo' button",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create OverviewTab component",
+      "details": "Create src/components/project/tabs/OverviewTab.tsx. Accept project as prop. Layout: 2-column on desktop (vision + stats on left, recent activity on right). Single column on mobile.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Build vision card",
+      "details": "Display project.description in a Card with edit button (pencil icon) that opens an inline edit form. If no description, show placeholder text 'No vision statement yet. Add one to keep your project focused.'",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Build stats section",
+      "details": "Progress bar with label showing auto% and manual% (if set). Milestones: 'X of Y completed'. Points and level. All in a Card grid.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Build recent activity mini-timeline",
+      "details": "Fetch GET /api/projects/:id/timeline?limit=5. Render each event as a compact row: icon + event description + time ago.",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Verify in browser using Playwright",
+      "details": "Open overview tab. Verify vision, stats, and recent activity render. Add a journal entry — verify it appears in recent activity. Edit vision inline — verify it saves.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-93", "TASK-51"],
+  "estimatedComplexity": "medium"
+}

@@ -1,0 +1,59 @@
+{
+  "id": "TASK-16",
+  "title": "POST /api/auth/register — email/password registration",
+  "category": "api-endpoint",
+  "description": "Implement user registration with email and password. Hash the password, create the user record, issue access + refresh tokens, and return the user profile.",
+  "acceptanceCriteria": [
+    "POST /api/auth/register accepts { email, name, password }",
+    "Returns 400 if email already exists",
+    "Returns 400 if email format is invalid or password is < 8 characters",
+    "Password is hashed with bcrypt before storage",
+    "Returns 201 with { user: { id, email, name }, accessToken } and sets HttpOnly refresh token cookie",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install bcryptjs and jsonwebtoken",
+      "details": "In server/: npm install bcryptjs jsonwebtoken. npm install -D @types/bcryptjs @types/jsonwebtoken.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create JWT utility functions",
+      "details": "Create server/src/utils/jwt.ts with: signAccessToken(userId: string): string — signs JWT with JWT_SECRET, 15m expiry, { sub: userId }. signRefreshToken(userId: string): string — signs with JWT_REFRESH_SECRET, 30d expiry. verifyAccessToken(token: string): { sub: string } — throws on invalid. verifyRefreshToken(token): { sub: string }.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Create Zod validation schema for registration",
+      "details": "Create server/src/validators/auth.ts with: registerSchema = z.object({ email: z.string().email().max(255), name: z.string().min(1).max(255), password: z.string().min(8).max(100) }).",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Create the register route handler",
+      "details": "Create server/src/routes/auth.ts. Implement POST / (mounted at /api/auth/register): 1) Validate body with registerSchema. 2) Check if email already exists in users table (return 409 if so). 3) Hash password: await bcrypt.hash(password, 12). 4) Insert user into users table. 5) Sign access token and refresh token. 6) Store bcrypt hash of refresh token in refresh_tokens table with expires_at = 30 days from now. 7) Set refresh token in HttpOnly cookie ('refreshToken', 30d, sameSite: 'lax'). 8) Return 201 with { user: { id, email, name }, accessToken }.",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Mount auth router in main index.ts",
+      "details": "In server/src/index.ts, import authRouter and mount: app.use('/api/auth', authRouter).",
+      "pass": false
+    },
+    {
+      "step": 6,
+      "description": "Test the registration endpoint",
+      "details": "Use curl or Postman: POST http://localhost:3000/api/auth/register with body {\"email\":\"test@example.com\",\"name\":\"Test\",\"password\":\"password123\"}. Verify 201 response with accessToken. Verify user exists in DB with hashed password. Try registering same email again — expect 409.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-4", "TASK-15"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "Refresh token should be set as HttpOnly, Secure (in prod), SameSite=Lax cookie to prevent XSS theft",
+    "Use bcrypt cost factor 12 — good balance of security and performance",
+    "Return 409 Conflict (not 400) when email is already taken"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "TASK-20",
+  "title": "POST /api/auth/forgot-password — send reset email",
+  "category": "api-endpoint",
+  "description": "Implement the forgot password flow: accept an email, generate a short-lived reset token, store it, and send a reset email via Resend.",
+  "acceptanceCriteria": [
+    "POST /api/auth/forgot-password accepts { email }",
+    "Always returns 200 (do not reveal if email exists)",
+    "If email exists, sends a password reset email with a unique link",
+    "Reset token expires in 1 hour",
+    "Token is stored hashed in the database (can reuse refresh_tokens table or a separate password_reset_tokens table)"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create password_reset_tokens table or field",
+      "details": "Add a password_reset_tokens table: id (uuid pk), user_id (uuid FK → users cascade delete), token_hash (text notNull), expires_at (timestamp notNull), used_at (timestamp nullable), created_at (timestamp defaultNow()). Run db:migrate.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Implement forgot-password handler",
+      "details": "1) Validate email. 2) Look up user by email (soft-delete filter). 3) If not found, return 200 with generic message (no info leak). 4) Generate crypto.randomBytes(32).toString('hex') as reset token. 5) Hash with bcrypt and store in password_reset_tokens with expires_at = 1 hour from now. 6) Call email service to send reset link: FRONTEND_URL/reset-password?token=RAW_TOKEN. 7) Return 200 { message: 'If that email exists, a reset link has been sent.' }",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test the endpoint",
+      "details": "POST /api/auth/forgot-password with a registered email — verify 200 and email is sent (check Resend dashboard or logs). POST with unknown email — verify same 200 response, no email sent.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-68", "TASK-17"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "Always return 200 to prevent email enumeration",
+    "crypto.randomBytes is cryptographically secure — use it, not Math.random()",
+    "Reset tokens should be single-use: mark used_at on redemption"
+  ]
+}

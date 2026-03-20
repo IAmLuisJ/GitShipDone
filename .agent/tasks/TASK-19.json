@@ -1,0 +1,31 @@
+{
+  "id": "TASK-19",
+  "title": "POST /api/auth/logout — invalidate refresh token",
+  "category": "api-endpoint",
+  "description": "Implement logout by deleting the refresh token from the database and clearing the cookie.",
+  "acceptanceCriteria": [
+    "POST /api/auth/logout clears the refresh token cookie",
+    "Deletes matching refresh token record from database",
+    "Returns 200 even if no cookie was present (idempotent)",
+    "Subsequent calls to /api/auth/refresh with old cookie fail"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement POST /api/auth/logout",
+      "details": "1) Read req.cookies.refreshToken. If present, verify it (ignore errors), find matching token in DB and delete it. 2) Clear the cookie: res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'lax' }). 3) Return 200 { message: 'Logged out' }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test logout",
+      "details": "Login, call /api/auth/logout, then try /api/auth/refresh — should return 401. Call logout again (no cookie) — should still return 200.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-18"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "Always return 200 from logout regardless of token validity — prevents leaking auth state"
+  ]
+}

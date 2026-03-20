@@ -1,0 +1,32 @@
+{
+  "id": "TASK-40",
+  "title": "PATCH /api/projects/:id/todos/:tid — update to-do (complete/uncomplete/edit)",
+  "category": "api-endpoint",
+  "description": "Update a todo's title, completion state, urgency, or due date. Completing awards +10 points; uncompleting deducts -10 points. Progress is recalculated after any change.",
+  "acceptanceCriteria": [
+    "PATCH requires auth and project ownership",
+    "Accepts partial: { title?, isCompleted?, isUrgent?, dueDate?, milestoneId? }",
+    "Completing a todo (isCompleted: true) awards +10 points",
+    "Unchecking a todo (isCompleted: false) deducts -10 points",
+    "completed_at is set on completion, cleared on uncheck",
+    "Progress is recalculated after change",
+    "Returns 200 with updated todo and current progress",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement PATCH /:tid handler",
+      "details": "1) getOwnedProject. 2) Find todo WHERE id = tid AND project_id = id (return 404 if not found). 3) Validate body. 4) Detect completion state change. 5) Update todo fields. If completing: set completed_at = NOW(), call awardPoints(projectId, 10, 'Completed todo: TITLE', 'todo'). If unchecking: set completed_at = null, call awardPoints(projectId, -10, 'Unchecked todo: TITLE', 'todo'). 6) Call recalculateProgress(projectId). 7) Return 200 { todo: updatedTodo, progress: newProgress }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test completion points flow",
+      "details": "Complete a todo — verify +10 points, progress updated, completed_at set. Uncheck it — verify -10 points, progress updated, completed_at cleared. Update only title — no points change.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-43", "TASK-32", "TASK-39"],
+  "estimatedComplexity": "medium"
+}

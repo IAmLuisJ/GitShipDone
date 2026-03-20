@@ -1,0 +1,29 @@
+{
+  "id": "TASK-45",
+  "title": "POST /api/projects/:id/points — manual points adjustment with reason",
+  "category": "api-endpoint",
+  "description": "Allow users to manually add or subtract points from their project with a required reason note.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Accepts { delta: number, reason: string }",
+    "delta must be between -500 and +500 (prevent abuse)",
+    "reason is required (1-255 chars)",
+    "Returns 200 with { pointsTotal, level, didLevelUp }"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement POST /:id/points handler",
+      "details": "On projects router, add POST '/:id/points': 1) getOwnedProject. 2) Validate: delta = z.number().int().min(-500).max(500), reason = z.string().min(1).max(255). 3) Call awardPoints(projectId, delta, reason, 'manual'). 4) Fetch updated project. 5) Return 200 { pointsTotal: project.pointsTotal, level: project.level }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test manual adjustment",
+      "details": "POST +100 points — verify total increases. POST -200 — verify deduction (floors at 0). POST without reason — expect 400.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-43"],
+  "estimatedComplexity": "low"
+}

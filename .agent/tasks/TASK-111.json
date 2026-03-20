@@ -1,0 +1,44 @@
+{
+  "id": "TASK-111",
+  "title": "Frontend: Notification bell — unread count badge and dropdown list",
+  "category": "ui-ux",
+  "description": "Build the notification bell in the app header/sidebar. Shows unread count badge and a dropdown/popover with the notification list.",
+  "acceptanceCriteria": [
+    "Bell icon in sidebar or header",
+    "Red badge shows unread count (hidden if 0)",
+    "Clicking bell opens a Popover with notification list",
+    "Shows last 20 notifications",
+    "'Mark all as read' button in header",
+    "Empty state when no notifications",
+    "Polls for new notifications every 60 seconds",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create NotificationBell component",
+      "details": "Create src/components/notifications/NotificationBell.tsx. Use shadcn/ui Popover. Bell icon with badge overlay showing unreadCount. useQuery to fetch /api/notifications?unreadOnly=false. Refetch every 60 seconds (refetchInterval: 60000).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Build notification list in popover",
+      "details": "ScrollArea inside popover (max height 400px). Header with 'Notifications' title + 'Mark all read' button. List of NotificationItem components. Empty state if no notifications.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Place bell in layout",
+      "details": "Add NotificationBell to the AppLayout header or sidebar bottom area.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify in browser using Playwright",
+      "details": "Create a milestone with a past due date (or manually insert a notification). Verify bell shows badge. Click bell — verify list appears. Click 'Mark all read' — verify count clears.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-64", "TASK-65", "TASK-81"],
+  "estimatedComplexity": "medium"
+}

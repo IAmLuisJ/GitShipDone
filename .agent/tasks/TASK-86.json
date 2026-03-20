@@ -1,0 +1,30 @@
+{
+  "id": "TASK-86",
+  "title": "Frontend: Forgot password page",
+  "category": "ui-ux",
+  "description": "Build the forgot password page where users enter their email to receive a reset link.",
+  "acceptanceCriteria": [
+    "Form with email field",
+    "On submit: POST /api/auth/forgot-password",
+    "Shows success message regardless of whether email exists",
+    "Loading state on submit button",
+    "Link back to login",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create ForgotPasswordPage",
+      "details": "src/pages/ForgotPasswordPage.tsx. Email-only form. On submit: show loading, POST /api/auth/forgot-password. On response (success or error): show 'If that email exists, a reset link has been sent.' Always show this message.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Verify in browser",
+      "details": "Submit with valid email — verify success message. Submit with unknown email — verify same message (no info leak).",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-20", "TASK-81"],
+  "estimatedComplexity": "low"
+}

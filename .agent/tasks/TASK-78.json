@@ -1,0 +1,31 @@
+{
+  "id": "TASK-78",
+  "title": "POST /api/projects/:id/github/releases/:rid/summarize — AI changelog summary from commits",
+  "category": "api-endpoint",
+  "description": "Generate an AI-written changelog summary for a GitHub release by analyzing the commits included since the previous release.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Returns 400 if user has no AI API key",
+    "Returns 404 if release not found for this project",
+    "Fetches commits between previous release and this one",
+    "Generates human-readable changelog from commit messages",
+    "Saves summary to github_releases.ai_summary",
+    "Returns 200 { summary: string }"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement POST /github/releases/:rid/summarize in github router",
+      "details": "1) getOwnedProject. 2) Fetch user — check ai_api_key. 3) Find release WHERE id = rid AND project_id. 4) Find previous release by published_at DESC WHERE published_at < this.published_at. 5) Fetch commits between previous.published_at and this.published_at. 6) Build prompt: 'Write a concise changelog for version TAG based on these commits: [commit list]. Use markdown with categories: Features, Fixes, Other.' 7) Call AI. 8) Save to release.ai_summary. 9) Return 200 { summary }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Connect GitHub repo with releases. Call summarize on a release. Verify ai_summary is set and is readable markdown.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-75", "TASK-60"],
+  "estimatedComplexity": "low"
+}

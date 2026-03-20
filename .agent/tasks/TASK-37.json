@@ -1,0 +1,28 @@
+{
+  "id": "TASK-37",
+  "title": "DELETE /api/projects/:id/milestones/:mid — delete milestone",
+  "category": "api-endpoint",
+  "description": "Delete a milestone. Todos linked to this milestone have their milestone_id set to null (FK set null on delete handles this automatically).",
+  "acceptanceCriteria": [
+    "DELETE requires auth and project ownership",
+    "Returns 404 if milestone not found",
+    "Returns 200 on success",
+    "Todos previously linked to this milestone remain with milestone_id = null"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement DELETE /:mid handler",
+      "details": "1) getOwnedProject. 2) Find milestone by id AND project_id. 3) Delete milestone record. 4) Return 200 { message: 'Milestone deleted' }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test deletion",
+      "details": "Create milestone with linked todos. Delete milestone. Verify todos still exist with milestone_id = null.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-35"],
+  "estimatedComplexity": "low"
+}

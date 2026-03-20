@@ -1,0 +1,53 @@
+{
+  "id": "TASK-5",
+  "title": "Projects table schema and migration",
+  "category": "data-model",
+  "description": "Define the projects table schema with all fields for project tracking including type, status, progress, points, level, sharing, and GitHub integration fields. Soft deletion support required.",
+  "acceptanceCriteria": [
+    "projects table defined in src/db/schema/projects.ts",
+    "Foreign key to users.id with cascade delete",
+    "All ENUM fields (type, status) use Drizzle pgEnum",
+    "share_token has UNIQUE constraint",
+    "Running db:migrate creates the table correctly",
+    "TypeScript types User and NewUser exported"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define enums for project type and status",
+      "details": "In server/src/db/schema/projects.ts, define: export const projectTypeEnum = pgEnum('project_type', ['software', 'design', 'physical', 'content', 'learning', 'other']); export const projectStatusEnum = pgEnum('project_status', ['active', 'on_hold', 'completed', 'archived']);",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Define projects table",
+      "details": "Define pgTable 'projects': id (uuid pk defaultRandom), user_id (uuid notNull references users.id onDelete cascade), name (varchar 255 notNull), description (text nullable), type (projectTypeEnum notNull default 'other'), status (projectStatusEnum notNull default 'active'), progress_auto (integer notNull default 0), progress_manual (integer nullable), points_total (integer notNull default 0), level (varchar 50 notNull default 'Seed'), share_token (uuid nullable unique), is_public (boolean notNull default false), github_repo_id (varchar 255 nullable), github_repo_name (varchar 500 nullable), created_at (timestamp notNull defaultNow()), updated_at (timestamp notNull defaultNow()), deleted_at (timestamp nullable).",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Add indexes",
+      "details": "Add: userIdIdx = index on projects.user_id (for fetching all user projects), shareTokenIdx = index on projects.share_token (for public share lookup).",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Export types and add to schema barrel",
+      "details": "Export type Project = typeof projects.$inferSelect; export type NewProject = typeof projects.$inferInsert; Add 'export * from ./projects' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Connect to DB and run \\d projects to verify all columns. Check that the foreign key to users is present. Verify the UNIQUE constraint on share_token.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-4"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "pgEnum creates a PostgreSQL ENUM type — must be referenced in the table definition",
+    "progress_auto is computed by the server; progress_manual is the user override",
+    "The level field is a VARCHAR computed by the level service from points_total, stored for fast reads"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "id": "TASK-22",
+  "title": "GET /api/auth/google — initiate Google OAuth flow",
+  "category": "api-endpoint",
+  "description": "Set up Google OAuth 2.0 login using Passport.js. User clicks 'Sign in with Google', is redirected to Google, and returns to the app authenticated with access + refresh tokens.",
+  "acceptanceCriteria": [
+    "GET /api/auth/google redirects to Google OAuth consent screen",
+    "GET /api/auth/google/callback handles the OAuth callback",
+    "On success: creates or updates user record, issues tokens, redirects to FRONTEND_URL/auth/callback?token=ACCESS_TOKEN",
+    "On failure: redirects to FRONTEND_URL/login?error=oauth_failed",
+    "New Google users are created with no password_hash"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install Passport.js and Google strategy",
+      "details": "npm install passport passport-google-oauth20. npm install -D @types/passport @types/passport-google-oauth20.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Configure Google OAuth strategy",
+      "details": "Create server/src/config/passport.ts. Configure GoogleStrategy with clientID (GOOGLE_CLIENT_ID), clientSecret (GOOGLE_CLIENT_SECRET), callbackURL ('/api/auth/google/callback'). In the verify callback: find user by google_id OR email. If found, update google_id if missing. If not found, create new user with name, email, google_id from profile. Return user.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Add Google OAuth routes",
+      "details": "In auth router: GET /google → passport.authenticate('google', { scope: ['profile', 'email'], session: false }). GET /google/callback → passport.authenticate(..., { session: false, failureRedirect: FRONTEND_URL/login?error=oauth_failed }) then issue tokens, set refresh cookie, redirect to FRONTEND_URL/auth/callback?token=ACCESS_TOKEN.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Initialize Passport in index.ts",
+      "details": "In server/src/index.ts, import passport config, call passport.initialize() middleware, app.use(passport.initialize()). No session middleware needed (session: false).",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Test Google OAuth flow",
+      "details": "Open http://localhost:3000/api/auth/google in a browser. Complete Google sign-in. Verify redirect to FRONTEND_URL/auth/callback?token=... Verify user created in DB with google_id set.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-16"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "Use session: false in Passport to avoid needing session middleware",
+    "Pass access token in redirect URL query param — frontend reads it and stores in memory",
+    "Google OAuth requires HTTPS in production; localhost works in development"
+  ]
+}

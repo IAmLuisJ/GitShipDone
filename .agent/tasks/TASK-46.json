@@ -1,0 +1,36 @@
+{
+  "id": "TASK-46",
+  "title": "POST /api/projects/:id/journal — create journal entry",
+  "category": "api-endpoint",
+  "description": "Create a journal entry for a project. Awards +5 points and logs a timeline event.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Accepts { title, body, mood? }",
+    "Returns 201 with the created journal entry",
+    "Awards +5 points with reason 'Journal entry: TITLE'",
+    "Logs a journal timeline event",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create journal schema and router",
+      "details": "createJournalSchema = z.object({ title: z.string().min(1).max(500), body: z.string().min(1), mood: z.enum(['excited','blocked','steady','win','learning']).optional() }). Create server/src/routes/journal.ts with mergeParams: true. Mount at /api/projects/:id/journal.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Implement POST / handler",
+      "details": "1) getOwnedProject. 2) Validate body. 3) Insert journal_entry. 4) Call awardPoints(projectId, 5, 'Journal entry: TITLE', 'journal'). 5) Call logTimelineEvent(projectId, 'journal', { entryId: entry.id, title, mood }). 6) Return 201.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test endpoint",
+      "details": "Create journal entry — verify 201, +5 points, timeline event. Try without body — expect 400.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-43", "TASK-50", "TASK-8"],
+  "estimatedComplexity": "low"
+}

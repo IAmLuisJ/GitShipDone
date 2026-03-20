@@ -1,0 +1,32 @@
+{
+  "id": "TASK-28",
+  "title": "GET /api/projects — list all user projects",
+  "category": "api-endpoint",
+  "description": "Return all non-deleted projects for the authenticated user, including computed progress and summary stats.",
+  "acceptanceCriteria": [
+    "GET /api/projects requires auth",
+    "Returns only projects belonging to the authenticated user",
+    "Excludes soft-deleted projects (deleted_at IS NULL)",
+    "Returns array sorted by updated_at DESC",
+    "Each project includes: id, name, type, status, progressAuto, progressManual, pointsTotal, level, isPublic, updatedAt"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement GET / handler on projects router",
+      "details": "Query: db.select().from(projects).where(and(eq(projects.userId, req.userId), isNull(projects.deletedAt))).orderBy(desc(projects.updatedAt)). Return 200 with the array.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test the endpoint",
+      "details": "Create 2 projects, then GET /api/projects — verify both returned in descending order. Soft-delete one project, verify it's excluded.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-27"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "No pagination needed here — users are unlikely to have hundreds of projects, but add limit=50 as a safety cap"
+  ]
+}

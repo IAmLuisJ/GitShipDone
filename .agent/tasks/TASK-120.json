@@ -1,0 +1,55 @@
+{
+  "id": "TASK-120",
+  "title": "WCAG 2.1 AA — keyboard navigation, ARIA labels, and color contrast audit",
+  "category": "functional",
+  "description": "Audit the app for WCAG 2.1 AA compliance and fix critical issues: keyboard navigation, ARIA labels, focus management, and color contrast.",
+  "acceptanceCriteria": [
+    "All interactive elements reachable via Tab key",
+    "Focus ring visible on all focused elements (no outline: none without replacement)",
+    "All images have alt text (or aria-hidden if decorative)",
+    "All form inputs have associated labels",
+    "Modal dialogs trap focus when open (shadcn/ui handles this)",
+    "ARIA roles on custom components (e.g., timeline, notification list)",
+    "Color contrast ratio ≥ 4.5:1 for normal text, ≥ 3:1 for large text",
+    "No content relies on color alone to convey meaning"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Run automated accessibility audit",
+      "details": "Install axe-playwright or axe-core. Run axe audit on main pages: landing, login, register, dashboard, project detail (each tab), settings, public share page. Log all violations.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Fix keyboard navigation issues",
+      "details": "Tab through the app. Fix any: missing tabindex, focus jumping to wrong element, focus not returning to trigger after dialog closes. Ensure drag-and-drop list items have keyboard alternatives (arrow key reorder).",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Fix ARIA labels",
+      "details": "Add aria-label to: icon-only buttons (e.g., delete, drag handle, close), the notification bell, the theme toggle, the progress bar (aria-valuenow, aria-valuemin, aria-valuemax). Add role='list' and role='listitem' to custom lists.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify color contrast",
+      "details": "Use browser DevTools accessibility panel or a contrast checker tool. Check all muted text colors against their backgrounds. Fix any failures — usually by darkening text or lightening background.",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Test with keyboard only",
+      "details": "Complete the main user flow using only keyboard: login, create project, add milestone, complete todo, log journal entry. Verify all actions are achievable without a mouse.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-82", "TASK-89", "TASK-93"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "shadcn/ui components are built on Radix UI which handles most WCAG requirements out of the box",
+    "Common issues: custom dropdown menus, drag-and-drop interfaces, and toast notifications need extra ARIA work",
+    "Test with real screen readers (VoiceOver on Mac, NVDA on Windows) for a full a11y check"
+  ]
+}

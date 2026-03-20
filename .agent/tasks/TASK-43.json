@@ -1,0 +1,30 @@
+{
+  "id": "TASK-43",
+  "title": "Points service — award and deduct points based on events",
+  "category": "functional",
+  "description": "Create a reusable points service that inserts a record into points_log, updates projects.points_total, and triggers level recalculation.",
+  "acceptanceCriteria": [
+    "awardPoints(projectId, delta, reason, source) function exists",
+    "Inserts record into points_log",
+    "Updates projects.points_total += delta atomically",
+    "Calls recalculateLevel after updating points",
+    "Handles negative delta (deductions) correctly — points_total never goes below 0",
+    "Logs a points_change timeline event"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create points service",
+      "details": "Create server/src/services/pointsService.ts. Export async function awardPoints(projectId: string, delta: number, reason: string, source: PointSource). 1) Fetch current points_total. 2) Compute newTotal = Math.max(0, current + delta). 3) In a transaction: a) INSERT into points_log (projectId, delta, reason, source). b) UPDATE projects SET points_total = newTotal WHERE id = projectId. 4) Call recalculateLevel(projectId, newTotal). 5) Log timeline event 'points_change' with { delta, reason, newTotal }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test points service",
+      "details": "Create project, call awardPoints(id, 10, 'test', 'manual'). Verify points_total = 10 in DB. Call awardPoints(id, -50, 'test deduct', 'manual'). Verify points_total = 0 (not -40). Check points_log has both entries.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-10", "TASK-44", "TASK-50"],
+  "estimatedComplexity": "low"
+}

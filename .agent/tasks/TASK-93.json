@@ -1,0 +1,44 @@
+{
+  "id": "TASK-93",
+  "title": "Frontend: Project detail page — tabbed layout",
+  "category": "ui-ux",
+  "description": "Build the project detail page shell with a tabbed navigation (Overview, Timeline, Milestones, Todos, Journal, Parking Lot, Settings) and project header.",
+  "acceptanceCriteria": [
+    "Renders at /projects/:id",
+    "Fetches project data on load, shows 404 if not found",
+    "Project header: name, type badge, status badge, level badge, points display",
+    "Tab navigation with 7 tabs",
+    "Active tab persists in URL (via ?tab=overview query param)",
+    "Each tab renders its corresponding section component",
+    "AI PM button in header to open AI chat panel",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create ProjectDetailPage",
+      "details": "Create src/pages/ProjectDetailPage.tsx. Fetch project using useQuery(['project', id], GET /api/projects/:id). Show loading skeleton, then render project header + Tabs. Use useSearchParams to sync active tab with URL.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Build project header",
+      "details": "Show: project name (large heading), type badge, status badge, level badge (e.g., 'Sprout'), points total. Action buttons: 'AI PM' (opens chat drawer), options dropdown (edit, delete). Progress bar component below header.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Set up tabs",
+      "details": "Use shadcn/ui Tabs. Tab values: overview, timeline, milestones, todos, journal, parking-lot, settings. Default to 'overview'. Each TabsContent renders the corresponding tab component (lazy/conditional render).",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify in browser using Playwright",
+      "details": "Navigate to /projects/:id. Verify header shows correct project data. Click each tab — verify content renders. Reload with ?tab=milestones — verify milestones tab is active.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-29", "TASK-82", "TASK-81"],
+  "estimatedComplexity": "medium"
+}

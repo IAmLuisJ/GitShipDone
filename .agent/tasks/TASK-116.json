@@ -1,0 +1,34 @@
+{
+  "id": "TASK-116",
+  "title": "Frontend: Empty states for all major list views",
+  "category": "ui-ux",
+  "description": "Create reusable empty state components and implement them across all list views: projects, milestones, todos, journal, parking lot, timeline, notifications.",
+  "acceptanceCriteria": [
+    "Reusable EmptyState component with icon, title, description, and optional CTA button",
+    "Used in: Projects dashboard, Milestones tab, Todos tab, Journal tab, Parking Lot tab, Timeline tab, Notifications dropdown",
+    "Each empty state has contextually appropriate message and CTA",
+    "Verify in browser using Playwright (set up each empty state)"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create EmptyState component",
+      "details": "Create src/components/ui/EmptyState.tsx. Props: icon (Lucide React component), title, description, action?: { label, onClick }. Render centered with icon (large, muted), title (muted foreground), description, and optional Button.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Implement in each list view",
+      "details": "Projects: 'No projects yet — Create your first project'. Milestones: 'No milestones — Add a milestone to track your goals'. Todos: 'No todos — Add tasks to track your work'. Journal: 'No entries yet — Log your first update'. Parking Lot: 'No ideas yet — Add ideas you want to explore later'. Timeline: 'No activity yet — Start working on your project'. Notifications: 'All caught up!'.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Verify in browser using Playwright",
+      "details": "Create a project with no milestones/todos. Open each tab and verify appropriate empty state renders with correct message.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-81"],
+  "estimatedComplexity": "low"
+}

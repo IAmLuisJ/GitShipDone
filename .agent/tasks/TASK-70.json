@@ -1,0 +1,29 @@
+{
+  "id": "TASK-70",
+  "title": "PATCH /api/users/me — update profile (name, avatar, email)",
+  "category": "api-endpoint",
+  "description": "Update user's display name and/or avatar URL. Updating email requires re-verification (not in MVP — disallow email changes for now).",
+  "acceptanceCriteria": [
+    "PATCH requires auth",
+    "Accepts partial: { name?, avatarUrl? }",
+    "Email changes are NOT supported in MVP (return 400 if email included)",
+    "Updates updated_at timestamp",
+    "Returns 200 with sanitized user profile"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement PATCH /me handler",
+      "details": "updateProfileSchema = z.object({ name: z.string().min(1).max(255).optional(), avatarUrl: z.string().url().max(2000).optional() }). If body contains email, return 400 'Email changes not supported'. Update user. Return 200 with sanitized profile.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Update name — verify change. Update avatarUrl — verify change. Try updating email — expect 400.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-69"],
+  "estimatedComplexity": "low"
+}

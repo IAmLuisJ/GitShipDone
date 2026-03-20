@@ -1,0 +1,46 @@
+{
+  "id": "TASK-23",
+  "title": "GET /api/auth/github — initiate GitHub OAuth login flow",
+  "category": "api-endpoint",
+  "description": "Set up GitHub OAuth login using Passport.js GitHub strategy. This is for login/registration only — GitHub repo integration is separate (TASK-56).",
+  "acceptanceCriteria": [
+    "GET /api/auth/github redirects to GitHub OAuth",
+    "GET /api/auth/github/callback handles callback",
+    "Creates or finds user by github_id or email",
+    "On success: issues tokens, redirects to FRONTEND_URL/auth/callback?token=ACCESS_TOKEN",
+    "On failure: redirects to FRONTEND_URL/login?error=oauth_failed"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install GitHub Passport strategy",
+      "details": "npm install passport-github2. npm install -D @types/passport-github2.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Configure GitHub strategy in passport.ts",
+      "details": "Add GitHubStrategy to config/passport.ts with clientID (GITHUB_CLIENT_ID), clientSecret (GITHUB_CLIENT_SECRET), callbackURL ('/api/auth/github/callback'), scope: ['user:email']. In verify: find user by github_id OR email. Create if not found. Note: GitHub may not return email if user has it private — handle gracefully (use github_id as primary key for lookup).",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Add GitHub OAuth routes",
+      "details": "GET /github → passport.authenticate('github', { scope: ['user:email'], session: false }). GET /github/callback → authenticate, then issue tokens and redirect same as Google.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Test GitHub OAuth flow",
+      "details": "Navigate to http://localhost:3000/api/auth/github, authorize the app, verify redirect with token. Verify user in DB has github_id set.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-22"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "GitHub login and GitHub repo integration use DIFFERENT OAuth apps with different scopes",
+    "Login OAuth app only needs 'user:email' scope",
+    "Repo integration OAuth app needs 'repo' or 'public_repo' scope — handled in TASK-56"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "TASK-32",
+  "title": "Project progress auto-calculation service",
+  "category": "functional",
+  "description": "Create a service that recalculates and persists project progress whenever todos are added, completed, or unchecked. Progress = (completed_todos / total_todos) * 100, clamped to 0-100.",
+  "acceptanceCriteria": [
+    "recalculateProgress(projectId) function exists in a service file",
+    "Returns 0 if project has no todos",
+    "Correctly calculates percentage from completed vs total todos",
+    "Updates projects.progress_auto in the database",
+    "Logs a progress_change timeline event if progress changed by >= 5%",
+    "Called automatically when todos are created, completed, or deleted"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create progress service",
+      "details": "Create server/src/services/progressService.ts. Export async function recalculateProgress(projectId: string): Promise<number>. Query: SELECT COUNT(*) as total, SUM(CASE WHEN is_completed THEN 1 ELSE 0 END) as done FROM todos WHERE project_id = projectId. Compute pct = total === 0 ? 0 : Math.round((done / total) * 100). Update projects.progress_auto = pct WHERE id = projectId. Return pct.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add timeline event on significant progress change",
+      "details": "Before updating, fetch current progress_auto. If abs(newPct - oldPct) >= 5, call logTimelineEvent(projectId, 'progress_change', { from: oldPct, to: newPct, isManual: false }). This avoids spamming the timeline on every tiny change.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Wire into todo endpoints",
+      "details": "Call recalculateProgress(projectId) after: creating a todo, toggling todo completion, deleting a todo. These calls happen in the todo route handlers (TASK-38, TASK-40, TASK-41).",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Test progress calculation",
+      "details": "Create a project with 4 todos. Complete 2 — verify progress_auto = 50. Complete the other 2 — verify 100. Uncheck one — verify 75.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-7", "TASK-5", "TASK-50"],
+  "estimatedComplexity": "low"
+}

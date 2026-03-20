@@ -1,0 +1,29 @@
+{
+  "id": "TASK-48",
+  "title": "PATCH /api/projects/:id/journal/:jid — update journal entry",
+  "category": "api-endpoint",
+  "description": "Allow users to edit the title, body, and mood of an existing journal entry.",
+  "acceptanceCriteria": [
+    "PATCH requires auth and project ownership",
+    "Returns 404 if entry not found or soft-deleted",
+    "Accepts partial: { title?, body?, mood? }",
+    "Updates updated_at timestamp",
+    "Returns 200 with updated entry"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement PATCH /:jid handler",
+      "details": "1) getOwnedProject. 2) Find journal entry WHERE id = jid AND project_id = id AND deleted_at IS NULL. 3) Validate partial update. 4) Update entry + updated_at. 5) Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Update title — verify change and updated_at refreshed. Try with soft-deleted entry — expect 404.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-47"],
+  "estimatedComplexity": "low"
+}

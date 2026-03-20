@@ -1,0 +1,42 @@
+{
+  "id": "TASK-83",
+  "title": "Frontend: Landing / marketing page with hero and feature highlights",
+  "category": "ui-ux",
+  "description": "Create the public landing page shown to unauthenticated users. Includes a hero section, feature highlights, and CTAs to sign up.",
+  "acceptanceCriteria": [
+    "Page renders at '/' for unauthenticated users",
+    "Authenticated users are redirected to /dashboard",
+    "Hero section: headline, sub-headline, 'Get Started Free' and 'Sign In' buttons",
+    "Feature highlights: at least 6 features with icon, title, description",
+    "Page is responsive (mobile + desktop)",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create LandingPage component",
+      "details": "Create src/pages/LandingPage.tsx. If user is authenticated (check authStore), redirect to /dashboard. Otherwise render the marketing page.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Build hero section",
+      "details": "Hero: centered layout, large headline ('Build more. Track effortlessly. Ship with confidence.'), sub-headline, two CTA buttons using shadcn/ui Button (primary: 'Get Started Free' → /register, secondary: 'Sign In' → /login).",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Build feature highlights grid",
+      "details": "6-card grid using shadcn/ui Card. Features: Timeline history, GitHub changelogs, AI PM copilot, Points & levels, Project sharing, Parking lot ideas. Each card: icon (lucide-react), title, 2-line description.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify in browser using Playwright",
+      "details": "Open http://localhost:5173. Verify landing page renders. Click 'Get Started Free' — navigate to /register. Resize to 375px — verify mobile layout.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-81", "TASK-88"],
+  "estimatedComplexity": "low"
+}

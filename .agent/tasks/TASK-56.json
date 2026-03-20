@@ -1,0 +1,45 @@
+{
+  "id": "TASK-56",
+  "title": "GitHub OAuth integration — connect GitHub account for repo access",
+  "category": "integration",
+  "description": "Set up a SEPARATE GitHub OAuth flow specifically for repo integration (not login). This OAuth app needs 'repo' scope to read commits and releases. The resulting access token is stored encrypted on the user record.",
+  "acceptanceCriteria": [
+    "GET /api/auth/github/repo initiates GitHub OAuth with repo scope",
+    "GET /api/auth/github/repo/callback handles callback",
+    "On success: stores encrypted GitHub access token on the user record",
+    "Redirects to FRONTEND_URL/settings?github=connected",
+    "On failure: redirects to FRONTEND_URL/settings?github=error"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create a second GitHub OAuth strategy for repo access",
+      "details": "In server/src/config/passport.ts, add a second strategy named 'github-repo' with clientID (GITHUB_REPO_CLIENT_ID), clientSecret (GITHUB_REPO_CLIENT_SECRET), callbackURL ('/api/auth/github/repo/callback'), scope: ['repo']. In verify callback: encrypt the accessToken with the encryption utility (TASK-73), update the user's github_access_token field.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add env variables for repo OAuth app",
+      "details": "Add to .env.example: GITHUB_REPO_CLIENT_ID=, GITHUB_REPO_CLIENT_SECRET=. These are from a DIFFERENT GitHub OAuth App than the login one.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Add routes to auth router",
+      "details": "GET /github/repo → passport.authenticate('github-repo', { session: false }). GET /github/repo/callback → authenticate, encrypt token, store on user, redirect to FRONTEND_URL/settings?github=connected.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Test GitHub repo OAuth",
+      "details": "Navigate to /api/auth/github/repo (while logged in). Authorize. Verify redirect to settings page. Check DB: user.github_access_token is set (encrypted).",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-73", "TASK-24"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "This requires TWO separate GitHub OAuth Apps: one for login (read:user, user:email) and one for repo access (repo scope)",
+    "The repo OAuth requires the user to be already logged in — require auth middleware before the route"
+  ]
+}

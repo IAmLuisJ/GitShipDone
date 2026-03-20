@@ -1,0 +1,37 @@
+{
+  "id": "TASK-89",
+  "title": "Frontend: Projects dashboard — grid of project cards",
+  "category": "ui-ux",
+  "description": "Build the main dashboard page showing all user projects as a responsive card grid with a 'New Project' button.",
+  "acceptanceCriteria": [
+    "Renders all user projects as cards in a responsive grid",
+    "Empty state with CTA when no projects exist",
+    "'New Project' button opens the create project modal",
+    "Cards link to /projects/:id",
+    "Page title and header visible",
+    "Loading skeleton shown while fetching",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create DashboardPage",
+      "details": "Create src/pages/DashboardPage.tsx. Use useQuery to fetch /api/projects. Show skeleton cards while loading. Render ProjectCard for each project in a CSS grid (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4). 'New Project' button in header triggers create modal.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create empty state",
+      "details": "If projects.length === 0, render an EmptyState component with an illustration, 'No projects yet' title, and 'Create your first project' button.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Verify in browser using Playwright",
+      "details": "Login and navigate to dashboard. Verify projects display. Create a project — verify it appears. Check on mobile viewport — verify single column grid.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-82", "TASK-90", "TASK-91", "TASK-116", "TASK-117"],
+  "estimatedComplexity": "low"
+}

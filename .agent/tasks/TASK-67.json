@@ -1,0 +1,42 @@
+{
+  "id": "TASK-67",
+  "title": "Reminder cron job — send in-app and email reminders for upcoming milestones and todos",
+  "category": "functional",
+  "description": "Daily cron job that checks for milestones and todos due in the next 3 days and on the current day, creates in-app notifications, and sends reminder emails.",
+  "acceptanceCriteria": [
+    "Cron runs daily at 8:00 AM UTC",
+    "Finds all incomplete milestones due within 3 days for all users",
+    "Finds all incomplete urgent todos due within 3 days",
+    "Creates in-app notifications for each (deduplicates: no duplicate notifications for same item same day)",
+    "Sends reminder email if user has email_notifications_enabled = true",
+    "Email includes CAN-SPAM compliant unsubscribe link"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create reminder cron job",
+      "details": "Create server/src/jobs/reminders.ts. Export startReminderJob(). Use cron.schedule('0 8 * * *', async () => { ... }). Inside: 1) Query milestones WHERE status != 'completed' AND due_date BETWEEN NOW() AND NOW() + INTERVAL '3 days'. Join with projects to get user_id and project name. 2) For each, check if notification already created today (avoid duplicate). 3) Insert into notifications. 4) If user.email_notifications_enabled, send reminder email.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add deduplication check",
+      "details": "Before inserting notification: SELECT COUNT(*) FROM notifications WHERE user_id = userId AND type = 'milestone_due' AND ref_id = milestoneId AND created_at > today_start. If count > 0, skip.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Start job on server startup",
+      "details": "Call startReminderJob() in index.ts after DB connection.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Test reminder job",
+      "details": "Create milestone due tomorrow. Manually invoke the job function. Verify notification created in DB. Verify email sent (check Resend logs).",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-68", "TASK-64"],
+  "estimatedComplexity": "medium"
+}

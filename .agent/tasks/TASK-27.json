@@ -1,0 +1,46 @@
+{
+  "id": "TASK-27",
+  "title": "POST /api/projects — create a project",
+  "category": "api-endpoint",
+  "description": "Create a new project for the authenticated user. Validate input, insert record, and optionally seed milestone templates for software projects.",
+  "acceptanceCriteria": [
+    "POST /api/projects requires auth",
+    "Accepts { name, description?, type, milestoneTemplates?: string[] }",
+    "Returns 400 if name is empty or type is invalid",
+    "Returns 201 with the created project object",
+    "If milestoneTemplates provided, inserts them as milestones with sort_order",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create project Zod validation schema",
+      "details": "Create server/src/validators/projects.ts. Define createProjectSchema = z.object({ name: z.string().min(1).max(255), description: z.string().max(5000).optional(), type: z.enum(['software','design','physical','content','learning','other']), milestoneTemplates: z.array(z.string().max(255)).max(10).optional() }).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create projects router and POST / handler",
+      "details": "Create server/src/routes/projects.ts. POST /: 1) Validate body. 2) Insert into projects table with user_id = req.userId, name, description, type, status='active'. 3) If milestoneTemplates provided, insert each as a milestone with sort_order = index. 4) Log a timeline event: status_change with payload { from: null, to: 'active' }. 5) Return 201 with project.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Mount projects router",
+      "details": "In index.ts, apply requireAuth middleware and mount: app.use('/api/projects', requireAuth, projectsRouter).",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Test project creation",
+      "details": "POST /api/projects with valid body and auth token — expect 201 with project. Try without auth — expect 401. Try with empty name — expect 400. Try with 5 milestone templates — verify 5 milestone rows created.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-24", "TASK-5", "TASK-6", "TASK-50"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "Use a database transaction when inserting project + milestones to ensure atomicity",
+    "sort_order for templates should be 0, 1, 2... in the order they're provided"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "TASK-59",
+  "title": "GitHub polling cron job — fetch new commits and releases every 60 minutes",
+  "category": "integration",
+  "description": "Set up a recurring cron job that polls GitHub for new commits and releases for all connected projects.",
+  "acceptanceCriteria": [
+    "Cron job runs every 60 minutes",
+    "Fetches all projects with github_repo_name set and non-null github_access_token",
+    "For each project, calls importCommitsForProject with commits since the last known commit",
+    "Errors for individual projects are logged but do not stop other projects from syncing",
+    "Job runs on server startup and on schedule"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install node-cron",
+      "details": "npm install node-cron. npm install -D @types/node-cron.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create cron job module",
+      "details": "Create server/src/jobs/githubSync.ts. Export function startGithubSyncJob(). Use cron.schedule('0 * * * *', async () => { ... }) for hourly. Inside: query projects WHERE github_repo_name IS NOT NULL. For each, get the user's encrypted token, decrypt, create Octokit, call importCommitsForProject(projectId, octokit, owner, repo) wrapped in try/catch.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Start job on server startup",
+      "details": "In server/src/index.ts, import and call startGithubSyncJob() after the DB connection is confirmed.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Test cron job",
+      "details": "Temporarily change schedule to '* * * * *' (every minute) for testing. Connect a repo and wait. Verify new commits appear after the minute fires. Restore to hourly schedule.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-58"],
+  "estimatedComplexity": "low"
+}

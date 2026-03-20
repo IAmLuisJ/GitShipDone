@@ -1,0 +1,52 @@
+{
+  "id": "TASK-115",
+  "title": "Frontend: Public share page — read-only project view without auth",
+  "category": "ui-ux",
+  "description": "Build the publicly accessible project share page. Accessible without login. Shows project overview, timeline, milestones, todos, and journal entries.",
+  "acceptanceCriteria": [
+    "Accessible at /share/:token without authentication",
+    "Shows 404 if token is invalid or project is private",
+    "Project header: name, type, status, progress, level, points",
+    "Timeline section: full scrollable timeline",
+    "Milestones section: read-only list with status",
+    "Todos section: read-only list with completion state",
+    "Journal entries: read-only list with rendered rich text",
+    "'Powered by GitShipDone' footer with CTA",
+    "No edit buttons, settings, or AI features visible",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create PublicSharePage",
+      "details": "Create src/pages/PublicSharePage.tsx. No AppLayout (no sidebar). Fetch GET /api/share/:token on load. If 404: render NotFoundPage. Otherwise render public view.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Build public project header",
+      "details": "Clean, minimal header: project name, type badge, status badge, level badge, progress bar (read-only), points total. No edit controls.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Render all public sections",
+      "details": "Tabs or stacked sections: Timeline (using TimelineEventRenderer read-only), Milestones (static list), Todos (static list with checkboxes disabled), Journal (using RichTextViewer). Each section collapses if empty.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Add footer",
+      "details": "Sticky or page-bottom footer: 'Built with GitShipDone · Track your projects →' with link to landing page.",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Verify in browser using Playwright",
+      "details": "Enable sharing on a project. Open share URL in incognito. Verify all sections render. Verify no edit buttons visible. Verify attempting to interact with todos doesn't work.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-63", "TASK-101"],
+  "estimatedComplexity": "medium"
+}

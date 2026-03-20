@@ -1,0 +1,47 @@
+{
+  "id": "TASK-9",
+  "title": "Timeline events table schema and migration",
+  "category": "data-model",
+  "description": "Define the timeline_events table that stores all project history events. This is the core of the timeline feature — every significant action (journal entry, milestone completion, GitHub commit, progress change, etc.) is logged here.",
+  "acceptanceCriteria": [
+    "timeline_events table defined in src/db/schema/timelineEvents.ts",
+    "FK to projects.id with cascade delete",
+    "type ENUM covers all 8 event types",
+    "payload JSONB column stores event-specific data",
+    "ref_id nullable UUID for linking to source records",
+    "Migration runs successfully"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define event type enum and timeline_events table",
+      "details": "Create server/src/db/schema/timelineEvents.ts. Define timelineEventTypeEnum = pgEnum('timeline_event_type', ['journal', 'milestone_completed', 'todo_batch', 'github_commit', 'github_release', 'progress_change', 'points_change', 'status_change']). Define timeline_events table: id (uuid pk), project_id (uuid notNull FK cascade delete), type (timelineEventTypeEnum notNull), ref_id (uuid nullable — FK to source record ID), payload (jsonb notNull default '{}'), created_at (timestamp notNull defaultNow()).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add indexes for timeline queries",
+      "details": "Add index on project_id and created_at together as a composite index (project_id, created_at DESC) for efficient paginated timeline queries. Add index on type for filtering.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export types and update schema barrel",
+      "details": "Export type TimelineEvent and type NewTimelineEvent. Add 'export * from ./timelineEvents' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Verify timeline_events table with \\d timeline_events. Confirm JSONB column type and composite index.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-5"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "JSONB allows storing different payload shapes per event type without schema changes",
+    "payload examples: journal: {entryId, title, mood}, milestone_completed: {milestoneId, name, points}, progress_change: {from, to, isManual}",
+    "The composite index (project_id, created_at DESC) is critical for pagination performance"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "TASK-8",
+  "title": "Journal entries table schema and migration",
+  "category": "data-model",
+  "description": "Define the journal_entries table for user project updates with rich text body, mood tracking, and soft deletion.",
+  "acceptanceCriteria": [
+    "journal_entries table defined in src/db/schema/journalEntries.ts",
+    "FK to projects.id with cascade delete",
+    "mood ENUM: excited, blocked, steady, win, learning",
+    "body stored as TEXT (Tiptap JSON serialized as string)",
+    "Soft delete via deleted_at nullable timestamp",
+    "Migration runs successfully"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define mood enum and journal_entries table",
+      "details": "Create server/src/db/schema/journalEntries.ts. Define journalMoodEnum = pgEnum('journal_mood', ['excited', 'blocked', 'steady', 'win', 'learning']). Define journal_entries table: id (uuid pk), project_id (uuid notNull FK → projects.id cascade delete), title (varchar 500 notNull), body (text notNull — Tiptap JSON as string), mood (journalMoodEnum nullable), created_at (timestamp notNull defaultNow()), updated_at (timestamp notNull defaultNow()), deleted_at (timestamp nullable).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add index on project_id",
+      "details": "Add index on journal_entries.project_id.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export types and update schema barrel",
+      "details": "Export type JournalEntry and type NewJournalEntry. Add 'export * from ./journalEntries' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Verify journal_entries table exists with all columns and the mood ENUM type.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-5"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "Store Tiptap editor content as JSON.stringify(editor.getJSON()) — TEXT is fine for this size",
+    "Queries must filter WHERE deleted_at IS NULL to exclude soft-deleted entries"
+  ]
+}

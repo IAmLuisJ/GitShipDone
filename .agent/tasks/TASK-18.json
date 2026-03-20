@@ -1,0 +1,39 @@
+{
+  "id": "TASK-18",
+  "title": "POST /api/auth/refresh — refresh access token",
+  "category": "api-endpoint",
+  "description": "Implement token refresh using the HttpOnly refresh token cookie. Validate the token, issue a new access token, and rotate the refresh token.",
+  "acceptanceCriteria": [
+    "POST /api/auth/refresh reads refresh token from HttpOnly cookie",
+    "Returns 401 if cookie missing or token invalid/expired",
+    "Returns 200 with new { accessToken } on success",
+    "Rotates the refresh token (old token invalidated, new one issued)",
+    "Verify token rotation works: old cookie no longer valid after refresh"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install cookie-parser",
+      "details": "npm install cookie-parser && npm install -D @types/cookie-parser. Apply in index.ts: app.use(cookieParser()).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Implement POST /api/auth/refresh handler",
+      "details": "1) Read req.cookies.refreshToken. If missing, return 401. 2) Verify token with verifyRefreshToken() — catch errors and return 401. 3) Find user by decoded sub (userId). If not found or deleted, return 401. 4) Find refresh_tokens for user where expires_at > NOW(). Compare each token_hash with bcrypt.compare() to find a match. If no match, return 401 (token was rotated/invalidated). 5) Delete the matched token record. 6) Sign new access + refresh tokens. 7) Store new hashed refresh token. 8) Set new refresh cookie. 9) Return 200 { accessToken }.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test refresh flow",
+      "details": "Login to get cookie. Call /api/auth/refresh — get new accessToken. Call /api/auth/refresh again with same cookie — should fail (rotated). Verify new cookie is set.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-17"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "Token rotation prevents refresh token replay attacks — each use invalidates the old token",
+    "bcrypt.compare on refresh tokens is O(n) per stored token — limit stored tokens per user to avoid slowdown"
+  ]
+}

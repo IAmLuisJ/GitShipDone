@@ -1,0 +1,30 @@
+{
+  "id": "TASK-76",
+  "title": "AI context builder service — assemble project context for AI prompt injection",
+  "category": "functional",
+  "description": "Create a service that assembles a concise, structured project context string for injection into AI prompts.",
+  "acceptanceCriteria": [
+    "buildProjectContext(projectId) returns a formatted string",
+    "Includes: project name, type, vision (truncated), status, progress %, level, points",
+    "Includes top 5 milestones with status",
+    "Includes last 3 journal entry titles",
+    "Includes incomplete todos count",
+    "Context string is < 2000 tokens (roughly 1500 words)"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create context builder service",
+      "details": "Create server/src/services/aiContextService.ts. Export async function buildProjectContext(projectId: string): Promise<string>. Fetch: project, milestones (top 5 by sort_order), last 3 journal entries (titles only), todo counts. Format as: 'Project: NAME (TYPE)\\nVision: VISION\\nStatus: STATUS | Progress: N%\\nLevel: LEVEL (N pts)\\nMilestones: [list]\\nRecent journal: [titles]\\nOpen todos: N'.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test context builder",
+      "details": "Call buildProjectContext with a well-populated project. Verify output is readable and under token limit. Verify it includes all key fields.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-5", "TASK-6", "TASK-7", "TASK-8"],
+  "estimatedComplexity": "low"
+}

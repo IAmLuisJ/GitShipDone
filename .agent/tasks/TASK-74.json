@@ -1,0 +1,30 @@
+{
+  "id": "TASK-74",
+  "title": "DELETE /api/users/me — soft delete account",
+  "category": "api-endpoint",
+  "description": "Soft delete the user's account by setting deleted_at. Invalidates all sessions. All their projects and data remain for potential recovery.",
+  "acceptanceCriteria": [
+    "DELETE requires auth",
+    "Requires { confirmPassword: string } body to prevent accidents",
+    "Sets user.deleted_at = NOW()",
+    "Deletes all refresh tokens (forces logout everywhere)",
+    "Returns 200 { message: 'Account deleted' }",
+    "Subsequent login attempts with this email return 401"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement DELETE /me handler",
+      "details": "Validate { confirmPassword: string }. Fetch user. If user has password, bcrypt.compare(confirmPassword, user.passwordHash) — return 401 if wrong. Set user.deleted_at = NOW(). Delete all refresh_tokens for user. Clear cookie. Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "Delete account with correct password. Try logging in with same email — expect 401. Check DB — user has deleted_at set, data still present.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-69"],
+  "estimatedComplexity": "low"
+}

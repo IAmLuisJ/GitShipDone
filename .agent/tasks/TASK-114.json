@@ -1,0 +1,36 @@
+{
+  "id": "TASK-114",
+  "title": "Frontend: AI settings form — provider select, masked API key input, test connection",
+  "category": "ui-ux",
+  "description": "AI configuration section within settings. Allows users to select their AI provider and enter their API key securely.",
+  "acceptanceCriteria": [
+    "Provider select: 'OpenAI (GPT-4o)' and 'Anthropic (Claude)'",
+    "API key input: password-type with show/hide toggle",
+    "If key is already saved: shows 'Key saved (••••••••)' and 'Update Key' option",
+    "Save button submits to PATCH /api/users/me/ai-settings",
+    "Success toast on save",
+    "Error shown if save fails"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create AiSettingsForm component",
+      "details": "Create src/components/settings/AiSettingsForm.tsx. Select for provider (two options). Password input for API key with eye icon toggle. If user.hasAiKey, show masked indicator. 'Save AI Settings' button.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Submit and handle response",
+      "details": "On submit: PATCH /api/users/me/ai-settings. On success: update authStore user (hasAiKey = true), show 'AI settings saved!' toast.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Verify in browser",
+      "details": "Enter OpenAI key — verify saved. Navigate away and back — verify 'Key saved' indicator shown. Try AI PM panel — verify it works with saved key.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-72", "TASK-81"],
+  "estimatedComplexity": "low"
+}

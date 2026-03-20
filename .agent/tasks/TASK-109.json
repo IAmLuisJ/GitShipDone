@@ -1,0 +1,41 @@
+{
+  "id": "TASK-109",
+  "title": "Frontend: Points display and level badge component with points history tooltip",
+  "category": "ui-ux",
+  "description": "Create the points display widget that shows current points, level, and on hover shows recent points transactions.",
+  "acceptanceCriteria": [
+    "Shows level badge (e.g., 'Sprout') with an icon",
+    "Shows points total (e.g., '245 pts')",
+    "Hover tooltip shows last 5 points transactions from points_log",
+    "Points and level update reactively when actions are taken",
+    "Level badge color changes per level"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create PointsDisplay component",
+      "details": "Create src/components/project/PointsDisplay.tsx. Shows level badge (Star icon + level name) and points count. Use shadcn/ui Tooltip to show recent points log on hover.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add points log tooltip",
+      "details": "Add GET /api/projects/:id/points-log endpoint (add to server — query last 5 points_log entries ORDER BY created_at DESC). Display in tooltip: each row shows delta (green/red), reason, time ago.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Level badge colors",
+      "details": "Seed=gray, Sprout=green, Growing=blue, Shipping=orange, Launched=purple. Apply as Tailwind classes based on level string.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Verify in browser",
+      "details": "Complete a todo — verify points increment in real time. Hover over points — verify log shows recent transactions.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-81", "TASK-43"],
+  "estimatedComplexity": "low"
+}

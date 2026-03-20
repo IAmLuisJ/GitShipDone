@@ -1,0 +1,36 @@
+{
+  "id": "TASK-90",
+  "title": "Frontend: Project card component — name, type badge, progress bar, points/level, last updated",
+  "category": "ui-ux",
+  "description": "Create the ProjectCard component that summarizes a project in a clickable card format for the dashboard grid.",
+  "acceptanceCriteria": [
+    "Card shows: project name, type badge (colored by type), progress bar (uses progressManual if set, else progressAuto), points total, level badge, last updated relative time",
+    "Card is clickable and navigates to /projects/:id",
+    "Status badge (active/on_hold/completed/archived) shown",
+    "Type badge colors: software=blue, design=purple, physical=orange, content=green, learning=yellow, other=gray",
+    "Progress bar fills from left to right with color indicating progress level",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create ProjectCard component",
+      "details": "Create src/components/projects/ProjectCard.tsx. Accept project as prop. Wrap in a link to /projects/:id. Use shadcn/ui Card, Badge, Progress components. Display effective progress = progressManual ?? progressAuto. Use date-fns formatDistanceToNow for last updated.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add type and status badges",
+      "details": "Create utility function getTypeColor(type): string that returns Tailwind color classes per type. Create getStatusVariant(status): Badge variant. Apply to shadcn/ui Badge components.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Verify in browser using Playwright",
+      "details": "Render dashboard with multiple project types. Verify each card shows correct data. Verify clicking card navigates to project detail.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-81"],
+  "estimatedComplexity": "low"
+}

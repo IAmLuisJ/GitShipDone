@@ -1,0 +1,50 @@
+{
+  "id": "TASK-102",
+  "title": "Frontend: Parking lot tab — list, add, archive, and promote ideas",
+  "category": "ui-ux",
+  "description": "Build the Parking Lot tab for managing project ideas that aren't prioritized yet.",
+  "acceptanceCriteria": [
+    "Lists active (non-archived) parking lot items by default",
+    "'Show archived' toggle to include archived items",
+    "Each item shows: title, description preview, AI pathway button, promote button, archive button",
+    "Inline 'Add Idea' form at top",
+    "AI Pathway button: calls generate pathway API and displays result in an expandable panel",
+    "Promote button: dialog to choose 'Promote to Milestone' or 'Promote to Todo'",
+    "Archive button with confirmation",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create ParkingLotTab component",
+      "details": "Create src/components/project/tabs/ParkingLotTab.tsx. Fetch items with useQuery. Toggle state for includeArchived. 'Add Idea' form at top (title + description inputs).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create ParkingLotItem component",
+      "details": "Create src/components/project/ParkingLotItem.tsx. Shows title, truncated description. Action buttons: AI Pathway (loading spinner while generating), Promote (opens choice dialog), Archive (calls archive API). If ai_pathway exists, show 'View Pathway' toggle button.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Build AI Pathway display",
+      "details": "Expandable section below item. If ai_pathway is null: 'Generate Pathway' button → POST /ai-pathway → sets pathway on item. If ai_pathway exists: render as markdown using react-markdown.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Build Promote dialog",
+      "details": "shadcn/ui Dialog with two choices (radio buttons): 'Add as Milestone' and 'Add as Todo'. Confirm button: POST /promote, then invalidate milestones or todos query.",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Verify in browser using Playwright",
+      "details": "Add 2 ideas. Generate pathway for one — verify it displays. Promote one to milestone — verify it appears in milestones tab. Archive one — verify it's gone from list.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-52", "TASK-53", "TASK-54", "TASK-55", "TASK-77"],
+  "estimatedComplexity": "medium"
+}

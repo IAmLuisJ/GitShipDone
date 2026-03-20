@@ -1,0 +1,36 @@
+{
+  "id": "TASK-38",
+  "title": "POST /api/projects/:id/todos — create to-do",
+  "category": "api-endpoint",
+  "description": "Create a new to-do item for a project with optional milestone linkage. Triggers progress recalculation.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Accepts { title, milestoneId?, dueDate?, isUrgent? }",
+    "Returns 201 with created todo",
+    "Progress is recalculated after creation",
+    "sort_order defaults to end of list",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create todo Zod schema and handler",
+      "details": "createTodoSchema = z.object({ title: z.string().min(1).max(500), milestoneId: z.string().uuid().optional(), dueDate: z.string().date().optional(), isUrgent: z.boolean().optional() }). Handler: 1) getOwnedProject. 2) If milestoneId provided, verify it belongs to same project. 3) Find max sort_order. 4) Insert todo. 5) Call recalculateProgress(projectId). 6) Return 201.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create todos router and mount",
+      "details": "Create server/src/routes/todos.ts with mergeParams: true. Mount: app.use('/api/projects/:id/todos', requireAuth, todosRouter).",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test endpoint",
+      "details": "Create 3 todos — verify sort_orders 1, 2, 3. Create with milestoneId — verify linked. Progress should still be 0% (none completed).",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-27", "TASK-32", "TASK-7"],
+  "estimatedComplexity": "low"
+}

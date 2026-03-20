@@ -1,0 +1,35 @@
+{
+  "id": "TASK-33",
+  "title": "POST /api/projects/:id/milestones — create milestone",
+  "category": "api-endpoint",
+  "description": "Create a new milestone under a project. Sort order defaults to the end of the list.",
+  "acceptanceCriteria": [
+    "POST /api/projects/:id/milestones requires auth and ownership",
+    "Accepts { name, description?, dueDate?, status? }",
+    "Returns 201 with the created milestone",
+    "sort_order defaults to max(current sort_order) + 1",
+    "Returns 400 for invalid input"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create milestone Zod schema and handler",
+      "details": "In validators/milestones.ts: createMilestoneSchema = z.object({ name: z.string().min(1).max(255), description: z.string().max(2000).optional(), dueDate: z.string().datetime().optional(), status: z.enum(['pending','in_progress','completed']).optional() }). Handler: 1) getOwnedProject. 2) Find max sort_order for project milestones. 3) Insert milestone with sort_order = max + 1. 4) Return 201.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create milestones router and mount",
+      "details": "Create server/src/routes/milestones.ts. Mount in index.ts: app.use('/api/projects/:id/milestones', requireAuth, milestonesRouter). Pass req.params.id via mergeParams: true on the router.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test endpoint",
+      "details": "Create 3 milestones for a project, verify sort_orders are 1, 2, 3. Verify 400 on empty name.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-27", "TASK-6"],
+  "estimatedComplexity": "low"
+}

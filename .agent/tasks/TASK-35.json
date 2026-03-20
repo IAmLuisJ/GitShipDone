@@ -1,0 +1,28 @@
+{
+  "id": "TASK-35",
+  "title": "PATCH /api/projects/:id/milestones/:mid — update milestone",
+  "category": "api-endpoint",
+  "description": "Update milestone fields: name, description, due date, status. Does not handle completion (separate endpoint TASK-36).",
+  "acceptanceCriteria": [
+    "PATCH requires auth and project ownership",
+    "Accepts partial body: { name?, description?, dueDate?, status? }",
+    "Returns 404 if milestone not found for this project",
+    "Returns 200 with updated milestone"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement PATCH /:mid handler",
+      "details": "1) getOwnedProject. 2) Find milestone by id WHERE project_id = projectId. 3) Validate body. 4) Update milestone fields. 5) Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test endpoint",
+      "details": "Update milestone name — verify change. Try with wrong milestone id for project — expect 404.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-34"],
+  "estimatedComplexity": "low"
+}

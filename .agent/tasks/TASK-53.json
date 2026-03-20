@@ -1,0 +1,27 @@
+{
+  "id": "TASK-53",
+  "title": "POST /api/projects/:id/parking-lot — add parking lot item",
+  "category": "api-endpoint",
+  "description": "Create a new parking lot idea for a project.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Accepts { title, description? }",
+    "Returns 201 with created item"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement POST / handler",
+      "details": "createParkingLotSchema = z.object({ title: z.string().min(1).max(500), description: z.string().max(2000).optional() }). Insert into parking_lot_items. Return 201.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test",
+      "details": "POST new item — verify 201 with correct fields. POST with empty title — expect 400.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-52"],
+  "estimatedComplexity": "low"
+}

@@ -1,0 +1,45 @@
+{
+  "id": "TASK-12",
+  "title": "GitHub commits table schema and migration",
+  "category": "data-model",
+  "description": "Define the github_commits table for storing commit records imported from GitHub. SHA must be unique per project to prevent duplicate imports.",
+  "acceptanceCriteria": [
+    "github_commits table defined in src/db/schema/githubCommits.ts",
+    "FK to projects.id with cascade delete",
+    "sha field has UNIQUE constraint (global across all projects)",
+    "committed_at timestamp stores original commit time",
+    "Migration runs successfully"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define github_commits table",
+      "details": "Create server/src/db/schema/githubCommits.ts. Define github_commits table: id (uuid pk), project_id (uuid notNull FK → projects cascade delete), sha (varchar 40 notNull unique), message (text notNull), author_name (varchar 255 notNull), author_email (varchar 255 nullable), committed_at (timestamp notNull), url (text notNull), created_at (timestamp notNull defaultNow()).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add indexes",
+      "details": "Add index on project_id and index on committed_at for timeline sorting.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export types and update schema barrel",
+      "details": "Export type GithubCommit and type NewGithubCommit. Add 'export * from ./githubCommits' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Verify unique constraint on sha.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-5"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "SHA uniqueness prevents re-importing the same commit during polling cycles",
+    "Use INSERT ... ON CONFLICT (sha) DO NOTHING for idempotent imports"
+  ]
+}

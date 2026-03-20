@@ -1,0 +1,28 @@
+{
+  "id": "TASK-44",
+  "title": "Level calculation service — compute project level from total points",
+  "category": "functional",
+  "description": "Create a service that maps a project's points_total to a named level and updates the project record. Levels: Seed (0-99), Sprout (100-299), Growing (300-699), Shipping (700-1499), Launched (1500+).",
+  "acceptanceCriteria": [
+    "getLevel(points) pure function returns correct level name",
+    "recalculateLevel(projectId, points) updates projects.level in the database",
+    "Level thresholds: Seed 0-99, Sprout 100-299, Growing 300-699, Shipping 700-1499, Launched 1500+",
+    "Level is updated atomically with points changes"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create level service",
+      "details": "Create server/src/services/levelService.ts. Export const LEVELS = [{ name: 'Seed', min: 0 }, { name: 'Sprout', min: 100 }, { name: 'Growing', min: 300 }, { name: 'Shipping', min: 700 }, { name: 'Launched', min: 1500 }]. Export function getLevel(points: number): string — find the last level where points >= min. Export async function recalculateLevel(projectId: string, points: number): Promise<{ level: string, didLevelUp: boolean }> — compute level, compare to current, update if different, return { level, didLevelUp }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test level calculation",
+      "details": "getLevel(0) = 'Seed'. getLevel(99) = 'Seed'. getLevel(100) = 'Sprout'. getLevel(1499) = 'Shipping'. getLevel(1500) = 'Launched'. Update project to 100 points — verify level changes to Sprout, didLevelUp = true.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-5"],
+  "estimatedComplexity": "low"
+}

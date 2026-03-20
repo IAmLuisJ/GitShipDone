@@ -1,0 +1,39 @@
+{
+  "id": "TASK-63",
+  "title": "GET /api/share/:token — public read-only project data endpoint",
+  "category": "api-endpoint",
+  "description": "Public endpoint (no auth required) that returns project data for the read-only share page. Returns only publicly-shareable fields.",
+  "acceptanceCriteria": [
+    "GET /api/share/:token requires NO authentication",
+    "Returns 404 if token is invalid or project is_public = false",
+    "Returns: project (name, type, status, vision, progress, points, level), milestones, todos, journal entries, recent timeline events",
+    "Does NOT return: AI chat history, parking lot items, github_access_token, user email",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create public share endpoint",
+      "details": "Create server/src/routes/publicShare.ts. GET /:token (no requireAuth): 1) Find project WHERE share_token = token AND is_public = true. If not found, return 404. 2) Fetch milestones, todos, journal_entries (WHERE deleted_at IS NULL), and last 50 timeline events. 3) Return 200 with { project: { id, name, type, description, status, progressAuto, progressManual, pointsTotal, level, createdAt }, milestones, todos, journalEntries, timeline }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Mount public share router",
+      "details": "In index.ts, mount WITHOUT requireAuth: app.use('/api/share', publicShareRouter).",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test public access",
+      "details": "Enable sharing, GET /api/share/:token without any auth headers — verify 200 with project data. Try invalid token — expect 404. Try token of private project — expect 404.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-61"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "This endpoint bypasses requireAuth — make sure it's mounted before the requireAuth middleware in index.ts",
+    "Carefully select what to return — do NOT include sensitive user data or encrypted tokens"
+  ]
+}

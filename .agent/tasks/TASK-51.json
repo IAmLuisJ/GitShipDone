@@ -1,0 +1,35 @@
+{
+  "id": "TASK-51",
+  "title": "GET /api/projects/:id/timeline — paginated timeline events with type filter",
+  "category": "api-endpoint",
+  "description": "Return paginated timeline events for a project, newest first, with optional event type filter.",
+  "acceptanceCriteria": [
+    "GET requires auth and project ownership",
+    "Returns events ordered by created_at DESC",
+    "Supports ?type= filter (comma-separated event types)",
+    "Supports ?page= and ?limit= (default limit 50)",
+    "Returns { events, total, page, limit }"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create timeline router and implement GET /",
+      "details": "Create server/src/routes/timeline.ts. Parse query params: page, limit (max 100), type (split on comma). Build query: WHERE project_id = id AND (type IN types if provided). ORDER BY created_at DESC. LIMIT + OFFSET. Return { events, total, page, limit }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Mount router",
+      "details": "Mount at /api/projects/:id/timeline with requireAuth.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test endpoint",
+      "details": "Create journal entry, complete milestone, complete todo. GET timeline — verify all 3 types present. GET ?type=journal — verify only journal events. GET ?page=2&limit=2 — verify pagination.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-50"],
+  "estimatedComplexity": "low"
+}

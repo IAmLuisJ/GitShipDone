@@ -1,0 +1,35 @@
+{
+  "id": "TASK-29",
+  "title": "GET /api/projects/:id — get single project detail",
+  "category": "api-endpoint",
+  "description": "Return detailed data for a single project including milestones, recent todos, and recent journal entries.",
+  "acceptanceCriteria": [
+    "GET /api/projects/:id requires auth",
+    "Returns 404 if project not found or belongs to different user",
+    "Returns 404 for soft-deleted projects",
+    "Response includes project fields + milestones array + todos array",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement GET /:id handler",
+      "details": "Query projects WHERE id = req.params.id AND user_id = req.userId AND deleted_at IS NULL. If not found, return 404. Fetch milestones for the project. Fetch todos for the project. Return 200 with { ...project, milestones, todos }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add ownership check helper",
+      "details": "Create server/src/utils/projectOwnership.ts: async function getOwnedProject(projectId: string, userId: string): Promise<Project> — returns project or throws 404 AppError. Reuse this in all project-specific endpoints.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test the endpoint",
+      "details": "GET /api/projects/:id with valid id — verify full response. Try another user's project id — expect 404. Try non-existent id — expect 404.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-28"],
+  "estimatedComplexity": "low"
+}

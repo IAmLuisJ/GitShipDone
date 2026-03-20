@@ -1,0 +1,48 @@
+{
+  "id": "TASK-75",
+  "title": "POST /api/projects/:id/ai/chat — AI PM chat endpoint (multi-provider)",
+  "category": "api-endpoint",
+  "description": "Accept a user message, build project context, call the configured AI provider (OpenAI or Anthropic), and stream or return the response.",
+  "acceptanceCriteria": [
+    "POST requires auth and project ownership",
+    "Returns 400 if user has no AI API key configured",
+    "Accepts { message: string }",
+    "Injects project context (vision, milestones, recent todos, journal, progress) into system prompt",
+    "Calls OpenAI or Anthropic based on user.aiProvider",
+    "Returns { response: string } on success",
+    "Returns 500 if AI API call fails with user-friendly message"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install AI SDKs",
+      "details": "npm install openai @anthropic-ai/sdk.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create AI router and POST /chat handler",
+      "details": "Create server/src/routes/ai.ts. POST /chat: 1) getOwnedProject. 2) Fetch user — if no ai_api_key, return 400. 3) Decrypt api key. 4) Call buildProjectContext(projectId) (TASK-76). 5) If provider='openai': use OpenAI SDK with model='gpt-4o'. If provider='anthropic': use Anthropic SDK with model='claude-sonnet-4-6'. 6) Send system prompt with context + user message. 7) Return { response: text }.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Mount AI router",
+      "details": "app.use('/api/projects/:id/ai', requireAuth, aiRouter).",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Test AI chat",
+      "details": "Configure AI settings with a valid API key. POST a question about the project. Verify response is returned and contains relevant context. Try without API key — expect 400.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-76", "TASK-72", "TASK-73"],
+  "estimatedComplexity": "medium",
+  "technicalNotes": [
+    "Do NOT store AI responses in the database — each conversation is stateless",
+    "Keep system prompt concise — inject only: project type, vision (first 500 chars), top 5 milestones, last 3 journal entries, progress %, current level",
+    "Handle AI API errors gracefully — return 500 with message 'AI service unavailable'"
+  ]
+}

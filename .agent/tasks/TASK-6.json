@@ -1,0 +1,46 @@
+{
+  "id": "TASK-6",
+  "title": "Milestones table schema and migration",
+  "category": "data-model",
+  "description": "Define the milestones table for tracking project milestones with status, due dates, sort order, and completion tracking.",
+  "acceptanceCriteria": [
+    "milestones table defined in src/db/schema/milestones.ts",
+    "Foreign key to projects.id with cascade delete",
+    "Status ENUM: pending, in_progress, completed",
+    "sort_order field present for drag-and-drop ordering",
+    "completed_at nullable timestamp present",
+    "Migration runs successfully"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Define milestone status enum and milestones table",
+      "details": "Create server/src/db/schema/milestones.ts. Define milestoneStatusEnum = pgEnum('milestone_status', ['pending', 'in_progress', 'completed']). Define milestones table: id (uuid pk), project_id (uuid notNull FK → projects.id cascade delete), name (varchar 255 notNull), description (text nullable), status (milestoneStatusEnum notNull default 'pending'), due_date (date nullable), sort_order (integer notNull default 0), completed_at (timestamp nullable), created_at (timestamp notNull defaultNow()), updated_at (timestamp notNull defaultNow()).",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Add index on project_id",
+      "details": "Add index on milestones.project_id to speed up queries that fetch milestones for a project.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Export types and update schema barrel",
+      "details": "Export type Milestone and type NewMilestone. Add 'export * from ./milestones' to schema/index.ts.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Run migration and verify",
+      "details": "Run 'npm run db:migrate'. Verify \\d milestones shows all columns and foreign key constraint.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-5"],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "sort_order is used for drag-and-drop reordering — update all affected rows when order changes",
+    "date type in Drizzle uses date() from drizzle-orm/pg-core"
+  ]
+}

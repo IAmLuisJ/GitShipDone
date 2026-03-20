@@ -1,0 +1,35 @@
+{
+  "id": "TASK-60",
+  "title": "DELETE /api/projects/:id/github/disconnect — remove GitHub repo link",
+  "category": "integration",
+  "description": "Allow users to disconnect a GitHub repo from a project. Clears github_repo_id and github_repo_name but does NOT delete imported commits/releases (they remain in the timeline).",
+  "acceptanceCriteria": [
+    "DELETE requires auth and project ownership",
+    "Returns 400 if no GitHub repo is connected",
+    "Clears github_repo_id and github_repo_name on the project",
+    "Imported commits and releases remain in the database",
+    "Returns 200 { message: 'GitHub repo disconnected' }"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement DELETE /github/disconnect handler",
+      "details": "In github.ts router: DELETE /disconnect. 1) getOwnedProject. 2) If project.github_repo_name is null, return 400. 3) Update project: github_repo_id = null, github_repo_name = null. 4) Return 200.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Mount github router",
+      "details": "In index.ts, mount: app.use('/api/projects/:id/github', requireAuth, githubRouter).",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test",
+      "details": "Connect repo, import commits, disconnect. Verify project has no github_repo_name. Verify commits/releases still exist in DB and timeline.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-57"],
+  "estimatedComplexity": "low"
+}

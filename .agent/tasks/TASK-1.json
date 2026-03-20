@@ -1,0 +1,53 @@
+{
+  "id": "TASK-1",
+  "title": "Docker Compose setup with PostgreSQL",
+  "category": "integration",
+  "description": "Create a docker-compose.yml at the project root that spins up a PostgreSQL 15 container for local development. Include an .env.example with all required environment variables. The database should be accessible on localhost:5432 with a named volume for data persistence.",
+  "acceptanceCriteria": [
+    "docker-compose.yml exists at project root",
+    "Running 'docker compose up -d' starts a PostgreSQL 15 container",
+    "Database is accessible at localhost:5432 with credentials from .env",
+    ".env.example documents all required env variables",
+    "Named volume ensures data persists across container restarts",
+    "A 'docker compose down -v' command removes all data cleanly"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create docker-compose.yml",
+      "details": "Create docker-compose.yml at project root with a 'db' service using image postgres:15-alpine. Set POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB from environment variables. Map port 5432:5432. Add a named volume 'pgdata' mounted at /var/lib/postgresql/data. Add a healthcheck using pg_isready.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create .env.example file",
+      "details": "Create .env.example documenting all variables: DATABASE_URL=postgresql://user:password@localhost:5432/gitshipdone, POSTGRES_USER=gitshipdone, POSTGRES_PASSWORD=gitshipdone, POSTGRES_DB=gitshipdone, JWT_SECRET=your-jwt-secret, JWT_REFRESH_SECRET=your-refresh-secret, GOOGLE_CLIENT_ID=, GOOGLE_CLIENT_SECRET=, GITHUB_CLIENT_ID=, GITHUB_CLIENT_SECRET=, RESEND_API_KEY=, ENCRYPTION_KEY=32-char-key, FRONTEND_URL=http://localhost:5173, PORT=3000",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Add .env to .gitignore",
+      "details": "Ensure .gitignore includes .env (but not .env.example). Also add node_modules/, dist/, and *.js.map if not already present.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Add npm scripts for Docker",
+      "details": "In the root package.json (or server package.json), add: 'db:up': 'docker compose up -d', 'db:down': 'docker compose down', 'db:reset': 'docker compose down -v && docker compose up -d'",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Verify PostgreSQL starts correctly",
+      "details": "Run 'docker compose up -d' and then 'docker compose ps' to confirm the db service is healthy. Connect with psql: psql postgresql://gitshipdone:gitshipdone@localhost:5432/gitshipdone and run \\l to list databases.",
+      "pass": false
+    }
+  ],
+  "dependencies": [],
+  "estimatedComplexity": "low",
+  "technicalNotes": [
+    "Use postgres:15-alpine for a smaller image footprint",
+    "The healthcheck prevents dependent services from starting before Postgres is ready",
+    "Use a named volume (not bind mount) so data survives 'docker compose down' without -v"
+  ]
+}

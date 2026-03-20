@@ -1,0 +1,35 @@
+{
+  "id": "TASK-64",
+  "title": "GET /api/notifications — list user notifications",
+  "category": "api-endpoint",
+  "description": "Return notifications for the authenticated user, with unread count and pagination.",
+  "acceptanceCriteria": [
+    "GET requires auth",
+    "Returns notifications ordered by created_at DESC",
+    "Excludes snoozed notifications where snoozed_until > NOW()",
+    "Returns { notifications, unreadCount }",
+    "Supports ?unreadOnly=true filter"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Create notifications router and GET / handler",
+      "details": "Create server/src/routes/notifications.ts. GET /: 1) Build query: WHERE user_id = userId AND (snoozed_until IS NULL OR snoozed_until < NOW()). 2) If unreadOnly=true, add AND is_read = false. 3) ORDER BY created_at DESC LIMIT 50. 4) Count unread (separate query). 5) Return { notifications, unreadCount }.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Mount notifications router",
+      "details": "app.use('/api/notifications', requireAuth, notificationsRouter).",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Test",
+      "details": "Create 3 notifications (1 read, 2 unread). GET all — verify 3 returned, unreadCount = 2. GET ?unreadOnly=true — verify 2 returned.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-14", "TASK-24"],
+  "estimatedComplexity": "low"
+}

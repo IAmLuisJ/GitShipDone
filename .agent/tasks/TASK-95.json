@@ -1,0 +1,50 @@
+{
+  "id": "TASK-95",
+  "title": "Frontend: Milestones tab — list, create, complete, delete, reorder with drag-and-drop",
+  "category": "ui-ux",
+  "description": "Build the Milestones tab with a sortable list of milestones, inline creation form, status updates, and drag-to-reorder.",
+  "acceptanceCriteria": [
+    "Lists all milestones sorted by sort_order",
+    "Each milestone shows: name, status badge, due date (if set), completion checkbox",
+    "Clicking checkbox calls complete-milestone endpoint",
+    "Drag-and-drop reorders milestones (calls reorder API)",
+    "Inline 'Add milestone' form at bottom of list",
+    "Delete button with confirmation dialog",
+    "Empty state if no milestones",
+    "Verify in browser using Playwright"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install dnd-kit",
+      "details": "npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Create MilestonesTab with sortable list",
+      "details": "Create src/components/project/tabs/MilestonesTab.tsx. Use @dnd-kit/sortable to wrap milestone items. On drag end, call reorder API with new order. Optimistic update: re-order in local state immediately, revert on API error.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Create MilestoneItem component",
+      "details": "Create src/components/project/MilestoneItem.tsx. Drag handle (grip icon), name, status badge (colored), due date, complete checkbox. Complete checkbox: calls POST /complete endpoint. On completion: show confetti (TASK-96). Delete: shadcn/ui AlertDialog for confirmation.",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Add inline create form",
+      "details": "Below milestone list: Input for milestone name + optional due date picker + 'Add' button. On submit: POST /api/projects/:id/milestones, invalidate milestones query.",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Verify in browser using Playwright",
+      "details": "Create 3 milestones. Drag to reorder — verify persists after reload. Complete a milestone — verify confetti animation and status change. Delete one — verify removed.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-33", "TASK-34", "TASK-35", "TASK-36", "TASK-37", "TASK-96"],
+  "estimatedComplexity": "high"
+}

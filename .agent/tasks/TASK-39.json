@@ -1,0 +1,29 @@
+{
+  "id": "TASK-39",
+  "title": "GET /api/projects/:id/todos — list to-dos",
+  "category": "api-endpoint",
+  "description": "Return all todos for a project ordered by sort_order, optionally filtered by milestone or completion state.",
+  "acceptanceCriteria": [
+    "GET requires auth and project ownership",
+    "Returns todos ordered by sort_order ASC",
+    "Supports optional query param ?milestoneId= to filter by milestone",
+    "Supports optional ?completed=true|false filter",
+    "Returns empty array if none exist"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Implement GET / handler with optional filters",
+      "details": "getOwnedProject. Build query: WHERE project_id = id. If req.query.milestoneId, add AND milestone_id = milestoneId. If req.query.completed = 'true', add AND is_completed = true. ORDER BY sort_order ASC. Return 200 with array.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Test endpoint",
+      "details": "Create mix of completed and uncompleted todos. GET all — verify all returned. GET ?completed=true — verify only completed. GET ?milestoneId=X — verify only that milestone's todos.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-38"],
+  "estimatedComplexity": "low"
+}

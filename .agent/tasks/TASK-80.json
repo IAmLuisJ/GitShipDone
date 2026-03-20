@@ -1,0 +1,59 @@
+{
+  "id": "TASK-80",
+  "title": "Frontend: Configure Vite proxy, React Router, Zustand, TanStack Query",
+  "category": "functional",
+  "description": "Set up the frontend project with all required routing, state management, and data fetching infrastructure. Configure Vite dev server to proxy API calls to the Express backend.",
+  "acceptanceCriteria": [
+    "Vite proxy configured: /api → http://localhost:3000",
+    "React Router v6 configured with all route definitions",
+    "Zustand store for auth state (user, accessToken)",
+    "TanStack Query configured with default stale time and retry settings",
+    "All packages installed: react-router-dom, zustand, @tanstack/react-query, axios"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Install frontend dependencies",
+      "details": "In root (frontend): npm install react-router-dom zustand @tanstack/react-query @tanstack/react-query-devtools axios date-fns framer-motion. npm install -D @types/node.",
+      "pass": false
+    },
+    {
+      "step": 2,
+      "description": "Configure Vite proxy in vite.config.ts",
+      "details": "In vite.config.ts, add server.proxy: { '/api': { target: 'http://localhost:3000', changeOrigin: true } }. This lets the frontend call /api/* without CORS issues in development.",
+      "pass": false
+    },
+    {
+      "step": 3,
+      "description": "Set up React Router in main.tsx",
+      "details": "Wrap App with BrowserRouter. Create src/routes/index.tsx with route definitions: '/' → LandingPage, '/login' → LoginPage, '/register' → RegisterPage, '/dashboard' → Dashboard (protected), '/projects/:id' → ProjectDetail (protected), '/share/:token' → PublicSharePage, '/settings' → Settings (protected).",
+      "pass": false
+    },
+    {
+      "step": 4,
+      "description": "Create Zustand auth store",
+      "details": "Create src/stores/authStore.ts. Store: { user: User | null, accessToken: string | null, setAuth(user, token), clearAuth() }. Access token stored in memory only (not localStorage — use HttpOnly cookie for refresh token).",
+      "pass": false
+    },
+    {
+      "step": 5,
+      "description": "Configure TanStack Query",
+      "details": "Create src/lib/queryClient.ts: new QueryClient({ defaultOptions: { queries: { staleTime: 30_000, retry: 1 } } }). Wrap App with QueryClientProvider in main.tsx.",
+      "pass": false
+    },
+    {
+      "step": 6,
+      "description": "Create Axios instance with interceptors",
+      "details": "Create src/lib/api.ts. Create axios instance with baseURL: '/api'. Add request interceptor to inject Authorization: Bearer TOKEN from authStore. Add response interceptor to handle 401 responses: call /api/auth/refresh, update token in store, retry original request.",
+      "pass": false
+    },
+    {
+      "step": 7,
+      "description": "Verify setup",
+      "details": "Start both server (npm run dev in server/) and frontend (npm run dev in root). Open http://localhost:5173. Verify no console errors. Make a test API call to /api/health — verify it proxies correctly.",
+      "pass": false
+    }
+  ],
+  "dependencies": ["TASK-2"],
+  "estimatedComplexity": "medium"
+}
