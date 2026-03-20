@@ -1,0 +1,49 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": { "name": "id", "type": "uuid", "primaryKey": true, "notNull": true, "default": "gen_random_uuid()" },
+        "email": { "name": "email", "type": "varchar(255)", "primaryKey": false, "notNull": true },
+        "name": { "name": "name", "type": "varchar(255)", "primaryKey": false, "notNull": true },
+        "avatar_url": { "name": "avatar_url", "type": "text", "primaryKey": false, "notNull": false },
+        "password_hash": { "name": "password_hash", "type": "text", "primaryKey": false, "notNull": false },
+        "github_id": { "name": "github_id", "type": "varchar(255)", "primaryKey": false, "notNull": false },
+        "google_id": { "name": "google_id", "type": "varchar(255)", "primaryKey": false, "notNull": false },
+        "github_access_token": { "name": "github_access_token", "type": "text", "primaryKey": false, "notNull": false },
+        "ai_provider": { "name": "ai_provider", "type": "text", "primaryKey": false, "notNull": false },
+        "ai_api_key": { "name": "ai_api_key", "type": "text", "primaryKey": false, "notNull": false },
+        "email_notifications_enabled": { "name": "email_notifications_enabled", "type": "boolean", "primaryKey": false, "notNull": true, "default": true },
+        "created_at": { "name": "created_at", "type": "timestamp", "primaryKey": false, "notNull": true, "default": "now()" },
+        "updated_at": { "name": "updated_at", "type": "timestamp", "primaryKey": false, "notNull": true, "default": "now()" },
+        "deleted_at": { "name": "deleted_at", "type": "timestamp", "primaryKey": false, "notNull": false }
+      },
+      "indexes": {
+        "users_email_idx": { "name": "users_email_idx", "columns": [{ "expression": "email", "isExpression": false, "asc": true, "nulls": "last" }], "isUnique": false },
+        "users_created_at_idx": { "name": "users_created_at_idx", "columns": [{ "expression": "created_at", "isExpression": false, "asc": true, "nulls": "last" }], "isUnique": false }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": { "name": "users_email_unique", "nullsNotDistinct": false, "columns": ["email"] },
+        "users_github_id_unique": { "name": "users_github_id_unique", "nullsNotDistinct": false, "columns": ["github_id"] },
+        "users_google_id_unique": { "name": "users_google_id_unique", "nullsNotDistinct": false, "columns": ["google_id"] }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": { "schemas": {}, "tables": {}, "columns": {} }
+}

@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-20
-**Tasks Completed:** 3
-**Current Task:** TASK-3 Complete
+**Tasks Completed:** 4
+**Current Task:** TASK-4 Complete
 
 ----------------------------------------------
 
@@ -41,3 +41,14 @@
 - Switched docker-compose to tmpfs volume (named volumes not shared on this host)
 - Fixed corrupted drizzle-kit binary via npm pack
 - 4 unit tests passing, type checks clean
+
+### 2026-03-20 — TASK-4: Users table schema and migration
+- Created `server/src/db/schema/users.ts` with all required columns (uuid PK, email, name, OAuth fields, AI settings, soft delete)
+- Email has UNIQUE constraint; github_id and google_id also unique
+- Indexes on email and created_at
+- All nullable fields correctly typed (passwordHash, avatarUrl, OAuth tokens, AI fields, deletedAt)
+- Exported User and NewUser types
+- Exported from schema barrel `index.ts`
+- Hand-wrote migration SQL (drizzle-kit Go binary crashes on ARM emulation)
+- Migration runs successfully, table verified in PostgreSQL
+- 14 unit tests passing, type checks clean

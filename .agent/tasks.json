@@ -1,122 +1,842 @@
 [
-  { "id": "TASK-1",  "title": "Docker Compose setup with PostgreSQL", "category": "integration", "specFilePath": ".agent/tasks/TASK-1.json", "passes": true },
-  { "id": "TASK-2",  "title": "Initialize Express.js + TypeScript backend", "category": "functional", "specFilePath": ".agent/tasks/TASK-2.json", "passes": true },
-  { "id": "TASK-3",  "title": "Configure Drizzle ORM with PostgreSQL connection", "category": "functional", "specFilePath": ".agent/tasks/TASK-3.json", "passes": true },
-  { "id": "TASK-4",  "title": "Users table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-4.json", "passes": false },
-  { "id": "TASK-5",  "title": "Projects table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-5.json", "passes": false },
-  { "id": "TASK-6",  "title": "Milestones table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-6.json", "passes": false },
-  { "id": "TASK-7",  "title": "Todos table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-7.json", "passes": false },
-  { "id": "TASK-8",  "title": "Journal entries table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-8.json", "passes": false },
-  { "id": "TASK-9",  "title": "Timeline events table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-9.json", "passes": false },
-  { "id": "TASK-10", "title": "Points log table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-10.json", "passes": false },
-  { "id": "TASK-11", "title": "Parking lot items table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-11.json", "passes": false },
-  { "id": "TASK-12", "title": "GitHub commits table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-12.json", "passes": false },
-  { "id": "TASK-13", "title": "GitHub releases table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-13.json", "passes": false },
-  { "id": "TASK-14", "title": "Notifications table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-14.json", "passes": false },
-  { "id": "TASK-15", "title": "Refresh tokens table schema and migration", "category": "data-model", "specFilePath": ".agent/tasks/TASK-15.json", "passes": false },
-  { "id": "TASK-16", "title": "POST /api/auth/register — email/password registration", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-16.json", "passes": false },
-  { "id": "TASK-17", "title": "POST /api/auth/login — email/password login", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-17.json", "passes": false },
-  { "id": "TASK-18", "title": "POST /api/auth/refresh — refresh access token", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-18.json", "passes": false },
-  { "id": "TASK-19", "title": "POST /api/auth/logout — invalidate refresh token", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-19.json", "passes": false },
-  { "id": "TASK-20", "title": "POST /api/auth/forgot-password — send reset email", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-20.json", "passes": false },
-  { "id": "TASK-21", "title": "POST /api/auth/reset-password — apply new password", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-21.json", "passes": false },
-  { "id": "TASK-22", "title": "GET /api/auth/google — initiate Google OAuth flow", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-22.json", "passes": false },
-  { "id": "TASK-23", "title": "GET /api/auth/github — initiate GitHub OAuth login flow", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-23.json", "passes": false },
-  { "id": "TASK-24", "title": "Auth middleware — verify JWT access token on protected routes", "category": "security", "specFilePath": ".agent/tasks/TASK-24.json", "passes": false },
-  { "id": "TASK-25", "title": "Rate limiting on auth endpoints", "category": "security", "specFilePath": ".agent/tasks/TASK-25.json", "passes": false },
-  { "id": "TASK-26", "title": "Helmet.js and CORS configuration", "category": "security", "specFilePath": ".agent/tasks/TASK-26.json", "passes": false },
-  { "id": "TASK-27", "title": "POST /api/projects — create a project", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-27.json", "passes": false },
-  { "id": "TASK-28", "title": "GET /api/projects — list all user projects", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-28.json", "passes": false },
-  { "id": "TASK-29", "title": "GET /api/projects/:id — get single project detail", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-29.json", "passes": false },
-  { "id": "TASK-30", "title": "PATCH /api/projects/:id — update project fields", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-30.json", "passes": false },
-  { "id": "TASK-31", "title": "DELETE /api/projects/:id — soft delete project", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-31.json", "passes": false },
-  { "id": "TASK-32", "title": "Project progress auto-calculation service", "category": "functional", "specFilePath": ".agent/tasks/TASK-32.json", "passes": false },
-  { "id": "TASK-33", "title": "POST /api/projects/:id/milestones — create milestone", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-33.json", "passes": false },
-  { "id": "TASK-34", "title": "GET /api/projects/:id/milestones — list milestones", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-34.json", "passes": false },
-  { "id": "TASK-35", "title": "PATCH /api/projects/:id/milestones/:mid — update milestone", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-35.json", "passes": false },
-  { "id": "TASK-36", "title": "POST /api/projects/:id/milestones/:mid/complete — complete milestone and award points", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-36.json", "passes": false },
-  { "id": "TASK-37", "title": "DELETE /api/projects/:id/milestones/:mid — delete milestone", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-37.json", "passes": false },
-  { "id": "TASK-38", "title": "POST /api/projects/:id/todos — create to-do", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-38.json", "passes": false },
-  { "id": "TASK-39", "title": "GET /api/projects/:id/todos — list to-dos", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-39.json", "passes": false },
-  { "id": "TASK-40", "title": "PATCH /api/projects/:id/todos/:tid — update to-do (complete/uncomplete/edit)", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-40.json", "passes": false },
-  { "id": "TASK-41", "title": "DELETE /api/projects/:id/todos/:tid — delete to-do", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-41.json", "passes": false },
-  { "id": "TASK-42", "title": "PATCH /api/projects/:id/todos/reorder — update todo sort order", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-42.json", "passes": false },
-  { "id": "TASK-43", "title": "Points service — award and deduct points based on events", "category": "functional", "specFilePath": ".agent/tasks/TASK-43.json", "passes": false },
-  { "id": "TASK-44", "title": "Level calculation service — compute project level from total points", "category": "functional", "specFilePath": ".agent/tasks/TASK-44.json", "passes": false },
-  { "id": "TASK-45", "title": "POST /api/projects/:id/points — manual points adjustment with reason", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-45.json", "passes": false },
-  { "id": "TASK-46", "title": "POST /api/projects/:id/journal — create journal entry", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-46.json", "passes": false },
-  { "id": "TASK-47", "title": "GET /api/projects/:id/journal — list journal entries", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-47.json", "passes": false },
-  { "id": "TASK-48", "title": "PATCH /api/projects/:id/journal/:jid — update journal entry", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-48.json", "passes": false },
-  { "id": "TASK-49", "title": "DELETE /api/projects/:id/journal/:jid — soft delete journal entry", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-49.json", "passes": false },
-  { "id": "TASK-50", "title": "Timeline events service — log all project events to timeline_events table", "category": "functional", "specFilePath": ".agent/tasks/TASK-50.json", "passes": false },
-  { "id": "TASK-51", "title": "GET /api/projects/:id/timeline — paginated timeline events with type filter", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-51.json", "passes": false },
-  { "id": "TASK-52", "title": "GET /api/projects/:id/parking-lot — list parking lot items", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-52.json", "passes": false },
-  { "id": "TASK-53", "title": "POST /api/projects/:id/parking-lot — add parking lot item", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-53.json", "passes": false },
-  { "id": "TASK-54", "title": "PATCH /api/projects/:id/parking-lot/:pid — update or archive parking lot item", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-54.json", "passes": false },
-  { "id": "TASK-55", "title": "POST /api/projects/:id/parking-lot/:pid/promote — promote to milestone or todo", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-55.json", "passes": false },
-  { "id": "TASK-56", "title": "GitHub OAuth integration — connect GitHub account for repo access", "category": "integration", "specFilePath": ".agent/tasks/TASK-56.json", "passes": false },
-  { "id": "TASK-57", "title": "POST /api/projects/:id/github/connect — link GitHub repo to project", "category": "integration", "specFilePath": ".agent/tasks/TASK-57.json", "passes": false },
-  { "id": "TASK-58", "title": "GitHub commit import service — fetch and store last 90 days on connect", "category": "integration", "specFilePath": ".agent/tasks/TASK-58.json", "passes": false },
-  { "id": "TASK-59", "title": "GitHub polling cron job — fetch new commits and releases every 60 minutes", "category": "integration", "specFilePath": ".agent/tasks/TASK-59.json", "passes": false },
-  { "id": "TASK-60", "title": "DELETE /api/projects/:id/github/disconnect — remove GitHub repo link", "category": "integration", "specFilePath": ".agent/tasks/TASK-60.json", "passes": false },
-  { "id": "TASK-61", "title": "POST /api/projects/:id/share/enable — generate public share token", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-61.json", "passes": false },
-  { "id": "TASK-62", "title": "POST /api/projects/:id/share/revoke — revoke and regenerate share token", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-62.json", "passes": false },
-  { "id": "TASK-63", "title": "GET /api/share/:token — public read-only project data endpoint", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-63.json", "passes": false },
-  { "id": "TASK-64", "title": "GET /api/notifications — list user notifications", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-64.json", "passes": false },
-  { "id": "TASK-65", "title": "PATCH /api/notifications/:nid/read — mark notification as read", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-65.json", "passes": false },
-  { "id": "TASK-66", "title": "PATCH /api/notifications/:nid/snooze — snooze notification until date", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-66.json", "passes": false },
-  { "id": "TASK-67", "title": "Reminder cron job — send in-app and email reminders for upcoming milestones and todos", "category": "functional", "specFilePath": ".agent/tasks/TASK-67.json", "passes": false },
-  { "id": "TASK-68", "title": "Email service setup with Resend — transactional email templates", "category": "integration", "specFilePath": ".agent/tasks/TASK-68.json", "passes": false },
-  { "id": "TASK-69", "title": "GET /api/users/me — get current user profile", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-69.json", "passes": false },
-  { "id": "TASK-70", "title": "PATCH /api/users/me — update profile (name, avatar, email)", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-70.json", "passes": false },
-  { "id": "TASK-71", "title": "PATCH /api/users/me/password — change password with current password verification", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-71.json", "passes": false },
-  { "id": "TASK-72", "title": "PATCH /api/users/me/ai-settings — save AI provider and encrypted API key", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-72.json", "passes": false },
-  { "id": "TASK-73", "title": "AES-256-CBC encryption/decryption utility for sensitive fields", "category": "security", "specFilePath": ".agent/tasks/TASK-73.json", "passes": false },
-  { "id": "TASK-74", "title": "DELETE /api/users/me — soft delete account", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-74.json", "passes": false },
-  { "id": "TASK-75", "title": "POST /api/projects/:id/ai/chat — AI PM chat endpoint (multi-provider)", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-75.json", "passes": false },
-  { "id": "TASK-76", "title": "AI context builder service — assemble project context for AI prompt injection", "category": "functional", "specFilePath": ".agent/tasks/TASK-76.json", "passes": false },
-  { "id": "TASK-77", "title": "POST /api/projects/:id/parking-lot/:pid/ai-pathway — generate AI pathway for parking lot item", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-77.json", "passes": false },
-  { "id": "TASK-78", "title": "POST /api/projects/:id/github/releases/:rid/summarize — AI changelog summary from commits", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-78.json", "passes": false },
-  { "id": "TASK-79", "title": "PATCH /api/projects/:id/progress — manual progress override", "category": "api-endpoint", "specFilePath": ".agent/tasks/TASK-79.json", "passes": false },
-  { "id": "TASK-80", "title": "Frontend: Configure Vite proxy, React Router, Zustand, TanStack Query", "category": "functional", "specFilePath": ".agent/tasks/TASK-80.json", "passes": false },
-  { "id": "TASK-81", "title": "Frontend: Install and configure shadcn/ui component library", "category": "functional", "specFilePath": ".agent/tasks/TASK-81.json", "passes": false },
-  { "id": "TASK-82", "title": "Frontend: Global layout — collapsible sidebar + main content area", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-82.json", "passes": false },
-  { "id": "TASK-83", "title": "Frontend: Landing / marketing page with hero and feature highlights", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-83.json", "passes": false },
-  { "id": "TASK-84", "title": "Frontend: Registration page with form validation", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-84.json", "passes": false },
-  { "id": "TASK-85", "title": "Frontend: Login page with email/password and OAuth buttons", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-85.json", "passes": false },
-  { "id": "TASK-86", "title": "Frontend: Forgot password page", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-86.json", "passes": false },
-  { "id": "TASK-87", "title": "Frontend: Reset password page", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-87.json", "passes": false },
-  { "id": "TASK-88", "title": "Frontend: Auth context, token storage, and protected route wrapper", "category": "functional", "specFilePath": ".agent/tasks/TASK-88.json", "passes": false },
-  { "id": "TASK-89", "title": "Frontend: Projects dashboard — grid of project cards", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-89.json", "passes": false },
-  { "id": "TASK-90", "title": "Frontend: Project card component — name, type badge, progress bar, points/level, last updated", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-90.json", "passes": false },
-  { "id": "TASK-91", "title": "Frontend: Create project modal/wizard — name, type, vision, optional milestone templates", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-91.json", "passes": false },
-  { "id": "TASK-92", "title": "Frontend: Software project milestone template wizard step", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-92.json", "passes": false },
-  { "id": "TASK-93", "title": "Frontend: Project detail page — tabbed layout", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-93.json", "passes": false },
-  { "id": "TASK-94", "title": "Frontend: Project overview tab — vision, stats, recent activity summary", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-94.json", "passes": false },
-  { "id": "TASK-95", "title": "Frontend: Milestones tab — list, create, complete, delete, reorder with drag-and-drop", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-95.json", "passes": false },
-  { "id": "TASK-96", "title": "Frontend: Milestone completion confetti animation", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-96.json", "passes": false },
-  { "id": "TASK-97", "title": "Frontend: Todos tab — list, create, check/uncheck, reorder, mark urgent", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-97.json", "passes": false },
-  { "id": "TASK-98", "title": "Frontend: Journal tab — list entries, create entry with mood picker", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-98.json", "passes": false },
-  { "id": "TASK-99", "title": "Frontend: Tiptap rich text editor integration (bold, italic, lists, links, code blocks)", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-99.json", "passes": false },
-  { "id": "TASK-100", "title": "Frontend: Timeline tab — vertical timeline, event icons, type filter, pagination", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-100.json", "passes": false },
-  { "id": "TASK-101", "title": "Frontend: Timeline event components for all event types", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-101.json", "passes": false },
-  { "id": "TASK-102", "title": "Frontend: Parking lot tab — list, add, archive, and promote ideas", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-102.json", "passes": false },
-  { "id": "TASK-103", "title": "Frontend: AI pathway display panel for parking lot items", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-103.json", "passes": false },
-  { "id": "TASK-104", "title": "Frontend: Project settings tab — name/type/status edit, danger zone", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-104.json", "passes": false },
-  { "id": "TASK-105", "title": "Frontend: GitHub connect flow in project settings — OAuth, repo selection", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-105.json", "passes": false },
-  { "id": "TASK-106", "title": "Frontend: Sharing panel — toggle public, copy share URL, revoke button", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-106.json", "passes": false },
-  { "id": "TASK-107", "title": "Frontend: AI PM chat panel — sliding drawer with message history and input", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-107.json", "passes": false },
-  { "id": "TASK-108", "title": "Frontend: Progress bar component — auto vs manual progress, override input", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-108.json", "passes": false },
-  { "id": "TASK-109", "title": "Frontend: Points display and level badge component with points history tooltip", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-109.json", "passes": false },
-  { "id": "TASK-110", "title": "Frontend: Level-up celebration animation on points threshold crossed", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-110.json", "passes": false },
-  { "id": "TASK-111", "title": "Frontend: Notification bell — unread count badge and dropdown list", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-111.json", "passes": false },
-  { "id": "TASK-112", "title": "Frontend: Notification item actions — mark read, snooze, dismiss", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-112.json", "passes": false },
-  { "id": "TASK-113", "title": "Frontend: User settings page — profile, password, AI config, notification preferences", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-113.json", "passes": false },
-  { "id": "TASK-114", "title": "Frontend: AI settings form — provider select, masked API key input, test connection", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-114.json", "passes": false },
-  { "id": "TASK-115", "title": "Frontend: Public share page — read-only project view without auth", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-115.json", "passes": false },
-  { "id": "TASK-116", "title": "Frontend: Empty states for all major list views", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-116.json", "passes": false },
-  { "id": "TASK-117", "title": "Frontend: Skeleton loaders for dashboard and timeline", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-117.json", "passes": false },
-  { "id": "TASK-118", "title": "Frontend: Dark mode support via Tailwind dark variant and theme toggle", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-118.json", "passes": false },
-  { "id": "TASK-119", "title": "Frontend: Mobile-responsive layout for all pages", "category": "ui-ux", "specFilePath": ".agent/tasks/TASK-119.json", "passes": false },
-  { "id": "TASK-120", "title": "WCAG 2.1 AA — keyboard navigation, ARIA labels, and color contrast audit", "category": "functional", "specFilePath": ".agent/tasks/TASK-120.json", "passes": false }
+  {
+    "id": "TASK-1",
+    "title": "Docker Compose setup with PostgreSQL",
+    "category": "integration",
+    "specFilePath": ".agent/tasks/TASK-1.json",
+    "passes": true
+  },
+  {
+    "id": "TASK-2",
+    "title": "Initialize Express.js + TypeScript backend",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-2.json",
+    "passes": true
+  },
+  {
+    "id": "TASK-3",
+    "title": "Configure Drizzle ORM with PostgreSQL connection",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-3.json",
+    "passes": true
+  },
+  {
+    "id": "TASK-4",
+    "title": "Users table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-4.json",
+    "passes": true
+  },
+  {
+    "id": "TASK-5",
+    "title": "Projects table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-5.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-6",
+    "title": "Milestones table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-6.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-7",
+    "title": "Todos table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-7.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-8",
+    "title": "Journal entries table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-8.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-9",
+    "title": "Timeline events table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-9.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-10",
+    "title": "Points log table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-10.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-11",
+    "title": "Parking lot items table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-11.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-12",
+    "title": "GitHub commits table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-12.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-13",
+    "title": "GitHub releases table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-13.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-14",
+    "title": "Notifications table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-14.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-15",
+    "title": "Refresh tokens table schema and migration",
+    "category": "data-model",
+    "specFilePath": ".agent/tasks/TASK-15.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-16",
+    "title": "POST /api/auth/register — email/password registration",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-16.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-17",
+    "title": "POST /api/auth/login — email/password login",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-17.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-18",
+    "title": "POST /api/auth/refresh — refresh access token",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-18.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-19",
+    "title": "POST /api/auth/logout — invalidate refresh token",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-19.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-20",
+    "title": "POST /api/auth/forgot-password — send reset email",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-20.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-21",
+    "title": "POST /api/auth/reset-password — apply new password",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-21.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-22",
+    "title": "GET /api/auth/google — initiate Google OAuth flow",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-22.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-23",
+    "title": "GET /api/auth/github — initiate GitHub OAuth login flow",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-23.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-24",
+    "title": "Auth middleware — verify JWT access token on protected routes",
+    "category": "security",
+    "specFilePath": ".agent/tasks/TASK-24.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-25",
+    "title": "Rate limiting on auth endpoints",
+    "category": "security",
+    "specFilePath": ".agent/tasks/TASK-25.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-26",
+    "title": "Helmet.js and CORS configuration",
+    "category": "security",
+    "specFilePath": ".agent/tasks/TASK-26.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-27",
+    "title": "POST /api/projects — create a project",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-27.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-28",
+    "title": "GET /api/projects — list all user projects",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-28.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-29",
+    "title": "GET /api/projects/:id — get single project detail",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-29.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-30",
+    "title": "PATCH /api/projects/:id — update project fields",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-30.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-31",
+    "title": "DELETE /api/projects/:id — soft delete project",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-31.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-32",
+    "title": "Project progress auto-calculation service",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-32.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-33",
+    "title": "POST /api/projects/:id/milestones — create milestone",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-33.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-34",
+    "title": "GET /api/projects/:id/milestones — list milestones",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-34.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-35",
+    "title": "PATCH /api/projects/:id/milestones/:mid — update milestone",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-35.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-36",
+    "title": "POST /api/projects/:id/milestones/:mid/complete — complete milestone and award points",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-36.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-37",
+    "title": "DELETE /api/projects/:id/milestones/:mid — delete milestone",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-37.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-38",
+    "title": "POST /api/projects/:id/todos — create to-do",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-38.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-39",
+    "title": "GET /api/projects/:id/todos — list to-dos",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-39.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-40",
+    "title": "PATCH /api/projects/:id/todos/:tid — update to-do (complete/uncomplete/edit)",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-40.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-41",
+    "title": "DELETE /api/projects/:id/todos/:tid — delete to-do",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-41.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-42",
+    "title": "PATCH /api/projects/:id/todos/reorder — update todo sort order",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-42.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-43",
+    "title": "Points service — award and deduct points based on events",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-43.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-44",
+    "title": "Level calculation service — compute project level from total points",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-44.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-45",
+    "title": "POST /api/projects/:id/points — manual points adjustment with reason",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-45.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-46",
+    "title": "POST /api/projects/:id/journal — create journal entry",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-46.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-47",
+    "title": "GET /api/projects/:id/journal — list journal entries",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-47.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-48",
+    "title": "PATCH /api/projects/:id/journal/:jid — update journal entry",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-48.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-49",
+    "title": "DELETE /api/projects/:id/journal/:jid — soft delete journal entry",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-49.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-50",
+    "title": "Timeline events service — log all project events to timeline_events table",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-50.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-51",
+    "title": "GET /api/projects/:id/timeline — paginated timeline events with type filter",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-51.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-52",
+    "title": "GET /api/projects/:id/parking-lot — list parking lot items",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-52.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-53",
+    "title": "POST /api/projects/:id/parking-lot — add parking lot item",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-53.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-54",
+    "title": "PATCH /api/projects/:id/parking-lot/:pid — update or archive parking lot item",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-54.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-55",
+    "title": "POST /api/projects/:id/parking-lot/:pid/promote — promote to milestone or todo",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-55.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-56",
+    "title": "GitHub OAuth integration — connect GitHub account for repo access",
+    "category": "integration",
+    "specFilePath": ".agent/tasks/TASK-56.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-57",
+    "title": "POST /api/projects/:id/github/connect — link GitHub repo to project",
+    "category": "integration",
+    "specFilePath": ".agent/tasks/TASK-57.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-58",
+    "title": "GitHub commit import service — fetch and store last 90 days on connect",
+    "category": "integration",
+    "specFilePath": ".agent/tasks/TASK-58.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-59",
+    "title": "GitHub polling cron job — fetch new commits and releases every 60 minutes",
+    "category": "integration",
+    "specFilePath": ".agent/tasks/TASK-59.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-60",
+    "title": "DELETE /api/projects/:id/github/disconnect — remove GitHub repo link",
+    "category": "integration",
+    "specFilePath": ".agent/tasks/TASK-60.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-61",
+    "title": "POST /api/projects/:id/share/enable — generate public share token",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-61.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-62",
+    "title": "POST /api/projects/:id/share/revoke — revoke and regenerate share token",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-62.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-63",
+    "title": "GET /api/share/:token — public read-only project data endpoint",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-63.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-64",
+    "title": "GET /api/notifications — list user notifications",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-64.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-65",
+    "title": "PATCH /api/notifications/:nid/read — mark notification as read",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-65.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-66",
+    "title": "PATCH /api/notifications/:nid/snooze — snooze notification until date",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-66.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-67",
+    "title": "Reminder cron job — send in-app and email reminders for upcoming milestones and todos",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-67.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-68",
+    "title": "Email service setup with Resend — transactional email templates",
+    "category": "integration",
+    "specFilePath": ".agent/tasks/TASK-68.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-69",
+    "title": "GET /api/users/me — get current user profile",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-69.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-70",
+    "title": "PATCH /api/users/me — update profile (name, avatar, email)",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-70.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-71",
+    "title": "PATCH /api/users/me/password — change password with current password verification",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-71.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-72",
+    "title": "PATCH /api/users/me/ai-settings — save AI provider and encrypted API key",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-72.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-73",
+    "title": "AES-256-CBC encryption/decryption utility for sensitive fields",
+    "category": "security",
+    "specFilePath": ".agent/tasks/TASK-73.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-74",
+    "title": "DELETE /api/users/me — soft delete account",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-74.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-75",
+    "title": "POST /api/projects/:id/ai/chat — AI PM chat endpoint (multi-provider)",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-75.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-76",
+    "title": "AI context builder service — assemble project context for AI prompt injection",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-76.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-77",
+    "title": "POST /api/projects/:id/parking-lot/:pid/ai-pathway — generate AI pathway for parking lot item",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-77.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-78",
+    "title": "POST /api/projects/:id/github/releases/:rid/summarize — AI changelog summary from commits",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-78.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-79",
+    "title": "PATCH /api/projects/:id/progress — manual progress override",
+    "category": "api-endpoint",
+    "specFilePath": ".agent/tasks/TASK-79.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-80",
+    "title": "Frontend: Configure Vite proxy, React Router, Zustand, TanStack Query",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-80.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-81",
+    "title": "Frontend: Install and configure shadcn/ui component library",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-81.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-82",
+    "title": "Frontend: Global layout — collapsible sidebar + main content area",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-82.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-83",
+    "title": "Frontend: Landing / marketing page with hero and feature highlights",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-83.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-84",
+    "title": "Frontend: Registration page with form validation",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-84.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-85",
+    "title": "Frontend: Login page with email/password and OAuth buttons",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-85.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-86",
+    "title": "Frontend: Forgot password page",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-86.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-87",
+    "title": "Frontend: Reset password page",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-87.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-88",
+    "title": "Frontend: Auth context, token storage, and protected route wrapper",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-88.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-89",
+    "title": "Frontend: Projects dashboard — grid of project cards",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-89.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-90",
+    "title": "Frontend: Project card component — name, type badge, progress bar, points/level, last updated",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-90.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-91",
+    "title": "Frontend: Create project modal/wizard — name, type, vision, optional milestone templates",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-91.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-92",
+    "title": "Frontend: Software project milestone template wizard step",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-92.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-93",
+    "title": "Frontend: Project detail page — tabbed layout",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-93.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-94",
+    "title": "Frontend: Project overview tab — vision, stats, recent activity summary",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-94.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-95",
+    "title": "Frontend: Milestones tab — list, create, complete, delete, reorder with drag-and-drop",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-95.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-96",
+    "title": "Frontend: Milestone completion confetti animation",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-96.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-97",
+    "title": "Frontend: Todos tab — list, create, check/uncheck, reorder, mark urgent",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-97.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-98",
+    "title": "Frontend: Journal tab — list entries, create entry with mood picker",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-98.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-99",
+    "title": "Frontend: Tiptap rich text editor integration (bold, italic, lists, links, code blocks)",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-99.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-100",
+    "title": "Frontend: Timeline tab — vertical timeline, event icons, type filter, pagination",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-100.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-101",
+    "title": "Frontend: Timeline event components for all event types",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-101.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-102",
+    "title": "Frontend: Parking lot tab — list, add, archive, and promote ideas",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-102.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-103",
+    "title": "Frontend: AI pathway display panel for parking lot items",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-103.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-104",
+    "title": "Frontend: Project settings tab — name/type/status edit, danger zone",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-104.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-105",
+    "title": "Frontend: GitHub connect flow in project settings — OAuth, repo selection",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-105.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-106",
+    "title": "Frontend: Sharing panel — toggle public, copy share URL, revoke button",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-106.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-107",
+    "title": "Frontend: AI PM chat panel — sliding drawer with message history and input",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-107.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-108",
+    "title": "Frontend: Progress bar component — auto vs manual progress, override input",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-108.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-109",
+    "title": "Frontend: Points display and level badge component with points history tooltip",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-109.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-110",
+    "title": "Frontend: Level-up celebration animation on points threshold crossed",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-110.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-111",
+    "title": "Frontend: Notification bell — unread count badge and dropdown list",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-111.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-112",
+    "title": "Frontend: Notification item actions — mark read, snooze, dismiss",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-112.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-113",
+    "title": "Frontend: User settings page — profile, password, AI config, notification preferences",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-113.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-114",
+    "title": "Frontend: AI settings form — provider select, masked API key input, test connection",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-114.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-115",
+    "title": "Frontend: Public share page — read-only project view without auth",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-115.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-116",
+    "title": "Frontend: Empty states for all major list views",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-116.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-117",
+    "title": "Frontend: Skeleton loaders for dashboard and timeline",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-117.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-118",
+    "title": "Frontend: Dark mode support via Tailwind dark variant and theme toggle",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-118.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-119",
+    "title": "Frontend: Mobile-responsive layout for all pages",
+    "category": "ui-ux",
+    "specFilePath": ".agent/tasks/TASK-119.json",
+    "passes": false
+  },
+  {
+    "id": "TASK-120",
+    "title": "WCAG 2.1 AA — keyboard navigation, ARIA labels, and color contrast audit",
+    "category": "functional",
+    "specFilePath": ".agent/tasks/TASK-120.json",
+    "passes": false
+  }
 ]

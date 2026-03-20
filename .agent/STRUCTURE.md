@@ -18,14 +18,17 @@ gitshipdone/
 │   │   │   ├── index.ts
 │   │   │   ├── migrate.ts
 │   │   │   └── schema/
-│   │   │       └── index.ts
+│   │   │       ├── index.ts
+│   │   │       └── users.ts
 │   │   ├── routes/
 │   │   │   └── health.ts
 │   │   └── middleware/
 │   │       └── errorHandler.ts
 │   ├── drizzle/
+│   │   ├── 0000_create_users.sql
 │   │   └── meta/
-│   │       └── _journal.json
+│   │       ├── _journal.json
+│   │       └── 0000_snapshot.json
 │   ├── drizzle.config.ts
 │   ├── package.json
 │   ├── tsconfig.json
