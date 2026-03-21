@@ -277,7 +277,7 @@
     "title": "PATCH /api/projects/:id/todos/:tid — update to-do (complete/uncomplete/edit)",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-40.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-41",

@@ -3,9 +3,10 @@ import { eq, max, and, asc, SQL } from "drizzle-orm";
 
 import { db } from "../db";
 import { todos, milestones } from "../db/schema";
-import { createTodoSchema } from "../validators/todos";
+import { createTodoSchema, updateTodoSchema } from "../validators/todos";
 import { getOwnedProject } from "../utils/projectOwnership";
 import { recalculateProgress } from "../services/progressService";
+import { awardPoints } from "../services/pointsService";
 
 const router = Router({ mergeParams: true });
 
@@ -110,5 +111,110 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 });
+
+/**
+ * PATCH /api/projects/:id/todos/:tid
+ * Update a to-do's title, completion state, urgency, due date, or milestone.
+ * Completing awards +10 points; uncompleting deducts -10 points.
+ * Progress is recalculated after any change.
+ */
+router.patch(
+  "/:tid",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const todoId = req.params.tid as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      const parsed = updateTodoSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          error: "Validation failed",
+          details: parsed.error.flatten().fieldErrors,
+        });
+        return;
+      }
+
+      const [existing] = await db
+        .select()
+        .from(todos)
+        .where(and(eq(todos.id, todoId), eq(todos.projectId, projectId)))
+        .limit(1);
+
+      if (!existing) {
+        res.status(404).json({ error: "Todo not found" });
+        return;
+      }
+
+      const data = parsed.data;
+
+      // Validate milestone if provided
+      if (data.milestoneId) {
+        const [milestone] = await db
+          .select()
+          .from(milestones)
+          .where(
+            and(
+              eq(milestones.id, data.milestoneId),
+              eq(milestones.projectId, projectId),
+            ),
+          )
+          .limit(1);
+
+        if (!milestone) {
+          res
+            .status(404)
+            .json({ error: "Milestone not found in this project" });
+          return;
+        }
+      }
+
+      // Build update fields
+      const updateFields: Record<string, unknown> = { updatedAt: new Date() };
+
+      if (data.title !== undefined) updateFields.title = data.title;
+      if (data.isUrgent !== undefined) updateFields.isUrgent = data.isUrgent;
+      if (data.dueDate !== undefined) updateFields.dueDate = data.dueDate;
+      if (data.milestoneId !== undefined)
+        updateFields.milestoneId = data.milestoneId;
+
+      // Detect completion state change
+      if (data.isCompleted !== undefined) {
+        updateFields.isCompleted = data.isCompleted;
+        if (data.isCompleted && !existing.isCompleted) {
+          // Completing
+          updateFields.completedAt = new Date();
+          await awardPoints(
+            projectId,
+            10,
+            `Completed todo: ${existing.title}`,
+            "todo",
+          );
+        } else if (!data.isCompleted && existing.isCompleted) {
+          // Uncompleting
+          updateFields.completedAt = null;
+          await awardPoints(
+            projectId,
+            -10,
+            `Unchecked todo: ${existing.title}`,
+            "todo",
+          );
+        }
+      }
+
+      const [updated] = await db
+        .update(todos)
+        .set(updateFields)
+        .where(and(eq(todos.id, todoId), eq(todos.projectId, projectId)))
+        .returning();
+
+      const progress = await recalculateProgress(projectId);
+
+      res.status(200).json({ todo: updated, progress });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 export default router;

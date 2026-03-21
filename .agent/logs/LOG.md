@@ -3,12 +3,20 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 39
-**Current Task:** TASK-39 Complete
+**Tasks Completed:** 40
+**Current Task:** TASK-40 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-40: PATCH /api/projects/:id/todos/:tid — update to-do
+- Added `updateTodoSchema` to `server/src/validators/todos.ts` — partial body with title, isCompleted, isUrgent, dueDate, milestoneId; requires at least one field
+- Added `PATCH /:tid` handler to `server/src/routes/todos.ts` — validates ownership, finds todo, detects completion state changes, awards/deducts points accordingly
+- Completing a todo awards +10 points via `awardPoints()`, uncompleting deducts -10 points; `completed_at` is set/cleared accordingly
+- Returns `{ todo, progress }` with updated todo and recalculated progress
+- 11 unit tests covering: auth 401, project 404, empty body 400, todo not found 404, title-only update (no points), completing (+10), uncompleting (-10), already-completed no-op, progress recalculation, multi-field update, clearing dueDate
+- 383 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-39: GET /api/projects/:id/todos — list to-dos
 - Added `GET /` handler to `server/src/routes/todos.ts` — validates ownership, queries todos ordered by `sort_order ASC`, supports optional `?milestoneId` and `?completed=true|false` filters
