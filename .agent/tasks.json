@@ -214,7 +214,7 @@
     "title": "DELETE /api/projects/:id — soft delete project",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-31.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-32",

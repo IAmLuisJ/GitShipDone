@@ -172,4 +172,27 @@ router.patch(
   },
 );
 
+/**
+ * DELETE /api/projects/:id
+ * Soft delete a project by setting deleted_at to current timestamp.
+ */
+router.delete(
+  "/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const project = await getOwnedProject(projectId, req.userId!);
+
+      await db
+        .update(projects)
+        .set({ deletedAt: new Date() })
+        .where(eq(projects.id, project.id));
+
+      res.status(200).json({ message: "Project deleted" });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
 export default router;

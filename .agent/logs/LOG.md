@@ -3,12 +3,18 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 30
-**Current Task:** TASK-30 Complete
+**Tasks Completed:** 31
+**Current Task:** TASK-31 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-31: DELETE /api/projects/:id — soft delete project
+- Added `DELETE /:id` handler to `server/src/routes/projects.ts` — validates ownership via `getOwnedProject`, sets `deletedAt = new Date()`, returns 200 `{ message: 'Project deleted' }`
+- Already-deleted projects return 404 (filtered by `getOwnedProject`)
+- 6 unit tests covering auth, 404 (non-existent, other user, already deleted), 200 soft delete, db.update call verification
+- 297 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-30: PATCH /api/projects/:id — update project fields
 - Added `updateProjectSchema` to `server/src/validators/projects.ts` — partial body with name, description, type, status
