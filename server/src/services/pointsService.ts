@@ -31,17 +31,19 @@ export async function awardPoints(
   const currentTotal = current?.pointsTotal ?? 0;
   const newTotal = Math.max(0, currentTotal + delta);
 
-  await db.insert(pointsLog).values({
-    projectId,
-    delta,
-    reason,
-    source,
-  });
+  await db.transaction(async (tx) => {
+    await tx.insert(pointsLog).values({
+      projectId,
+      delta,
+      reason,
+      source,
+    });
 
-  await db
-    .update(projects)
-    .set({ pointsTotal: newTotal, updatedAt: new Date() })
-    .where(eq(projects.id, projectId));
+    await tx
+      .update(projects)
+      .set({ pointsTotal: newTotal, updatedAt: new Date() })
+      .where(eq(projects.id, projectId));
+  });
 
   const { level, didLevelUp } = await recalculateLevel(projectId, newTotal);
 

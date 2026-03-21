@@ -3,12 +3,17 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 42
-**Current Task:** TASK-42 Complete
+**Tasks Completed:** 43
+**Current Task:** TASK-43 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-43: Points service — award and deduct points based on events
+- Wrapped points_log insert + projects update in a `db.transaction()` for atomicity
+- 11 unit tests covering: select current points, transaction insert, atomic update, positive delta, negative delta clamped to 0, partial deduct, recalculateLevel call, timeline event logging, null coalesce, empty select, return structure
+- 414 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-42: PATCH /api/projects/:id/todos/reorder — update todo sort order
 - Added `reorderTodosSchema` to `server/src/validators/todos.ts` — validates `{ orderedIds: uuid[] }` with min 1

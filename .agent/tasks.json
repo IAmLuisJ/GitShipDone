@@ -298,7 +298,7 @@
     "title": "Points service — award and deduct points based on events",
     "category": "functional",
     "specFilePath": ".agent/tasks/TASK-43.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-44",
