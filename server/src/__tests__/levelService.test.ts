@@ -1,4 +1,5 @@
-import { describe, it, expect } from "vitest";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getLevel } from "../services/levelService";
 
 describe("getLevel", () => {
@@ -40,5 +41,100 @@ describe("getLevel", () => {
 
   it("returns Launched for 10000 points", () => {
     expect(getLevel(10000)).toBe("Launched");
+  });
+});
+
+// Mock DB for recalculateLevel tests
+vi.mock("../db", () => ({
+  db: {
+    select: vi.fn(),
+    update: vi.fn(),
+  },
+}));
+
+import { db } from "../db";
+import { recalculateLevel } from "../services/levelService";
+
+const mockSelect = vi.mocked(db.select);
+const mockUpdate = vi.mocked(db.update);
+
+function setupSelectMock(currentLevel: string) {
+  mockSelect.mockReturnValue({
+    from: vi.fn().mockReturnValue({
+      where: vi.fn().mockReturnValue({
+        limit: vi.fn().mockResolvedValue([{ level: currentLevel }]),
+      }),
+    }),
+  } as any);
+}
+
+function setupUpdateMock() {
+  mockUpdate.mockReturnValue({
+    set: vi.fn().mockReturnValue({
+      where: vi.fn().mockResolvedValue([]),
+    }),
+  } as any);
+}
+
+describe("recalculateLevel", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupUpdateMock();
+  });
+
+  it("updates level to Sprout when points reach 100", async () => {
+    setupSelectMock("Seed");
+
+    const result = await recalculateLevel("project-1", 100);
+
+    expect(result.level).toBe("Sprout");
+    expect(result.didLevelUp).toBe(true);
+    expect(mockUpdate).toHaveBeenCalled();
+  });
+
+  it("reports didLevelUp = false when level unchanged", async () => {
+    setupSelectMock("Seed");
+
+    const result = await recalculateLevel("project-1", 50);
+
+    expect(result.level).toBe("Seed");
+    expect(result.didLevelUp).toBe(false);
+  });
+
+  it("updates level to Growing at 300 points", async () => {
+    setupSelectMock("Sprout");
+
+    const result = await recalculateLevel("project-1", 300);
+
+    expect(result.level).toBe("Growing");
+    expect(result.didLevelUp).toBe(true);
+  });
+
+  it("updates level to Shipping at 700 points", async () => {
+    setupSelectMock("Growing");
+
+    const result = await recalculateLevel("project-1", 700);
+
+    expect(result.level).toBe("Shipping");
+    expect(result.didLevelUp).toBe(true);
+  });
+
+  it("updates level to Launched at 1500 points", async () => {
+    setupSelectMock("Shipping");
+
+    const result = await recalculateLevel("project-1", 1500);
+
+    expect(result.level).toBe("Launched");
+    expect(result.didLevelUp).toBe(true);
+  });
+
+  it("persists the new level in the database", async () => {
+    setupSelectMock("Seed");
+
+    await recalculateLevel("project-1", 100);
+
+    const updateResult = mockUpdate.mock.results[0].value as any;
+    const setCall = updateResult.set.mock.calls[0][0];
+    expect(setCall.level).toBe("Sprout");
   });
 });

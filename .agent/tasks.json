@@ -305,7 +305,7 @@
     "title": "Level calculation service — compute project level from total points",
     "category": "functional",
     "specFilePath": ".agent/tasks/TASK-44.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-45",

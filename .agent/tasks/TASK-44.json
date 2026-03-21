@@ -14,13 +14,13 @@
       "step": 1,
       "description": "Create level service",
       "details": "Create server/src/services/levelService.ts. Export const LEVELS = [{ name: 'Seed', min: 0 }, { name: 'Sprout', min: 100 }, { name: 'Growing', min: 300 }, { name: 'Shipping', min: 700 }, { name: 'Launched', min: 1500 }]. Export function getLevel(points: number): string — find the last level where points >= min. Export async function recalculateLevel(projectId: string, points: number): Promise<{ level: string, didLevelUp: boolean }> — compute level, compare to current, update if different, return { level, didLevelUp }.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Test level calculation",
       "details": "getLevel(0) = 'Seed'. getLevel(99) = 'Seed'. getLevel(100) = 'Sprout'. getLevel(1499) = 'Shipping'. getLevel(1500) = 'Launched'. Update project to 100 points — verify level changes to Sprout, didLevelUp = true.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-5"],

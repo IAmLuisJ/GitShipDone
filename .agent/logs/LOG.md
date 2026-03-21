@@ -410,3 +410,8 @@
   - Returns 201 with created project
 - Mounted projects router in app.ts behind requireAuth middleware
 - 268 unit tests passing (10 new for project creation), type checks clean
+
+### 2026-03-21 — TASK-44: Level calculation service — compute project level from total points
+- `server/src/services/levelService.ts` already existed with `getLevel` and `recalculateLevel`
+- Added 6 new `recalculateLevel` tests (mocked DB): level-up detection, persistence, all thresholds
+- 403 unit tests passing (16 in levelService.test.ts), type checks clean
