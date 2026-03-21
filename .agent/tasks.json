@@ -368,7 +368,7 @@
     "title": "POST /api/projects/:id/parking-lot — add parking lot item",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-53.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-54",

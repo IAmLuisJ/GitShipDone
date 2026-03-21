@@ -57,7 +57,8 @@ gitshipdone/
 │   │   │   ├── projects.ts
 │   │   │   ├── milestones.ts
 │   │   │   ├── todos.ts
-│   │   │   └── journal.ts
+│   │   │   ├── journal.ts
+│   │   │   └── parkingLot.ts
 │   │   ├── types/
 │   │   │   └── express.d.ts
 │   │   └── middleware/

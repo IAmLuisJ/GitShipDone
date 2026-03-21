@@ -3,12 +3,18 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 52
-**Current Task:** TASK-52 Complete
+**Tasks Completed:** 53
+**Current Task:** TASK-53 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-53: POST /api/projects/:id/parking-lot — add parking lot item
+- Created `server/src/validators/parkingLot.ts` with `createParkingLotSchema` (title min 1/max 500, optional description max 2000)
+- Added POST `/` handler to `server/src/routes/parkingLot.ts`: validates ownership, inserts item, returns 201
+- 9 unit tests covering: auth 401, project 404, empty/missing/long title 400, long description 400, title-only 201, title+description 201, db.insert call
+- 497 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-52: GET /api/projects/:id/parking-lot — list parking lot items
 - Created `server/src/routes/parkingLot.ts` with GET handler: validates ownership, queries parking_lot_items ordered by `created_at DESC`
