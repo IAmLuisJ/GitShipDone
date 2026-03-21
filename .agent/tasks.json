@@ -228,7 +228,7 @@
     "title": "POST /api/projects/:id/milestones — create milestone",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-33.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-34",

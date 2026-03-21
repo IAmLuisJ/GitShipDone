@@ -8,6 +8,7 @@ import passport from "passport";
 import healthRouter from "./routes/health";
 import authRouter from "./routes/auth";
 import projectsRouter from "./routes/projects";
+import milestonesRouter from "./routes/milestones";
 import { configurePassport } from "./config/passport";
 import { requireAuth } from "./middleware/requireAuth";
 import { errorHandler, AppError } from "./middleware/errorHandler";
@@ -36,6 +37,7 @@ app.use("/api/auth", authRouter);
 app.use("/api", requireAuth);
 
 app.use("/api/projects", projectsRouter);
+app.use("/api/projects/:id/milestones", milestonesRouter);
 
 /** Catch-all for unmatched routes */
 app.use((_req, _res, next) => {

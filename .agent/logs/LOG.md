@@ -3,12 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 31
-**Current Task:** TASK-32 Complete
+**Tasks Completed:** 32
+**Current Task:** TASK-33 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-33: POST /api/projects/:id/milestones — create milestone
+- Created `server/src/validators/milestones.ts` with `createMilestoneSchema` (name, description, dueDate, status)
+- Created `server/src/routes/milestones.ts` with POST handler: validates ownership, computes `sortOrder = max + 1`, inserts milestone, returns 201
+- Mounted router at `/api/projects/:id/milestones` in `app.ts` with `mergeParams: true`
+- 9 unit tests covering: auth 401, project 404, missing/empty name 400, invalid status 400, sort_order 0 for first milestone, sort_order max+1 for subsequent, optional fields, default pending status
+- 315 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-32: Project progress auto-calculation service
 - Created `server/src/services/progressService.ts` with `recalculateProgress(projectId)` function
