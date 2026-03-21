@@ -3,12 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 26
-**Current Task:** TASK-26 Complete
+**Tasks Completed:** 28
+**Current Task:** TASK-28 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-28: GET /api/projects — list all user projects
+- Added `GET /` handler to `server/src/routes/projects.ts`
+- Queries projects where `userId = req.userId` and `deletedAt IS NULL`, sorted by `updatedAt DESC`, limit 50
+- Returns 200 with array of project objects including all required fields
+- 6 unit tests covering auth, response shape, sorting, empty state, and query chain
+- 274 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-26: Helmet.js and CORS configuration
 - Updated CORS config in `server/src/app.ts`: fixed default origin to `http://localhost:5173`, added `methods` and `allowedHeaders` options

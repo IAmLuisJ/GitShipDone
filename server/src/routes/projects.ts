@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
+import { eq, and, isNull, desc } from "drizzle-orm";
 import { db } from "../db";
 import { projects, milestones, timelineEvents } from "../db/schema";
 import { createProjectSchema } from "../validators/projects";
@@ -56,6 +57,28 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     });
 
     res.status(201).json(result);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/projects
+ * List all non-deleted projects for the authenticated user,
+ * sorted by updated_at descending, capped at 50.
+ */
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.userId!;
+
+    const result = await db
+      .select()
+      .from(projects)
+      .where(and(eq(projects.userId, userId), isNull(projects.deletedAt)))
+      .orderBy(desc(projects.updatedAt))
+      .limit(50);
+
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }

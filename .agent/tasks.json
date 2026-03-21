@@ -193,7 +193,7 @@
     "title": "GET /api/projects — list all user projects",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-28.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-29",
