@@ -3,12 +3,20 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 51
-**Current Task:** TASK-51 Complete
+**Tasks Completed:** 52
+**Current Task:** TASK-52 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-52: GET /api/projects/:id/parking-lot — list parking lot items
+- Created `server/src/routes/parkingLot.ts` with GET handler: validates ownership, queries parking_lot_items ordered by `created_at DESC`
+- Excludes archived items (`archived_at IS NULL`) by default; supports `?includeArchived=true` query param
+- Returns `{ items }` response shape
+- Mounted router at `/api/projects/:id/parking-lot` in `app.ts` behind requireAuth
+- 7 unit tests covering: auth 401, project 404, non-archived items, empty array, includeArchived=true, db.select call count, ordering
+- 488 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-51: GET /api/projects/:id/timeline — paginated timeline events with type filter
 - Created `server/src/routes/timeline.ts` with GET handler: validates ownership, queries timeline_events ordered by `created_at DESC`

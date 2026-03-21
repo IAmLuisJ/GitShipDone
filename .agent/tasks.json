@@ -361,7 +361,7 @@
     "title": "GET /api/projects/:id/parking-lot — list parking lot items",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-52.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-53",
