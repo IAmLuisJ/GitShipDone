@@ -3,12 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 43
-**Current Task:** TASK-43 Complete
+**Tasks Completed:** 44
+**Current Task:** TASK-45 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-45: POST /api/projects/:id/points — manual points adjustment with reason
+- Added `manualPointsSchema` to `server/src/validators/projects.ts` — validates delta (int, -500..500) and reason (1-255 chars)
+- Added `POST /:id/points` handler to `server/src/routes/projects.ts` — validates ownership, calls `awardPoints()` with source `manual`
+- Returns 200 with `{ pointsTotal, level, didLevelUp }`
+- 12 unit tests covering: auth 401, project 404, missing reason/delta 400, delta out of range 400, empty/long reason 400, non-integer delta 400, positive delta 200, negative delta (floor 0) 200, level-up detection
+- 426 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-43: Points service — award and deduct points based on events
 - Wrapped points_log insert + projects update in a `db.transaction()` for atomicity

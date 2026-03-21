@@ -14,6 +14,11 @@ export const createProjectSchema = z.object({
   milestoneTemplates: z.array(z.string().max(255)).max(10).optional(),
 });
 
+export const manualPointsSchema = z.object({
+  delta: z.number().int().min(-500).max(500),
+  reason: z.string().min(1).max(255),
+});
+
 export const updateProjectSchema = z.object({
   name: z.string().min(1).max(255).optional(),
   description: z.string().max(5000).optional(),

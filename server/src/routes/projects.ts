@@ -6,7 +6,9 @@ import { projects, milestones, todos, timelineEvents } from "../db/schema";
 import {
   createProjectSchema,
   updateProjectSchema,
+  manualPointsSchema,
 } from "../validators/projects";
+import { awardPoints } from "../services/pointsService";
 import { getOwnedProject } from "../utils/projectOwnership";
 
 const router = Router();
@@ -166,6 +168,40 @@ router.patch(
       }
 
       res.status(200).json(updated);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * POST /api/projects/:id/points
+ * Manually adjust points for a project with a required reason.
+ */
+router.post(
+  "/:id/points",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const parsed = manualPointsSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          error: "Validation failed",
+          details: parsed.error.flatten().fieldErrors,
+        });
+        return;
+      }
+
+      const projectId = req.params.id as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      const { delta, reason } = parsed.data;
+      const result = await awardPoints(projectId, delta, reason, "manual");
+
+      res.status(200).json({
+        pointsTotal: result.newTotal,
+        level: result.level,
+        didLevelUp: result.didLevelUp,
+      });
     } catch (err) {
       next(err);
     }
