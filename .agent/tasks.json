@@ -410,7 +410,7 @@
     "title": "GitHub polling cron job — fetch new commits and releases every 60 minutes",
     "category": "integration",
     "specFilePath": ".agent/tasks/TASK-59.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-60",

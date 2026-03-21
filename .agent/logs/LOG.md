@@ -3,12 +3,21 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 59
-**Current Task:** TASK-58 Complete
+**Tasks Completed:** 60
+**Current Task:** TASK-59 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-59: GitHub polling cron job — fetch new commits and releases every 60 minutes
+- Installed `node-cron` and `@types/node-cron` in server
+- Created `server/src/jobs/githubSync.ts` with `syncAllGithubProjects()` and `startGithubSyncJob()`
+- `syncAllGithubProjects`: queries projects with github_repo_name + github_access_token via inner join on users, splits owner/repo, creates Octokit, calls `importCommitsForProject` per project, errors logged but don't stop other projects
+- `startGithubSyncJob`: runs initial sync immediately, then schedules hourly via `cron.schedule('0 * * * *', ...)`
+- Updated `server/src/index.ts` to call `startGithubSyncJob()` after DB connection confirmed
+- 12 unit tests: query check, no projects noop, getOctokit called, importCommitsForProject params, multiple projects, error isolation, invalid repo format skip, error logging, cron schedule, startup message, initial sync trigger
+- 573 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-58: GitHub commit import service — fetch and store last 90 days on connect
 - Enhanced `importCommitsForProject` (renamed from `importCommits`, backward-compatible alias kept) in `server/src/services/githubService.ts`

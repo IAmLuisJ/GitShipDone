@@ -44,6 +44,8 @@ gitshipdone/
 │   │   │   └── github.ts
 │   │   ├── config/
 │   │   │   └── passport.ts
+│   │   ├── jobs/
+│   │   │   └── githubSync.ts
 │   │   ├── services/
 │   │   │   ├── email.ts
 │   │   │   ├── levelService.ts
