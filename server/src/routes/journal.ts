@@ -2,13 +2,14 @@ import { Router, Request, Response, NextFunction } from "express";
 import { eq, and, isNull, desc, count } from "drizzle-orm";
 
 import { db } from "../db";
-import { journalEntries, timelineEvents } from "../db/schema";
+import { journalEntries } from "../db/schema";
 import {
   createJournalSchema,
   updateJournalSchema,
 } from "../validators/journal";
 import { getOwnedProject } from "../utils/projectOwnership";
 import { awardPoints } from "../services/pointsService";
+import { logTimelineEvent } from "../services/timelineService";
 
 const router = Router({ mergeParams: true });
 
@@ -46,12 +47,12 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     await awardPoints(projectId, 5, `Journal entry: ${title}`, "journal");
 
     // Log journal timeline event
-    await db.insert(timelineEvents).values({
+    await logTimelineEvent(
       projectId,
-      type: "journal",
-      refId: entry.id,
-      payload: { entryId: entry.id, title, mood: mood ?? null },
-    });
+      "journal",
+      { entryId: entry.id, title, mood: mood ?? null },
+      entry.id,
+    );
 
     res.status(201).json(entry);
   } catch (err) {

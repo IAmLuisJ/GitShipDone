@@ -45,7 +45,8 @@ gitshipdone/
 │   │   │   ├── email.ts
 │   │   │   ├── levelService.ts
 │   │   │   ├── pointsService.ts
-│   │   │   └── progressService.ts
+│   │   │   ├── progressService.ts
+│   │   │   └── timelineService.ts
 │   │   ├── utils/
 │   │   │   ├── jwt.ts
 │   │   │   └── projectOwnership.ts

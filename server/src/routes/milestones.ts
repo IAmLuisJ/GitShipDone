@@ -2,13 +2,14 @@ import { Router, Request, Response, NextFunction } from "express";
 import { eq, max, asc, and } from "drizzle-orm";
 
 import { db } from "../db";
-import { milestones, projects, timelineEvents } from "../db/schema";
+import { milestones, projects } from "../db/schema";
 import {
   createMilestoneSchema,
   updateMilestoneSchema,
 } from "../validators/milestones";
 import { getOwnedProject } from "../utils/projectOwnership";
 import { awardPoints } from "../services/pointsService";
+import { logTimelineEvent } from "../services/timelineService";
 
 const router = Router({ mergeParams: true });
 
@@ -182,16 +183,12 @@ router.post(
       );
 
       // Log milestone_completed timeline event
-      await db.insert(timelineEvents).values({
+      await logTimelineEvent(
         projectId,
-        type: "milestone_completed",
-        refId: milestoneId,
-        payload: {
-          milestoneId,
-          milestoneName: milestone.name,
-          points: 50,
-        },
-      });
+        "milestone_completed",
+        { milestoneId, milestoneName: milestone.name, points: 50 },
+        milestoneId,
+      );
 
       // Fetch updated project
       const [updatedProject] = await db

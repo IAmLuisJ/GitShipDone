@@ -347,7 +347,7 @@
     "title": "Timeline events service — log all project events to timeline_events table",
     "category": "functional",
     "specFilePath": ".agent/tasks/TASK-50.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-51",

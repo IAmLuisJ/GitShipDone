@@ -452,3 +452,11 @@
 - `server/src/services/levelService.ts` already existed with `getLevel` and `recalculateLevel`
 - Added 6 new `recalculateLevel` tests (mocked DB): level-up detection, persistence, all thresholds
 - 403 unit tests passing (16 in levelService.test.ts), type checks clean
+
+### 2026-03-21 — TASK-50: Timeline events service — log all project events to timeline_events table
+- Created `server/src/services/timelineService.ts` with `logTimelineEvent()` function
+  - Accepts projectId, type, payload (JSONB), optional refId
+  - Wraps insert in try/catch — errors are logged but never re-thrown (non-critical)
+- Refactored existing routes (projects, milestones, journal) to use `logTimelineEvent` instead of inline `db.insert(timelineEvents)`
+- Updated `projects-create.test.ts` to mock timelineService and adjust tx insert counts
+- 470 unit tests passing (5 new for timelineService), type checks clean

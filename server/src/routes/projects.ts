@@ -2,13 +2,14 @@ import { Router, Request, Response, NextFunction } from "express";
 import { eq, and, isNull, desc } from "drizzle-orm";
 
 import { db } from "../db";
-import { projects, milestones, todos, timelineEvents } from "../db/schema";
+import { projects, milestones, todos } from "../db/schema";
 import {
   createProjectSchema,
   updateProjectSchema,
   manualPointsSchema,
 } from "../validators/projects";
 import { awardPoints } from "../services/pointsService";
+import { logTimelineEvent } from "../services/timelineService";
 import { getOwnedProject } from "../utils/projectOwnership";
 
 const router = Router();
@@ -54,13 +55,12 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
         );
       }
 
-      await tx.insert(timelineEvents).values({
-        projectId: project.id,
-        type: "status_change",
-        payload: { from: null, to: "active" },
-      });
-
       return project;
+    });
+
+    await logTimelineEvent(result.id, "status_change", {
+      from: null,
+      to: "active",
     });
 
     res.status(201).json(result);
@@ -160,10 +160,9 @@ router.patch(
         .returning();
 
       if (statusChanged) {
-        await db.insert(timelineEvents).values({
-          projectId: project.id,
-          type: "status_change",
-          payload: { from: oldStatus, to: updates.status },
+        await logTimelineEvent(project.id, "status_change", {
+          from: oldStatus,
+          to: updates.status,
         });
       }
 

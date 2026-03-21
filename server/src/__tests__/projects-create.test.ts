@@ -34,6 +34,11 @@ vi.mock("../db", () => ({
   },
 }));
 
+// Mock timeline service (non-critical, tested separately)
+vi.mock("../services/timelineService", () => ({
+  logTimelineEvent: vi.fn(),
+}));
+
 import { db } from "../db";
 
 const mockTransaction = vi.mocked(db.transaction);
@@ -176,8 +181,8 @@ describe("POST /api/projects", () => {
       });
 
     expect(res.status).toBe(201);
-    // 3 inserts: project, milestones, timeline event
-    expect(txInsertCalls).toBe(3);
+    // 2 inserts in tx: project, milestones (timeline logged outside tx)
+    expect(txInsertCalls).toBe(2);
   });
 
   it("creates project without milestone templates — only 2 inserts", async () => {
@@ -203,8 +208,8 @@ describe("POST /api/projects", () => {
       .send({ name: "My Project", type: "software" });
 
     expect(res.status).toBe(201);
-    // 2 inserts: project, timeline event
-    expect(txInsertCalls).toBe(2);
+    // 1 insert in tx: project only (timeline logged outside tx)
+    expect(txInsertCalls).toBe(1);
   });
 
   it("accepts all valid project types", async () => {
