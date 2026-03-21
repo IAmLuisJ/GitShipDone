@@ -3,12 +3,20 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 48
-**Current Task:** TASK-49 Complete
+**Tasks Completed:** 51
+**Current Task:** TASK-51 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-51: GET /api/projects/:id/timeline — paginated timeline events with type filter
+- Created `server/src/routes/timeline.ts` with GET handler: validates ownership, queries timeline_events ordered by `created_at DESC`
+- Supports `?type=` comma-separated filter (validates against known event types), `?page=` and `?limit=` (default 50, max 100)
+- Returns `{ events, total, page, limit }` response shape
+- Mounted router at `/api/projects/:id/timeline` in `app.ts` behind requireAuth
+- 11 unit tests covering: auth 401, project 404, events with pagination, empty array, single type filter, comma-separated types, invalid type ignored, page/limit params, limit cap at 100, default params, db.select call count
+- 481 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-49: DELETE /api/projects/:id/journal/:jid — soft delete journal entry
 - Added `DELETE /:jid` handler to `server/src/routes/journal.ts` — validates ownership, checks entry exists and not soft-deleted, sets `deleted_at`, returns 200

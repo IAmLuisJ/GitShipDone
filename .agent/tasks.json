@@ -354,7 +354,7 @@
     "title": "GET /api/projects/:id/timeline — paginated timeline events with type filter",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-51.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-52",

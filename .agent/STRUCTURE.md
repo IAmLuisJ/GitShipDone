@@ -38,7 +38,8 @@ gitshipdone/
 │   │   │   ├── projects.ts
 │   │   │   ├── milestones.ts
 │   │   │   ├── todos.ts
-│   │   │   └── journal.ts
+│   │   │   ├── journal.ts
+│   │   │   └── timeline.ts
 │   │   ├── config/
 │   │   │   └── passport.ts
 │   │   ├── services/

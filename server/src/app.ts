@@ -11,6 +11,7 @@ import projectsRouter from "./routes/projects";
 import milestonesRouter from "./routes/milestones";
 import todosRouter from "./routes/todos";
 import journalRouter from "./routes/journal";
+import timelineRouter from "./routes/timeline";
 import { configurePassport } from "./config/passport";
 import { requireAuth } from "./middleware/requireAuth";
 import { errorHandler, AppError } from "./middleware/errorHandler";
@@ -42,6 +43,7 @@ app.use("/api/projects", projectsRouter);
 app.use("/api/projects/:id/milestones", milestonesRouter);
 app.use("/api/projects/:id/todos", todosRouter);
 app.use("/api/projects/:id/journal", journalRouter);
+app.use("/api/projects/:id/timeline", timelineRouter);
 
 /** Catch-all for unmatched routes */
 app.use((_req, _res, next) => {
