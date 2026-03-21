@@ -17,6 +17,11 @@ import {
   verifyRefreshToken,
 } from "../utils/jwt";
 import { AppError } from "../middleware/errorHandler";
+import {
+  loginLimiter,
+  registerLimiter,
+  forgotPasswordLimiter,
+} from "../middleware/rateLimit";
 import { sendPasswordResetEmail } from "../services/email";
 
 const router = Router();
@@ -28,6 +33,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
  */
 router.post(
   "/register",
+  registerLimiter,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const parsed = registerSchema.safeParse(req.body);
@@ -102,6 +108,7 @@ router.post(
  */
 router.post(
   "/login",
+  loginLimiter,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const parsed = loginSchema.safeParse(req.body);
@@ -324,6 +331,7 @@ router.post(
  */
 router.post(
   "/forgot-password",
+  forgotPasswordLimiter,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const parsed = forgotPasswordSchema.safeParse(req.body);
