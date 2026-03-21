@@ -95,7 +95,7 @@
     "title": "Notifications table schema and migration",
     "category": "data-model",
     "specFilePath": ".agent/tasks/TASK-14.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-15",

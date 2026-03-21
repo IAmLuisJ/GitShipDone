@@ -8,3 +8,4 @@ export * from "./pointsLog";
 export * from "./parkingLotItems";
 export * from "./githubCommits";
 export * from "./githubReleases";
+export * from "./notifications";

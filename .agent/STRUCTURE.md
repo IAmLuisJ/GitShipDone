@@ -28,6 +28,7 @@ gitshipdone/
 │   │   │       ├── pointsLog.ts
 │   │   │       ├── parkingLotItems.ts
 │   │   │       ├── githubCommits.ts
+│   │   │       ├── notifications.ts
 │   │   │       └── githubReleases.ts
 │   │   ├── routes/
 │   │   │   └── health.ts
@@ -44,6 +45,7 @@ gitshipdone/
 │   │   ├── 0007_create_parking_lot_items.sql
 │   │   ├── 0008_create_github_commits.sql
 │   │   ├── 0009_create_github_releases.sql
+│   │   ├── 0010_create_notifications.sql
 │   │   └── meta/
 │   │       ├── _journal.json
 │   │       └── 0000_snapshot.json

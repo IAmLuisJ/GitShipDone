@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 12
-**Current Task:** TASK-13 Complete
+**Tasks Completed:** 13
+**Current Task:** TASK-14 Complete
 
 ----------------------------------------------
 
@@ -140,6 +140,17 @@
 - Hand-wrote migration SQL `0009_create_github_releases.sql`
 - Migration runs successfully, table verified in PostgreSQL
 - 133 unit tests passing (13 new for github releases schema), type checks clean
+
+### 2026-03-21 — TASK-14: Notifications table schema and migration
+- Created `server/src/db/schema/notifications.ts` with all required columns
+- Defined `notificationTypeEnum` with 4 types (milestone_due, todo_due, milestone_completed, system)
+- FK to `users.id` with cascade delete, optional FK to `projects.id` with set null on delete
+- `is_read` boolean (default false), `snoozed_until` nullable timestamp
+- Indexes on `user_id` and `(user_id, is_read)` for notification bell queries
+- Exported `Notification` and `NewNotification` types, added to schema barrel
+- Hand-wrote migration SQL `0010_create_notifications.sql`
+- Migration runs successfully, table verified in PostgreSQL
+- 146 unit tests passing (13 new for notifications schema), type checks clean
 
 ### 2026-03-21 — TASK-9: Timeline events table schema and migration
 - Created `server/src/db/schema/timelineEvents.ts` with all required columns
