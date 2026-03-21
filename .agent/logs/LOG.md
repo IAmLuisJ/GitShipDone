@@ -96,3 +96,15 @@
 - Hand-wrote migration SQL `0004_create_journal_entries.sql`
 - Migration runs successfully, table verified in PostgreSQL
 - 73 unit tests passing (12 new for journal entries schema), type checks clean
+
+### 2026-03-21 — TASK-9: Timeline events table schema and migration
+- Created `server/src/db/schema/timelineEvents.ts` with all required columns
+- Defined `timelineEventTypeEnum` with all 8 event types (journal, milestone_completed, todo_batch, github_commit, github_release, progress_change, points_change, status_change)
+- FK to `projects.id` with cascade delete
+- `payload` JSONB column (notNull, default `{}`) for event-specific data
+- `ref_id` nullable UUID for linking to source records
+- Composite index on `(project_id, created_at DESC)` for paginated timeline queries
+- Index on `type` for filtering
+- Hand-wrote migration SQL `0005_create_timeline_events.sql`
+- Migration runs successfully, table verified in PostgreSQL
+- 84 unit tests passing (11 new for timeline events schema), type checks clean

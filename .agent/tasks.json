@@ -60,7 +60,7 @@
     "title": "Timeline events table schema and migration",
     "category": "data-model",
     "specFilePath": ".agent/tasks/TASK-9.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-10",

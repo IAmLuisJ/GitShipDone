@@ -36,6 +36,13 @@
       "when": 1742832000000,
       "tag": "0004_create_journal_entries",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1742918400000,
+      "tag": "0005_create_timeline_events",
+      "breakpoints": true
     }
   ]
 }
