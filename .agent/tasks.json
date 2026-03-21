@@ -326,7 +326,7 @@
     "title": "GET /api/projects/:id/journal — list journal entries",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-47.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-48",

@@ -3,12 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 45
-**Current Task:** TASK-46 Complete
+**Tasks Completed:** 46
+**Current Task:** TASK-47 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-47: GET /api/projects/:id/journal — list journal entries
+- Added GET `/` handler to `server/src/routes/journal.ts` with pagination (page, limit capped at 100)
+- Queries non-deleted journal entries ordered by `created_at DESC` with LIMIT/OFFSET
+- Returns `{ entries, total, page, limit }` response shape
+- 9 unit tests covering: auth 401, project 404, entries with pagination metadata, empty array, page/limit params, limit cap at 100, invalid params defaults, db.select call count
+- 446 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-46: POST /api/projects/:id/journal — create journal entry
 - Created `server/src/validators/journal.ts` with `createJournalSchema` (title min 1/max 500, body min 1, optional mood enum)
