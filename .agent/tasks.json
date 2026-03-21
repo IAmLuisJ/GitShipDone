@@ -130,7 +130,7 @@
     "title": "POST /api/auth/logout — invalidate refresh token",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-19.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-20",

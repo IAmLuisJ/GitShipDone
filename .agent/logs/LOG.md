@@ -3,12 +3,20 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 18
-**Current Task:** TASK-18 Complete
+**Tasks Completed:** 19
+**Current Task:** TASK-19 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-19: POST /api/auth/logout — invalidate refresh token
+- Added `POST /api/auth/logout` endpoint to `server/src/routes/auth.ts`
+- Reads refresh token cookie, verifies JWT, finds matching hashed token in DB and deletes it
+- Gracefully handles missing/invalid/expired tokens — always returns 200 (idempotent)
+- Clears HttpOnly refreshToken cookie on every logout call
+- 6 unit tests covering all acceptance criteria
+- 193 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-18: POST /api/auth/refresh — refresh access token
 - Added `POST /api/auth/refresh` endpoint to `server/src/routes/auth.ts`

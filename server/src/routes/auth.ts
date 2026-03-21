@@ -259,4 +259,55 @@ router.post(
   },
 );
 
+/**
+ * POST /api/auth/logout
+ * Invalidate refresh token and clear cookie.
+ */
+router.post(
+  "/logout",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const rawToken = req.cookies?.refreshToken;
+
+      if (rawToken) {
+        // Try to verify and find matching token to delete
+        try {
+          const payload = verifyRefreshToken(rawToken);
+          const userId = payload.sub;
+
+          // Find non-expired tokens for this user
+          const storedTokens = await db
+            .select()
+            .from(refreshTokens)
+            .where(eq(refreshTokens.userId, userId));
+
+          // Find and delete matching token
+          for (const stored of storedTokens) {
+            const isMatch = await bcrypt.compare(rawToken, stored.tokenHash);
+            if (isMatch) {
+              await db
+                .delete(refreshTokens)
+                .where(eq(refreshTokens.id, stored.id));
+              break;
+            }
+          }
+        } catch {
+          // Token invalid/expired — just clear the cookie
+        }
+      }
+
+      // Always clear cookie and return 200
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+      });
+
+      res.status(200).json({ message: "Logged out" });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
 export default router;
