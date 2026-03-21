@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 16
-**Current Task:** TASK-16 Complete
+**Tasks Completed:** 17
+**Current Task:** TASK-17 Complete
 
 ----------------------------------------------
 
@@ -184,3 +184,13 @@
 - Hand-wrote migration SQL `0011_create_refresh_tokens.sql`
 - Migration runs successfully, table verified in PostgreSQL
 - 155 unit tests passing (9 new for refresh tokens schema), type checks clean
+
+### 2026-03-21 — TASK-17: POST /api/auth/login — email/password login
+- Added `loginSchema` to `server/src/validators/auth.ts`
+- Implemented `POST /api/auth/login` in `server/src/routes/auth.ts`
+  - Validates body with Zod, returns generic 401 for all auth failures (prevents user enumeration)
+  - Rejects soft-deleted users and OAuth-only accounts (no password hash)
+  - Verifies password with bcrypt.compare, signs new JWT access + refresh tokens
+  - Deletes old refresh tokens for the user, stores new hashed refresh token
+  - Sets HttpOnly cookie for refresh token, returns 200 with user + accessToken
+- 179 unit tests passing (9 new for auth-login), type checks clean
