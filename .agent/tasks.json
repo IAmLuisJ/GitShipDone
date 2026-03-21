@@ -207,7 +207,7 @@
     "title": "PATCH /api/projects/:id — update project fields",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-30.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-31",

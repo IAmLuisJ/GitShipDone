@@ -1,8 +1,12 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { eq, and, isNull, desc } from "drizzle-orm";
+
 import { db } from "../db";
 import { projects, milestones, todos, timelineEvents } from "../db/schema";
-import { createProjectSchema } from "../validators/projects";
+import {
+  createProjectSchema,
+  updateProjectSchema,
+} from "../validators/projects";
 import { getOwnedProject } from "../utils/projectOwnership";
 
 const router = Router();
@@ -116,5 +120,56 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 });
+
+/**
+ * PATCH /api/projects/:id
+ * Update editable project fields. Logs a status_change timeline event when status changes.
+ */
+router.patch(
+  "/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const parsed = updateProjectSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          error: "Validation failed",
+          details: parsed.error.flatten().fieldErrors,
+        });
+        return;
+      }
+
+      const updates = parsed.data;
+      if (Object.keys(updates).length === 0) {
+        res.status(400).json({ error: "No fields to update" });
+        return;
+      }
+
+      const projectId = req.params.id as string;
+      const project = await getOwnedProject(projectId, req.userId!);
+
+      const statusChanged =
+        updates.status !== undefined && updates.status !== project.status;
+      const oldStatus = project.status;
+
+      const [updated] = await db
+        .update(projects)
+        .set({ ...updates, updatedAt: new Date() })
+        .where(eq(projects.id, project.id))
+        .returning();
+
+      if (statusChanged) {
+        await db.insert(timelineEvents).values({
+          projectId: project.id,
+          type: "status_change",
+          payload: { from: oldStatus, to: updates.status },
+        });
+      }
+
+      res.status(200).json(updated);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 export default router;

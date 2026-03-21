@@ -3,10 +3,18 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 29
-**Current Task:** TASK-29 Complete
+**Tasks Completed:** 30
+**Current Task:** TASK-30 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-21 — TASK-30: PATCH /api/projects/:id — update project fields
+- Added `updateProjectSchema` to `server/src/validators/projects.ts` — partial body with name, description, type, status
+- Added `PATCH /:id` handler to `server/src/routes/projects.ts` — validates ownership, updates fields, logs status_change timeline event when status changes
+- 9 unit tests covering auth, 404, empty body, invalid values, name update, status change with timeline event, same-status no event, multi-field update
+- 291 total unit tests passing, type checks clean
 
 ## Session Log
 
