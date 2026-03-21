@@ -5,6 +5,7 @@ import {
   text,
   timestamp,
   index,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { projects } from "./projects";
 
@@ -31,6 +32,10 @@ export const githubReleases = pgTable(
     index("github_releases_project_id_published_at_idx").on(
       table.projectId,
       table.publishedAt,
+    ),
+    uniqueIndex("github_releases_tag_project_unique").on(
+      table.tagName,
+      table.projectId,
     ),
   ],
 );

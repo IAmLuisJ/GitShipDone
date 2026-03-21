@@ -92,6 +92,13 @@
       "when": 1743523200000,
       "tag": "0012_create_password_reset_tokens",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1743609600000,
+      "tag": "0013_add_github_releases_unique_constraint",
+      "breakpoints": true
     }
   ]
 }

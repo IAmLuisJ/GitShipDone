@@ -24,11 +24,15 @@ vi.mock("../utils/jwt", () => ({
 }));
 
 // Mock GitHub service
-vi.mock("../services/githubService", () => ({
-  getOctokit: vi.fn(),
-  getRepo: vi.fn(),
-  importCommits: vi.fn(),
-}));
+vi.mock("../services/githubService", () => {
+  const fn = vi.fn();
+  return {
+    getOctokit: vi.fn(),
+    getRepo: vi.fn(),
+    importCommits: fn,
+    importCommitsForProject: fn,
+  };
+});
 
 import app from "../app";
 

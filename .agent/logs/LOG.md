@@ -3,12 +3,21 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 58
-**Current Task:** TASK-57 Complete
+**Tasks Completed:** 59
+**Current Task:** TASK-58 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-58: GitHub commit import service — fetch and store last 90 days on connect
+- Enhanced `importCommitsForProject` (renamed from `importCommits`, backward-compatible alias kept) in `server/src/services/githubService.ts`
+- Commits: fetches last 90 days via `octokit.paginate`, inserts with ON CONFLICT DO NOTHING, awards +2 points and logs `github_commit` timeline event for each new commit
+- Releases: fetches via `octokit.repos.listReleases`, filters to last 90 days, inserts with ON CONFLICT DO NOTHING, awards +25 points and logs `github_release` timeline event for each new release
+- Added unique constraint on `github_releases(tag_name, project_id)` via migration `0013_add_github_releases_unique_constraint.sql`
+- Updated schema in `server/src/db/schema/githubReleases.ts` with `uniqueIndex`
+- 16 unit tests in `github-import.test.ts`: function existence, alias, paginate call, insert, +2 points per commit, timeline event per commit, skip duplicates, release import, +25 points per release, release timeline event, skip old releases, skip null published_at, error handling for commits/releases, skip duplicate releases
+- 561 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-57: POST /api/projects/:id/github/connect — link GitHub repo to project
 - Installed `@octokit/rest` in server

@@ -403,7 +403,7 @@
     "title": "GitHub commit import service — fetch and store last 90 days on connect",
     "category": "integration",
     "specFilePath": ".agent/tasks/TASK-58.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-59",
