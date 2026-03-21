@@ -217,4 +217,40 @@ router.patch(
   },
 );
 
+/**
+ * DELETE /api/projects/:id/todos/:tid
+ * Permanently delete a to-do and recalculate project progress.
+ */
+router.delete(
+  "/:tid",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const todoId = req.params.tid as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      const [existing] = await db
+        .select()
+        .from(todos)
+        .where(and(eq(todos.id, todoId), eq(todos.projectId, projectId)))
+        .limit(1);
+
+      if (!existing) {
+        res.status(404).json({ error: "Todo not found" });
+        return;
+      }
+
+      await db
+        .delete(todos)
+        .where(and(eq(todos.id, todoId), eq(todos.projectId, projectId)));
+
+      const progress = await recalculateProgress(projectId);
+
+      res.status(200).json({ message: "Todo deleted", progress });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
 export default router;

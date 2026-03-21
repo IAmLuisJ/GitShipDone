@@ -3,12 +3,18 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 40
-**Current Task:** TASK-40 Complete
+**Tasks Completed:** 41
+**Current Task:** TASK-41 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-41: DELETE /api/projects/:id/todos/:tid — delete to-do
+- Added `DELETE /:tid` handler to `server/src/routes/todos.ts` — validates ownership, finds todo by id+projectId, deletes permanently, recalculates progress
+- Returns 200 with `{ message: 'Todo deleted', progress }` or 404 if todo not found
+- 6 unit tests covering: auth 401, project 404, todo not found 404, successful deletion 200, db.delete called, progress recalculation
+- 389 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-40: PATCH /api/projects/:id/todos/:tid — update to-do
 - Added `updateTodoSchema` to `server/src/validators/todos.ts` — partial body with title, isCompleted, isUrgent, dueDate, milestoneId; requires at least one field
