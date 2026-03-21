@@ -389,7 +389,7 @@
     "title": "GitHub OAuth integration — connect GitHub account for repo access",
     "category": "integration",
     "specFilePath": ".agent/tasks/TASK-56.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-57",
@@ -508,7 +508,7 @@
     "title": "AES-256-CBC encryption/decryption utility for sensitive fields",
     "category": "security",
     "specFilePath": ".agent/tasks/TASK-73.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-74",

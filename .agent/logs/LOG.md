@@ -3,10 +3,21 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 55
-**Current Task:** TASK-55 Complete
+**Tasks Completed:** 57
+**Current Task:** TASK-56 Complete (also TASK-73)
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-21 — TASK-56: GitHub OAuth integration — connect GitHub account for repo access (also TASK-73: AES-256-CBC encryption utility)
+- Created `server/src/utils/encryption.ts` with AES-256-CBC encrypt/decrypt using random IV, hex-encoded output (TASK-73)
+- Added `github-repo` Passport strategy in `server/src/config/passport.ts` with `repo` scope, encrypts and stores access token on user record
+- Added GET `/github/repo` (requireAuth) and GET `/github/repo/callback` routes in `server/src/routes/auth.ts`
+- Added `GITHUB_REPO_CLIENT_ID` and `GITHUB_REPO_CLIENT_SECRET` to `.env.example`
+- 9 encryption unit tests: round-trip, random IV, long strings, special chars, hex format, key validation, invalid format
+- 6 auth-github-repo unit tests: 401 without auth, route registered, error redirect, user false redirect, success redirect, no refresh cookie
+- 534 total unit tests passing, type checks clean
 
 ## Session Log
 

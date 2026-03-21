@@ -50,6 +50,7 @@ gitshipdone/
 │   │   │   ├── progressService.ts
 │   │   │   └── timelineService.ts
 │   │   ├── utils/
+│   │   │   ├── encryption.ts
 │   │   │   ├── jwt.ts
 │   │   │   └── projectOwnership.ts
 │   │   ├── validators/

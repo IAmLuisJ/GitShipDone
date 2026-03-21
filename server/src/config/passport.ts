@@ -12,10 +12,14 @@ import { eq, or } from "drizzle-orm";
 import { db } from "../db";
 import { users } from "../db/schema";
 
+import { encrypt } from "../utils/encryption";
+
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "";
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || "";
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || "";
+const GITHUB_REPO_CLIENT_ID = process.env.GITHUB_REPO_CLIENT_ID || "";
+const GITHUB_REPO_CLIENT_SECRET = process.env.GITHUB_REPO_CLIENT_SECRET || "";
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001";
 
 /**
@@ -112,6 +116,7 @@ export function configurePassport(): void {
   );
 
   configureGitHubStrategy();
+  configureGitHubRepoStrategy();
 }
 
 /**
@@ -200,6 +205,66 @@ function configureGitHubStrategy(): void {
             id: newUser.id,
             email: newUser.email,
             name: newUser.name,
+          });
+        } catch (err) {
+          return done(err as Error);
+        }
+      },
+    ),
+  );
+}
+
+/**
+ * Configure GitHub OAuth strategy for repo access (separate OAuth app).
+ * Requires user to already be authenticated. Stores encrypted access token on user record.
+ */
+function configureGitHubRepoStrategy(): void {
+  if (!GITHUB_REPO_CLIENT_ID || !GITHUB_REPO_CLIENT_SECRET) {
+    console.warn(
+      "[Passport] GitHub Repo OAuth not configured — GITHUB_REPO_CLIENT_ID or GITHUB_REPO_CLIENT_SECRET missing",
+    );
+    return;
+  }
+
+  passport.use(
+    "github-repo",
+    new GitHubStrategy(
+      {
+        clientID: GITHUB_REPO_CLIENT_ID,
+        clientSecret: GITHUB_REPO_CLIENT_SECRET,
+        callbackURL: `${BACKEND_URL}/api/auth/github/repo/callback`,
+        scope: ["repo"],
+      },
+      async (
+        accessToken: string,
+        _refreshToken: string,
+        profile: GitHubProfile,
+        done: (err: Error | null, user?: { id: string; githubAccessToken: string }) => void,
+      ) => {
+        try {
+          const githubId = profile.id;
+
+          // Find user by github_id
+          const [existingUser] = await db
+            .select({ id: users.id })
+            .from(users)
+            .where(eq(users.githubId, githubId))
+            .limit(1);
+
+          if (!existingUser) {
+            return done(new Error("No user found with this GitHub account"));
+          }
+
+          // Encrypt and store the repo access token
+          const encryptedToken = encrypt(accessToken);
+          await db
+            .update(users)
+            .set({ githubAccessToken: encryptedToken })
+            .where(eq(users.id, existingUser.id));
+
+          return done(null, {
+            id: existingUser.id,
+            githubAccessToken: encryptedToken,
           });
         } catch (err) {
           return done(err as Error);

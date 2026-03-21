@@ -16,6 +16,7 @@ import {
   signRefreshToken,
   verifyRefreshToken,
 } from "../utils/jwt";
+import { requireAuth } from "../middleware/requireAuth";
 import { AppError } from "../middleware/errorHandler";
 import {
   loginLimiter,
@@ -572,6 +573,42 @@ router.get(
         } catch (error) {
           next(error);
         }
+      },
+    )(req, res, next);
+  },
+);
+
+/**
+ * GET /api/auth/github/repo
+ * Initiate GitHub OAuth for repo access (requires authentication).
+ */
+router.get(
+  "/github/repo",
+  requireAuth,
+  passport.authenticate("github-repo", {
+    session: false,
+  }),
+);
+
+/**
+ * GET /api/auth/github/repo/callback
+ * Handle GitHub repo OAuth callback — store encrypted token and redirect.
+ */
+router.get(
+  "/github/repo/callback",
+  (req: Request, res: Response, next: NextFunction) => {
+    passport.authenticate(
+      "github-repo",
+      { session: false },
+      (err: Error | null, user: { id: string; githubAccessToken: string } | false) => {
+        if (err || !user) {
+          const errorUrl = `${FRONTEND_URL}/settings?github=error`;
+          res.redirect(errorUrl);
+          return;
+        }
+
+        const successUrl = `${FRONTEND_URL}/settings?github=connected`;
+        res.redirect(successUrl);
       },
     )(req, res, next);
   },
