@@ -3,12 +3,18 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 53
-**Current Task:** TASK-53 Complete
+**Tasks Completed:** 54
+**Current Task:** TASK-54 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-54: PATCH /api/projects/:id/parking-lot/:pid — update or archive parking lot item
+- Added `updateParkingLotSchema` to `server/src/validators/parkingLot.ts` (optional title, description, archived boolean)
+- Added PATCH `/:pid` handler to `server/src/routes/parkingLot.ts`: validates ownership, checks item exists, updates fields; archived=true sets archived_at, archived=false clears it
+- 12 unit tests covering: auth 401, project 404, item not found 404, empty body 400, empty/long title 400, long description 400, title update 200, description update 200, archive 200, unarchive 200, db.update call count
+- 509 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-53: POST /api/projects/:id/parking-lot — add parking lot item
 - Created `server/src/validators/parkingLot.ts` with `createParkingLotSchema` (title min 1/max 500, optional description max 2000)
