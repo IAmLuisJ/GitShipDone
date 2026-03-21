@@ -3,12 +3,21 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 57
-**Current Task:** TASK-56 Complete (also TASK-73)
+**Tasks Completed:** 58
+**Current Task:** TASK-57 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-57: POST /api/projects/:id/github/connect — link GitHub repo to project
+- Installed `@octokit/rest` in server
+- Created `server/src/services/githubService.ts` with `getOctokit()`, `getRepo()`, and `importCommits()` (last 90 days, fire-and-forget, conflict-safe)
+- Created `server/src/validators/github.ts` with `connectGithubSchema` (repoOwner, repoName)
+- Created `server/src/routes/github.ts` with POST `/connect`: validates ownership, checks github_access_token, verifies repo access via Octokit, stores repo ID/name on project, triggers background commit import
+- Mounted github router at `/api/projects/:id/github` in `app.ts`
+- 11 unit tests: 401 no auth, 404 project not found, 400 missing repoOwner, 400 missing repoName, 400 no github token, 400 repo not found, 200 success, getOctokit called, getRepo called, project updated, importCommits fired
+- 545 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-56: GitHub OAuth integration — connect GitHub account for repo access (also TASK-73: AES-256-CBC encryption utility)
 - Created `server/src/utils/encryption.ts` with AES-256-CBC encrypt/decrypt using random IV, hex-encoded output (TASK-73)

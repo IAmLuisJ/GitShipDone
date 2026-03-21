@@ -40,7 +40,8 @@ gitshipdone/
 │   │   │   ├── todos.ts
 │   │   │   ├── journal.ts
 │   │   │   ├── parkingLot.ts
-│   │   │   └── timeline.ts
+│   │   │   ├── timeline.ts
+│   │   │   └── github.ts
 │   │   ├── config/
 │   │   │   └── passport.ts
 │   │   ├── services/
@@ -48,7 +49,8 @@ gitshipdone/
 │   │   │   ├── levelService.ts
 │   │   │   ├── pointsService.ts
 │   │   │   ├── progressService.ts
-│   │   │   └── timelineService.ts
+│   │   │   ├── timelineService.ts
+│   │   │   └── githubService.ts
 │   │   ├── utils/
 │   │   │   ├── encryption.ts
 │   │   │   ├── jwt.ts
@@ -59,7 +61,8 @@ gitshipdone/
 │   │   │   ├── milestones.ts
 │   │   │   ├── todos.ts
 │   │   │   ├── journal.ts
-│   │   │   └── parkingLot.ts
+│   │   │   ├── parkingLot.ts
+│   │   │   └── github.ts
 │   │   ├── types/
 │   │   │   └── express.d.ts
 │   │   └── middleware/
