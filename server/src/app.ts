@@ -8,6 +8,7 @@ import passport from 'passport';
 import healthRouter from './routes/health';
 import authRouter from './routes/auth';
 import { configurePassport } from './config/passport';
+import { requireAuth } from './middleware/requireAuth';
 import { errorHandler, AppError } from './middleware/errorHandler';
 
 const app = express();
@@ -27,6 +28,9 @@ configurePassport();
 
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
+
+/* --- Protected routes below this line --- */
+app.use('/api', requireAuth);
 
 /** Catch-all for unmatched routes */
 app.use((_req, _res, next) => {

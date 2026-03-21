@@ -3,12 +3,20 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 23
-**Current Task:** TASK-23 Complete
+**Tasks Completed:** 24
+**Current Task:** TASK-24 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-24: Auth middleware — verify JWT access token on protected routes
+- Created `server/src/middleware/requireAuth.ts` — extracts Bearer token, verifies JWT, attaches `req.userId`
+- Created `server/src/types/express.d.ts` — extends Express Request with `userId` property
+- Applied `requireAuth` to all `/api` routes after `/api/health` and `/api/auth` (public routes excluded)
+- Updated existing health test: `/api/nonexistent` now returns 401 (auth middleware catches before 404)
+- 5 unit tests for requireAuth middleware, 5 integration tests for protected vs public route behavior
+- 244 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-23: GET /api/auth/github — initiate GitHub OAuth login flow
 - Installed `passport-github2` with type definitions

@@ -43,8 +43,11 @@ gitshipdone/
 │   │   │   └── jwt.ts
 │   │   ├── validators/
 │   │   │   └── auth.ts
+│   │   ├── types/
+│   │   │   └── express.d.ts
 │   │   └── middleware/
-│   │       └── errorHandler.ts
+│   │       ├── errorHandler.ts
+│   │       └── requireAuth.ts
 │   ├── drizzle/
 │   │   ├── 0000_create_users.sql
 │   │   ├── 0001_create_projects.sql

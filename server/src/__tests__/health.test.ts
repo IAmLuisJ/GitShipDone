@@ -14,8 +14,16 @@ describe('GET /api/health', () => {
 });
 
 describe('404 handling', () => {
-  it('returns JSON error for unknown routes', async () => {
+  it('returns 401 for unknown /api routes (auth middleware catches first)', async () => {
     const res = await request(app).get('/api/nonexistent');
+
+    expect(res.status).toBe(401);
+    expect(res.body.error).toBe('Authentication required');
+    expect(res.headers['content-type']).toMatch(/json/);
+  });
+
+  it('returns 404 for non-api unknown routes', async () => {
+    const res = await request(app).get('/nonexistent');
 
     expect(res.status).toBe(404);
     expect(res.body.error).toBe('Not found');

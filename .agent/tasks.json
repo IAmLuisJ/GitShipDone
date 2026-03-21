@@ -165,7 +165,7 @@
     "title": "Auth middleware — verify JWT access token on protected routes",
     "category": "security",
     "specFilePath": ".agent/tasks/TASK-24.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-25",
