@@ -148,4 +148,45 @@ router.patch(
   },
 );
 
+/**
+ * DELETE /api/projects/:id/journal/:jid
+ * Soft delete a journal entry by setting deleted_at.
+ */
+router.delete(
+  "/:jid",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const jid = req.params.jid as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      const existing = await db
+        .select()
+        .from(journalEntries)
+        .where(
+          and(
+            eq(journalEntries.id, jid),
+            eq(journalEntries.projectId, projectId),
+            isNull(journalEntries.deletedAt),
+          ),
+        )
+        .limit(1);
+
+      if (existing.length === 0) {
+        res.status(404).json({ error: "Journal entry not found" });
+        return;
+      }
+
+      await db
+        .update(journalEntries)
+        .set({ deletedAt: new Date() })
+        .where(eq(journalEntries.id, jid));
+
+      res.json({ message: "Journal entry deleted" });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
 export default router;

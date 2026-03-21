@@ -340,7 +340,7 @@
     "title": "DELETE /api/projects/:id/journal/:jid — soft delete journal entry",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-49.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-50",
