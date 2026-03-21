@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 11
-**Current Task:** TASK-12 Complete
+**Tasks Completed:** 12
+**Current Task:** TASK-13 Complete
 
 ----------------------------------------------
 
@@ -128,6 +128,18 @@
 - Hand-wrote migration SQL `0008_create_github_commits.sql`
 - Migration runs successfully, table verified in PostgreSQL
 - 120 unit tests passing (13 new for github commits schema), type checks clean
+
+### 2026-03-21 — TASK-13: GitHub releases table schema and migration
+- Created `server/src/db/schema/githubReleases.ts` with all required columns
+- FK to `projects.id` with cascade delete
+- `tag_name` varchar(255) notNull, `name` varchar(255) nullable
+- `body` nullable text for raw GitHub release notes, `ai_summary` nullable text for AI-generated summary
+- `published_at` timestamp notNull, `url` text notNull
+- Composite index on `(project_id, published_at DESC)` for timeline ordering
+- Exported `GithubRelease` and `NewGithubRelease` types, added to schema barrel
+- Hand-wrote migration SQL `0009_create_github_releases.sql`
+- Migration runs successfully, table verified in PostgreSQL
+- 133 unit tests passing (13 new for github releases schema), type checks clean
 
 ### 2026-03-21 — TASK-9: Timeline events table schema and migration
 - Created `server/src/db/schema/timelineEvents.ts` with all required columns
