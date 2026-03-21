@@ -151,7 +151,7 @@
     "title": "GET /api/auth/google — initiate Google OAuth flow",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-22.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-23",

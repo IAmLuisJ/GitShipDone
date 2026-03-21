@@ -3,10 +3,27 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 21
-**Current Task:** TASK-21 Complete
+**Tasks Completed:** 22
+**Current Task:** TASK-22 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-21 — TASK-22: GET /api/auth/google — initiate Google OAuth flow
+- Installed `passport` and `passport-google-oauth20` with type definitions
+- Created `server/src/config/passport.ts` with GoogleStrategy configuration
+  - Find-or-create user by google_id or email
+  - Updates google_id on existing email-matched users
+  - Creates new OAuth-only users with no password_hash
+- Added `GET /api/auth/google` route — redirects to Google consent screen
+- Added `GET /api/auth/google/callback` — handles callback, issues tokens, redirects to frontend
+  - On success: redirects to `FRONTEND_URL/auth/callback?token=ACCESS_TOKEN`
+  - On failure: redirects to `FRONTEND_URL/login?error=oauth_failed`
+  - Sets HttpOnly refresh token cookie and stores hashed token in DB
+- Initialized passport in `app.ts` with `passport.initialize()` middleware
+- 6 unit tests covering route registration, failure redirect, success redirect, cookie setting, token storage
+- 227 total unit tests passing, type checks clean
 
 ## Session Log
 

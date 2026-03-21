@@ -35,6 +35,8 @@ gitshipdone/
 │   │   ├── routes/
 │   │   │   ├── health.ts
 │   │   │   └── auth.ts
+│   │   ├── config/
+│   │   │   └── passport.ts
 │   │   ├── services/
 │   │   │   └── email.ts
 │   │   ├── utils/

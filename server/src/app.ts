@@ -4,8 +4,10 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import passport from 'passport';
 import healthRouter from './routes/health';
 import authRouter from './routes/auth';
+import { configurePassport } from './config/passport';
 import { errorHandler, AppError } from './middleware/errorHandler';
 
 const app = express();
@@ -20,6 +22,8 @@ app.use(
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
+app.use(passport.initialize());
+configurePassport();
 
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);

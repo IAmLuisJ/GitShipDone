@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
+import passport from "passport";
 import { eq, and, gt, isNull } from "drizzle-orm";
 import { db } from "../db";
 import { users, refreshTokens, passwordResetTokens } from "../db/schema";
@@ -19,6 +20,7 @@ import { AppError } from "../middleware/errorHandler";
 import { sendPasswordResetEmail } from "../services/email";
 
 const router = Router();
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
 /**
  * POST /api/auth/register
@@ -438,6 +440,69 @@ router.post(
     } catch (err) {
       next(err);
     }
+  },
+);
+
+/**
+ * GET /api/auth/google
+ * Redirect to Google OAuth consent screen.
+ */
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    session: false,
+  }),
+);
+
+/**
+ * GET /api/auth/google/callback
+ * Handle Google OAuth callback — issue tokens and redirect to frontend.
+ */
+router.get(
+  "/google/callback",
+  (req: Request, res: Response, next: NextFunction) => {
+    passport.authenticate(
+      "google",
+      { session: false },
+      async (err: Error | null, user: { id: string; email: string; name: string } | false) => {
+        try {
+          if (err || !user) {
+            const errorUrl = `${FRONTEND_URL}/login?error=oauth_failed`;
+            res.redirect(errorUrl);
+            return;
+          }
+
+          // Issue tokens
+          const accessToken = signAccessToken(user.id);
+          const rawRefreshToken = signRefreshToken(user.id);
+
+          // Store hashed refresh token
+          const tokenHash = await bcrypt.hash(rawRefreshToken, 10);
+          const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+          await db.insert(refreshTokens).values({
+            userId: user.id,
+            tokenHash,
+            expiresAt,
+          });
+
+          // Set refresh token cookie
+          res.cookie("refreshToken", rawRefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+            path: "/",
+          });
+
+          // Redirect to frontend with access token
+          const callbackUrl = `${FRONTEND_URL}/auth/callback?token=${encodeURIComponent(accessToken)}`;
+          res.redirect(callbackUrl);
+        } catch (error) {
+          next(error);
+        }
+      },
+    )(req, res, next);
   },
 );
 
