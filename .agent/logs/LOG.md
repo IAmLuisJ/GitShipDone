@@ -3,10 +3,20 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 17
-**Current Task:** TASK-17 Complete
+**Tasks Completed:** 18
+**Current Task:** TASK-18 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-21 — TASK-18: POST /api/auth/refresh — refresh access token
+- Added `POST /api/auth/refresh` endpoint to `server/src/routes/auth.ts`
+- Reads refresh token from HttpOnly cookie, verifies JWT, checks user exists
+- Finds matching hashed token in DB (bcrypt compare), deletes old token (rotation)
+- Issues new access + refresh tokens, sets new HttpOnly cookie
+- Returns 401 for missing/invalid/expired tokens, deleted users, non-matching hashes
+- 8 unit tests covering all acceptance criteria
 
 ## Session Log
 
