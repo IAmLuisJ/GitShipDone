@@ -5,3 +5,4 @@ export * from "./todos";
 export * from "./journalEntries";
 export * from "./timelineEvents";
 export * from "./pointsLog";
+export * from "./parkingLotItems";

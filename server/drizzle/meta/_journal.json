@@ -50,6 +50,13 @@
       "when": 1743004800000,
       "tag": "0006_create_points_log",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1743091200000,
+      "tag": "0007_create_parking_lot_items",
+      "breakpoints": true
     }
   ]
 }

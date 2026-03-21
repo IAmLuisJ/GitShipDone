@@ -25,7 +25,8 @@ gitshipdone/
 │   │   │       ├── todos.ts
 │   │   │       ├── journalEntries.ts
 │   │   │       ├── timelineEvents.ts
-│   │   │       └── pointsLog.ts
+│   │   │       ├── pointsLog.ts
+│   │   │       └── parkingLotItems.ts
 │   │   ├── routes/
 │   │   │   └── health.ts
 │   │   └── middleware/
@@ -38,6 +39,7 @@ gitshipdone/
 │   │   ├── 0004_create_journal_entries.sql
 │   │   ├── 0005_create_timeline_events.sql
 │   │   ├── 0006_create_points_log.sql
+│   │   ├── 0007_create_parking_lot_items.sql
 │   │   └── meta/
 │   │       ├── _journal.json
 │   │       └── 0000_snapshot.json

@@ -2,9 +2,9 @@
 
 `Current Status`
 =================
-**Last Updated:** 2026-03-20
-**Tasks Completed:** 9
-**Current Task:** TASK-10 Complete
+**Last Updated:** 2026-03-21
+**Tasks Completed:** 10
+**Current Task:** TASK-11 Complete
 
 ----------------------------------------------
 
@@ -106,6 +106,17 @@
 - Hand-wrote migration SQL `0006_create_points_log.sql`
 - Migration runs successfully, table verified in PostgreSQL
 - 95 unit tests passing (11 new for points log schema), type checks clean
+
+### 2026-03-21 — TASK-11: Parking lot items table schema and migration
+- Created `server/src/db/schema/parkingLotItems.ts` with all required columns
+- FK to `projects.id` with cascade delete, index on `project_id`
+- `title` as varchar(500) notNull, `description` as nullable text
+- `ai_pathway` as nullable text for AI-generated step-by-step plans
+- `archived_at` as nullable timestamp for soft archiving
+- Exported `ParkingLotItem` and `NewParkingLotItem` types, added to schema barrel
+- Hand-wrote migration SQL `0007_create_parking_lot_items.sql`
+- Migration runs successfully, table verified in PostgreSQL
+- 107 unit tests passing (12 new for parking lot items schema), type checks clean
 
 ### 2026-03-21 — TASK-9: Timeline events table schema and migration
 - Created `server/src/db/schema/timelineEvents.ts` with all required columns
