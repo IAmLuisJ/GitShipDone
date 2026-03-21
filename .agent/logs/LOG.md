@@ -3,10 +3,18 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 54
-**Current Task:** TASK-54 Complete
+**Tasks Completed:** 55
+**Current Task:** TASK-55 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-21 — TASK-55: POST /api/projects/:id/parking-lot/:pid/promote — promote to milestone or todo
+- Added `promoteParkingLotSchema` to `server/src/validators/parkingLot.ts` (targetType: 'milestone' | 'todo')
+- Added POST `/:pid/promote` handler to `server/src/routes/parkingLot.ts`: validates ownership, finds item, creates milestone or todo from item title/description with correct sort_order, archives the parking lot item, returns 200 with created record
+- 10 unit tests covering: auth 401, project 404, missing targetType 400, invalid targetType 400, item not found 404, promote to milestone 200, promote to todo 200, db.insert call count, db.update call count, null max sort order
+- 519 total unit tests passing, type checks clean
 
 ## Session Log
 

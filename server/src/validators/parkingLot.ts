@@ -10,3 +10,7 @@ export const updateParkingLotSchema = z.object({
   description: z.string().max(2000).optional(),
   archived: z.boolean().optional(),
 });
+
+export const promoteParkingLotSchema = z.object({
+  targetType: z.enum(["milestone", "todo"]),
+});

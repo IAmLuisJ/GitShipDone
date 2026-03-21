@@ -382,7 +382,7 @@
     "title": "POST /api/projects/:id/parking-lot/:pid/promote — promote to milestone or todo",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-55.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-56",
