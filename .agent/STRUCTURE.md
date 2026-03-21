@@ -41,6 +41,8 @@ gitshipdone/
 │   │   │   └── passport.ts
 │   │   ├── services/
 │   │   │   ├── email.ts
+│   │   │   ├── levelService.ts
+│   │   │   ├── pointsService.ts
 │   │   │   └── progressService.ts
 │   │   ├── utils/
 │   │   │   ├── jwt.ts

@@ -249,7 +249,7 @@
     "title": "POST /api/projects/:id/milestones/:mid/complete — complete milestone and award points",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-36.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-37",

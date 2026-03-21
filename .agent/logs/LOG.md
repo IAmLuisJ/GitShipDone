@@ -10,6 +10,17 @@
 
 ## Session Log
 
+### 2026-03-21 — TASK-36: POST /api/projects/:id/milestones/:mid/complete — complete milestone and award points
+- Added `POST /:mid/complete` handler to `server/src/routes/milestones.ts` — validates ownership, finds milestone, checks not already completed
+- Sets milestone `status = completed`, `completed_at = NOW()`
+- Created `server/src/services/levelService.ts` with `getLevel()` pure function and `recalculateLevel()` — maps points to levels (Seed/Sprout/Growing/Shipping/Launched)
+- Created `server/src/services/pointsService.ts` with `awardPoints()` — inserts points_log, updates project points_total (clamped >= 0), recalculates level, logs points_change timeline event
+- Awards +50 points via `awardPoints()`, logs `milestone_completed` timeline event with milestone name
+- Returns 200 with `{ milestone, project }` including updated points and level
+- Returns 400 if milestone is already completed, 404 if milestone not found
+- 9 unit tests for complete endpoint + 10 unit tests for getLevel()
+- 348 total unit tests passing, type checks clean
+
 ### 2026-03-21 — TASK-35: PATCH /api/projects/:id/milestones/:mid — update milestone
 - Added `updateMilestoneSchema` to `server/src/validators/milestones.ts` — partial body with name, description, dueDate, status; requires at least one field
 - Added `PATCH /:mid` handler to `server/src/routes/milestones.ts` — validates ownership, finds milestone by id+projectId, updates fields, returns 200

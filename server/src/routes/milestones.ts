@@ -2,12 +2,13 @@ import { Router, Request, Response, NextFunction } from "express";
 import { eq, max, asc, and } from "drizzle-orm";
 
 import { db } from "../db";
-import { milestones } from "../db/schema";
+import { milestones, projects, timelineEvents } from "../db/schema";
 import {
   createMilestoneSchema,
   updateMilestoneSchema,
 } from "../validators/milestones";
 import { getOwnedProject } from "../utils/projectOwnership";
+import { awardPoints } from "../services/pointsService";
 
 const router = Router({ mergeParams: true });
 
@@ -121,6 +122,85 @@ router.patch(
       }
 
       res.status(200).json(updated);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * POST /api/projects/:id/milestones/:mid/complete
+ * Mark a milestone as completed, award 50 points, log timeline event.
+ */
+router.post(
+  "/:mid/complete",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const milestoneId = req.params.mid as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      // Find the milestone
+      const [milestone] = await db
+        .select()
+        .from(milestones)
+        .where(
+          and(
+            eq(milestones.id, milestoneId),
+            eq(milestones.projectId, projectId),
+          ),
+        )
+        .limit(1);
+
+      if (!milestone) {
+        res.status(404).json({ error: "Milestone not found" });
+        return;
+      }
+
+      if (milestone.status === "completed") {
+        res.status(400).json({ error: "Milestone is already completed" });
+        return;
+      }
+
+      // Mark milestone as completed
+      const [updatedMilestone] = await db
+        .update(milestones)
+        .set({
+          status: "completed",
+          completedAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .where(eq(milestones.id, milestoneId))
+        .returning();
+
+      // Award 50 points
+      await awardPoints(
+        projectId,
+        50,
+        `Milestone completed: ${milestone.name}`,
+        "milestone",
+      );
+
+      // Log milestone_completed timeline event
+      await db.insert(timelineEvents).values({
+        projectId,
+        type: "milestone_completed",
+        refId: milestoneId,
+        payload: {
+          milestoneId,
+          milestoneName: milestone.name,
+          points: 50,
+        },
+      });
+
+      // Fetch updated project
+      const [updatedProject] = await db
+        .select()
+        .from(projects)
+        .where(eq(projects.id, projectId))
+        .limit(1);
+
+      res.status(200).json({ milestone: updatedMilestone, project: updatedProject });
     } catch (err) {
       next(err);
     }
