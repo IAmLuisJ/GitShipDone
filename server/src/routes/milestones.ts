@@ -1,9 +1,12 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { eq, max, asc } from "drizzle-orm";
+import { eq, max, asc, and } from "drizzle-orm";
 
 import { db } from "../db";
 import { milestones } from "../db/schema";
-import { createMilestoneSchema } from "../validators/milestones";
+import {
+  createMilestoneSchema,
+  updateMilestoneSchema,
+} from "../validators/milestones";
 import { getOwnedProject } from "../utils/projectOwnership";
 
 const router = Router({ mergeParams: true });
@@ -73,5 +76,55 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 });
+
+/**
+ * PATCH /api/projects/:id/milestones/:mid
+ * Update milestone fields (name, description, dueDate, status).
+ */
+router.patch(
+  "/:mid",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const milestoneId = req.params.mid as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      const parsed = updateMilestoneSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          error: "Validation failed",
+          details: parsed.error.flatten().fieldErrors,
+        });
+        return;
+      }
+
+      const { name, description, dueDate, status } = parsed.data;
+
+      // Build update object with only provided fields
+      const updates: Record<string, unknown> = { updatedAt: new Date() };
+      if (name !== undefined) updates.name = name;
+      if (description !== undefined) updates.description = description;
+      if (dueDate !== undefined) updates.dueDate = dueDate;
+      if (status !== undefined) updates.status = status;
+
+      const [updated] = await db
+        .update(milestones)
+        .set(updates)
+        .where(
+          and(eq(milestones.id, milestoneId), eq(milestones.projectId, projectId)),
+        )
+        .returning();
+
+      if (!updated) {
+        res.status(404).json({ error: "Milestone not found" });
+        return;
+      }
+
+      res.status(200).json(updated);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 export default router;

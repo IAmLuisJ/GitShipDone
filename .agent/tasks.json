@@ -242,7 +242,7 @@
     "title": "PATCH /api/projects/:id/milestones/:mid — update milestone",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-35.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-36",

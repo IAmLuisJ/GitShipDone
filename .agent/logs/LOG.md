@@ -3,12 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 33
-**Current Task:** TASK-34 Complete
+**Tasks Completed:** 34
+**Current Task:** TASK-35 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-35: PATCH /api/projects/:id/milestones/:mid — update milestone
+- Added `updateMilestoneSchema` to `server/src/validators/milestones.ts` — partial body with name, description, dueDate, status; requires at least one field
+- Added `PATCH /:mid` handler to `server/src/routes/milestones.ts` — validates ownership, finds milestone by id+projectId, updates fields, returns 200
+- Returns 404 if milestone not found for the project
+- 9 unit tests covering: auth 401, project 404, empty body 400, invalid status 400, milestone not found 404, name update, status update, multi-field update, db.update call verification
+- 329 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-34: GET /api/projects/:id/milestones — list milestones
 - Added `GET /` handler to `server/src/routes/milestones.ts` — validates ownership via `getOwnedProject`, queries milestones ordered by `sort_order ASC`, returns 200 with array
