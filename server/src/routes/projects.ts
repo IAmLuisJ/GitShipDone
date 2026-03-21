@@ -1,8 +1,9 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { eq, and, isNull, desc } from "drizzle-orm";
 import { db } from "../db";
-import { projects, milestones, timelineEvents } from "../db/schema";
+import { projects, milestones, todos, timelineEvents } from "../db/schema";
 import { createProjectSchema } from "../validators/projects";
+import { getOwnedProject } from "../utils/projectOwnership";
 
 const router = Router();
 
@@ -79,6 +80,38 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
       .limit(50);
 
     res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/projects/:id
+ * Get single project detail with milestones and todos.
+ */
+router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const projectId = req.params.id as string;
+    const project = await getOwnedProject(projectId, req.userId!);
+
+    const [projectMilestones, projectTodos] = await Promise.all([
+      db
+        .select()
+        .from(milestones)
+        .where(eq(milestones.projectId, project.id))
+        .orderBy(milestones.sortOrder),
+      db
+        .select()
+        .from(todos)
+        .where(eq(todos.projectId, project.id))
+        .orderBy(todos.sortOrder),
+    ]);
+
+    res.status(200).json({
+      ...project,
+      milestones: projectMilestones,
+      todos: projectTodos,
+    });
   } catch (err) {
     next(err);
   }

@@ -3,12 +3,18 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 28
-**Current Task:** TASK-28 Complete
+**Tasks Completed:** 29
+**Current Task:** TASK-29 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-29: GET /api/projects/:id — get single project detail
+- Created `server/src/utils/projectOwnership.ts` — reusable helper that fetches a project by ID, validates ownership and soft-delete status, throws 404
+- Added `GET /:id` handler to `server/src/routes/projects.ts` — returns project with milestones and todos arrays
+- 7 unit tests covering auth, 404 (non-existent, other user, soft-deleted), 200 with milestones/todos, empty arrays, field checks
+- 281 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-28: GET /api/projects — list all user projects
 - Added `GET /` handler to `server/src/routes/projects.ts`

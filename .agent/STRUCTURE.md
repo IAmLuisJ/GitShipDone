@@ -41,7 +41,8 @@ gitshipdone/
 │   │   ├── services/
 │   │   │   └── email.ts
 │   │   ├── utils/
-│   │   │   └── jwt.ts
+│   │   │   ├── jwt.ts
+│   │   │   └── projectOwnership.ts
 │   │   ├── validators/
 │   │   │   ├── auth.ts
 │   │   │   └── projects.ts

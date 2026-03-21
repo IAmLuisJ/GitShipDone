@@ -200,7 +200,7 @@
     "title": "GET /api/projects/:id — get single project detail",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-29.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-30",
