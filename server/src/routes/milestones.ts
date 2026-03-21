@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { eq, max } from "drizzle-orm";
+import { eq, max, asc } from "drizzle-orm";
 
 import { db } from "../db";
 import { milestones } from "../db/schema";
@@ -48,6 +48,27 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
       .returning();
 
     res.status(201).json(milestone);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/projects/:id/milestones
+ * List all milestones for a project, ordered by sort_order ascending.
+ */
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const projectId = req.params.id as string;
+    await getOwnedProject(projectId, req.userId!);
+
+    const result = await db
+      .select()
+      .from(milestones)
+      .where(eq(milestones.projectId, projectId))
+      .orderBy(asc(milestones.sortOrder));
+
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }

@@ -3,12 +3,17 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 32
-**Current Task:** TASK-33 Complete
+**Tasks Completed:** 33
+**Current Task:** TASK-34 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-34: GET /api/projects/:id/milestones — list milestones
+- Added `GET /` handler to `server/src/routes/milestones.ts` — validates ownership via `getOwnedProject`, queries milestones ordered by `sort_order ASC`, returns 200 with array
+- 5 unit tests covering: auth 401, project 404, ordered list of 3 milestones, empty array, field correctness
+- 320 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-33: POST /api/projects/:id/milestones — create milestone
 - Created `server/src/validators/milestones.ts` with `createMilestoneSchema` (name, description, dueDate, status)

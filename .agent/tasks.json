@@ -235,7 +235,7 @@
     "title": "GET /api/projects/:id/milestones — list milestones",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-34.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-35",
