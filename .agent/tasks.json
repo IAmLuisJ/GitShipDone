@@ -270,7 +270,7 @@
     "title": "GET /api/projects/:id/todos — list to-dos",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-39.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-40",

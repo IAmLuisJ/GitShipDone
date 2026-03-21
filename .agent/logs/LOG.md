@@ -3,12 +3,17 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 38
-**Current Task:** TASK-38 Complete
+**Tasks Completed:** 39
+**Current Task:** TASK-39 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-39: GET /api/projects/:id/todos — list to-dos
+- Added `GET /` handler to `server/src/routes/todos.ts` — validates ownership, queries todos ordered by `sort_order ASC`, supports optional `?milestoneId` and `?completed=true|false` filters
+- 8 unit tests covering: auth 401, project 404, full list ordered, empty array, completed=true filter, completed=false filter, milestoneId filter, field correctness
+- 372 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-38: POST /api/projects/:id/todos — create to-do
 - Created `server/src/validators/todos.ts` with `createTodoSchema` (title, milestoneId, dueDate, isUrgent)

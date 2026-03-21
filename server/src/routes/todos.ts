@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { eq, max, and } from "drizzle-orm";
+import { eq, max, and, asc, SQL } from "drizzle-orm";
 
 import { db } from "../db";
 import { todos, milestones } from "../db/schema";
@@ -72,6 +72,40 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     await recalculateProgress(projectId);
 
     res.status(201).json(todo);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/projects/:id/todos
+ * List all to-dos for a project, ordered by sort_order ASC.
+ * Optional filters: ?milestoneId=<uuid> and ?completed=true|false.
+ */
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const projectId = req.params.id as string;
+    await getOwnedProject(projectId, req.userId!);
+
+    const conditions: SQL[] = [eq(todos.projectId, projectId)];
+
+    if (req.query.milestoneId) {
+      conditions.push(eq(todos.milestoneId, req.query.milestoneId as string));
+    }
+
+    if (req.query.completed === "true") {
+      conditions.push(eq(todos.isCompleted, true));
+    } else if (req.query.completed === "false") {
+      conditions.push(eq(todos.isCompleted, false));
+    }
+
+    const result = await db
+      .select()
+      .from(todos)
+      .where(and(...conditions))
+      .orderBy(asc(todos.sortOrder));
+
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }
