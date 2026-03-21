@@ -3,12 +3,18 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 46
-**Current Task:** TASK-47 Complete
+**Tasks Completed:** 47
+**Current Task:** TASK-48 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-48: PATCH /api/projects/:id/journal/:jid — update journal entry
+- Added `updateJournalSchema` to `server/src/validators/journal.ts` — partial update with title, body, mood (nullable), requires at least one field
+- Added `PATCH /:jid` handler to `server/src/routes/journal.ts` — validates ownership, checks entry exists and not soft-deleted, updates fields + `updated_at`, returns 200
+- 12 unit tests covering: auth 401, project 404, entry not found 404, empty body 400, empty title/body 400, invalid mood 400, title update 200, mood update 200, mood set to null 200, db.update call, soft-deleted entry 404
+- 458 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-47: GET /api/projects/:id/journal — list journal entries
 - Added GET `/` handler to `server/src/routes/journal.ts` with pagination (page, limit capped at 100)

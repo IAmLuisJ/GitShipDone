@@ -3,7 +3,10 @@ import { eq, and, isNull, desc, count } from "drizzle-orm";
 
 import { db } from "../db";
 import { journalEntries, timelineEvents } from "../db/schema";
-import { createJournalSchema } from "../validators/journal";
+import {
+  createJournalSchema,
+  updateJournalSchema,
+} from "../validators/journal";
 import { getOwnedProject } from "../utils/projectOwnership";
 import { awardPoints } from "../services/pointsService";
 
@@ -93,5 +96,56 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 });
+
+/**
+ * PATCH /api/projects/:id/journal/:jid
+ * Update a journal entry's title, body, or mood. Returns 404 if soft-deleted.
+ */
+router.patch(
+  "/:jid",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const jid = req.params.jid as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      const parsed = updateJournalSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          error: "Validation failed",
+          details: parsed.error.flatten().fieldErrors,
+        });
+        return;
+      }
+
+      const existing = await db
+        .select()
+        .from(journalEntries)
+        .where(
+          and(
+            eq(journalEntries.id, jid),
+            eq(journalEntries.projectId, projectId),
+            isNull(journalEntries.deletedAt),
+          ),
+        )
+        .limit(1);
+
+      if (existing.length === 0) {
+        res.status(404).json({ error: "Journal entry not found" });
+        return;
+      }
+
+      const [updated] = await db
+        .update(journalEntries)
+        .set({ ...parsed.data, updatedAt: new Date() })
+        .where(eq(journalEntries.id, jid))
+        .returning();
+
+      res.json(updated);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 export default router;

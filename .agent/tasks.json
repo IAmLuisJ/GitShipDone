@@ -333,7 +333,7 @@
     "title": "PATCH /api/projects/:id/journal/:jid — update journal entry",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-48.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-49",
