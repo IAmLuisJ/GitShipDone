@@ -4,11 +4,20 @@
 =================
 **Last Updated:** 2026-03-21
 **Tasks Completed:** 31
-**Current Task:** TASK-31 Complete
+**Current Task:** TASK-32 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-32: Project progress auto-calculation service
+- Created `server/src/services/progressService.ts` with `recalculateProgress(projectId)` function
+- Queries todo completion ratio: `(completed / total) * 100`, returns 0 for no todos
+- Updates `projects.progress_auto` in database
+- Logs `progress_change` timeline event when progress changes by >= 5%
+- Wiring into todo endpoints deferred to TASK-38/40/41 as specified
+- 9 unit tests covering: zero todos, 50%/75%/100% calculation, rounding, timeline event logging (>= 5% threshold), no event on small changes, DB update verification, null handling
+- 306 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-31: DELETE /api/projects/:id — soft delete project
 - Added `DELETE /:id` handler to `server/src/routes/projects.ts` — validates ownership via `getOwnedProject`, sets `deletedAt = new Date()`, returns 200 `{ message: 'Project deleted' }`

@@ -221,7 +221,7 @@
     "title": "Project progress auto-calculation service",
     "category": "functional",
     "specFilePath": ".agent/tasks/TASK-32.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-33",

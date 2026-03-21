@@ -39,7 +39,8 @@ gitshipdone/
 │   │   ├── config/
 │   │   │   └── passport.ts
 │   │   ├── services/
-│   │   │   └── email.ts
+│   │   │   ├── email.ts
+│   │   │   └── progressService.ts
 │   │   ├── utils/
 │   │   │   ├── jwt.ts
 │   │   │   └── projectOwnership.ts
