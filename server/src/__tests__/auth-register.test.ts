@@ -1,5 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import request from 'supertest';
+
+// Mock rate limiters to pass through — prevents cross-test rate limit interference
+vi.mock('../middleware/rateLimit', () => {
+  const passthrough = (_req: any, _res: any, next: any) => next();
+  return {
+    loginLimiter: passthrough,
+    registerLimiter: passthrough,
+    forgotPasswordLimiter: passthrough,
+  };
+});
+
 import app from '../app';
 
 // Mock the DB module

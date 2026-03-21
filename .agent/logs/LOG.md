@@ -3,10 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 24
-**Current Task:** TASK-24 Complete
+**Tasks Completed:** 25
+**Current Task:** TASK-25 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-21 — TASK-25: Rate limiting on auth endpoints
+- Rate limiters already implemented in `server/src/middleware/rateLimit.ts` (login: 5/15min, register: 10/hr, forgot-password: 3/hr)
+- Rate limiters already applied to auth routes in `server/src/routes/auth.ts`
+- 5 unit tests already passing in `server/src/__tests__/rate-limit.test.ts`
+- Fixed cross-test rate limit interference: added rate limiter mocks to `auth-login`, `auth-register`, and `auth-forgot-password` test files
+- 249 total unit tests passing, type checks clean
 
 ## Session Log
 

@@ -172,7 +172,7 @@
     "title": "Rate limiting on auth endpoints",
     "category": "security",
     "specFilePath": ".agent/tasks/TASK-25.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-26",
