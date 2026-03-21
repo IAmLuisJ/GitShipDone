@@ -179,7 +179,7 @@
     "title": "Helmet.js and CORS configuration",
     "category": "security",
     "specFilePath": ".agent/tasks/TASK-26.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-27",

@@ -3,10 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 25
-**Current Task:** TASK-25 Complete
+**Tasks Completed:** 26
+**Current Task:** TASK-26 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-21 — TASK-26: Helmet.js and CORS configuration
+- Updated CORS config in `server/src/app.ts`: fixed default origin to `http://localhost:5173`, added `methods` and `allowedHeaders` options
+- Helmet already applied globally (X-Content-Type-Options, X-Frame-Options, CSP, HSTS)
+- CORS allows only `FRONTEND_URL` origin with `credentials: true`
+- 9 unit tests covering security headers (5) and CORS behavior (4)
+- 258 total unit tests passing, type checks clean
 
 ## Session Log
 
