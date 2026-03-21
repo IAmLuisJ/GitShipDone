@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 13
-**Current Task:** TASK-14 Complete
+**Tasks Completed:** 15
+**Current Task:** TASK-15 Complete
 
 ----------------------------------------------
 
@@ -163,3 +163,13 @@
 - Hand-wrote migration SQL `0005_create_timeline_events.sql`
 - Migration runs successfully, table verified in PostgreSQL
 - 84 unit tests passing (11 new for timeline events schema), type checks clean
+
+### 2026-03-21 — TASK-15: Refresh tokens table schema and migration
+- Created `server/src/db/schema/refreshTokens.ts` with all required columns
+- FK to `users.id` with cascade delete, index on `user_id`
+- `token_hash` as text notNull (bcrypt hash, never plaintext)
+- `expires_at` as timestamp notNull for token expiry
+- Exported `RefreshToken` and `NewRefreshToken` types, added to schema barrel
+- Hand-wrote migration SQL `0011_create_refresh_tokens.sql`
+- Migration runs successfully, table verified in PostgreSQL
+- 155 unit tests passing (9 new for refresh tokens schema), type checks clean
