@@ -81,7 +81,7 @@
     "title": "GitHub commits table schema and migration",
     "category": "data-model",
     "specFilePath": ".agent/tasks/TASK-12.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-13",

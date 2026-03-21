@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 10
-**Current Task:** TASK-11 Complete
+**Tasks Completed:** 11
+**Current Task:** TASK-12 Complete
 
 ----------------------------------------------
 
@@ -117,6 +117,17 @@
 - Hand-wrote migration SQL `0007_create_parking_lot_items.sql`
 - Migration runs successfully, table verified in PostgreSQL
 - 107 unit tests passing (12 new for parking lot items schema), type checks clean
+
+### 2026-03-21 — TASK-12: GitHub commits table schema and migration
+- Created `server/src/db/schema/githubCommits.ts` with all required columns
+- FK to `projects.id` with cascade delete
+- `sha` varchar(40) with UNIQUE constraint for idempotent imports
+- `author_email` nullable, all other fields notNull
+- Indexes on `project_id` and `committed_at` for timeline sorting
+- Exported `GithubCommit` and `NewGithubCommit` types, added to schema barrel
+- Hand-wrote migration SQL `0008_create_github_commits.sql`
+- Migration runs successfully, table verified in PostgreSQL
+- 120 unit tests passing (13 new for github commits schema), type checks clean
 
 ### 2026-03-21 — TASK-9: Timeline events table schema and migration
 - Created `server/src/db/schema/timelineEvents.ts` with all required columns
