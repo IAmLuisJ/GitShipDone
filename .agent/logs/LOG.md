@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 15
-**Current Task:** TASK-15 Complete
+**Tasks Completed:** 16
+**Current Task:** TASK-16 Complete
 
 ----------------------------------------------
 
@@ -163,6 +163,17 @@
 - Hand-wrote migration SQL `0005_create_timeline_events.sql`
 - Migration runs successfully, table verified in PostgreSQL
 - 84 unit tests passing (11 new for timeline events schema), type checks clean
+
+### 2026-03-21 — TASK-16: POST /api/auth/register — email/password registration
+- Installed bcryptjs, jsonwebtoken, zod, cookie-parser in server/
+- Created `server/src/utils/jwt.ts` with signAccessToken, signRefreshToken, verifyAccessToken, verifyRefreshToken
+- Created `server/src/validators/auth.ts` with Zod registerSchema
+- Created `server/src/routes/auth.ts` with POST /register handler
+  - Validates input with Zod, checks duplicate email (409), hashes password with bcrypt(12)
+  - Creates user, signs JWT access + refresh tokens, stores hashed refresh token in DB
+  - Sets HttpOnly cookie for refresh token, returns 201 with user + accessToken
+- Added cookie-parser middleware and auth router to app.ts, enabled CORS credentials
+- 170 unit tests passing (15 new: 7 JWT, 8 auth-register), type checks clean
 
 ### 2026-03-21 — TASK-15: Refresh tokens table schema and migration
 - Created `server/src/db/schema/refreshTokens.ts` with all required columns

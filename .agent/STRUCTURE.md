@@ -32,7 +32,12 @@ gitshipdone/
 │   │   │       ├── refreshTokens.ts
 │   │   │       └── githubReleases.ts
 │   │   ├── routes/
-│   │   │   └── health.ts
+│   │   │   ├── health.ts
+│   │   │   └── auth.ts
+│   │   ├── utils/
+│   │   │   └── jwt.ts
+│   │   ├── validators/
+│   │   │   └── auth.ts
 │   │   └── middleware/
 │   │       └── errorHandler.ts
 │   ├── drizzle/

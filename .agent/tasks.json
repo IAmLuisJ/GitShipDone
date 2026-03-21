@@ -109,7 +109,7 @@
     "title": "POST /api/auth/register — email/password registration",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-16.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-17",
