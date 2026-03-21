@@ -144,7 +144,7 @@
     "title": "POST /api/auth/reset-password — apply new password",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-21.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-22",

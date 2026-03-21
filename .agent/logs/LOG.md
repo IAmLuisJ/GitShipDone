@@ -3,12 +3,23 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 20
-**Current Task:** TASK-20 Complete
+**Tasks Completed:** 21
+**Current Task:** TASK-21 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-21: POST /api/auth/reset-password — apply new password
+- Added `resetPasswordSchema` validator (token + newPassword min 8 chars)
+- Added `POST /api/auth/reset-password` endpoint to `server/src/routes/auth.ts`
+- Finds unused, non-expired password_reset_tokens and bcrypt-compares to find match
+- Returns 400 for invalid/expired tokens and short passwords
+- Updates user's password_hash with bcrypt cost 12
+- Marks reset token as used (sets used_at), preventing reuse
+- Deletes all refresh tokens for user (forces re-login on all sessions)
+- 9 unit tests covering all acceptance criteria
+- 221 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-20: POST /api/auth/forgot-password — send reset email
 - Created `password_reset_tokens` table schema and migration (0012)

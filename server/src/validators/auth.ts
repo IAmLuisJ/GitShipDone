@@ -20,3 +20,10 @@ export const forgotPasswordSchema = z.object({
 });
 
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1),
+  newPassword: z.string().min(8).max(100),
+});
+
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;

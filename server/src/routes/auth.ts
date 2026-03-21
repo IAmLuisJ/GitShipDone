@@ -8,6 +8,7 @@ import {
   registerSchema,
   loginSchema,
   forgotPasswordSchema,
+  resetPasswordSchema,
 } from "../validators/auth";
 import {
   signAccessToken,
@@ -366,6 +367,74 @@ router.post(
       res
         .status(200)
         .json({ message: "If that email exists, a reset link has been sent." });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * POST /api/auth/reset-password
+ * Verify reset token, update password, invalidate all sessions.
+ */
+router.post(
+  "/reset-password",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const parsed = resetPasswordSchema.safeParse(req.body);
+      if (!parsed.success) {
+        const message = parsed.error.issues
+          .map((e: { message: string }) => e.message)
+          .join(", ");
+        throw new AppError(message, 400);
+      }
+
+      const { token, newPassword } = parsed.data;
+
+      // Find all unused, non-expired reset tokens
+      const candidates = await db
+        .select()
+        .from(passwordResetTokens)
+        .where(
+          and(
+            isNull(passwordResetTokens.usedAt),
+            gt(passwordResetTokens.expiresAt, new Date()),
+          ),
+        );
+
+      // Find the matching token by comparing bcrypt hashes
+      let matchedToken: (typeof candidates)[0] | null = null;
+      for (const candidate of candidates) {
+        const isMatch = await bcrypt.compare(token, candidate.tokenHash);
+        if (isMatch) {
+          matchedToken = candidate;
+          break;
+        }
+      }
+
+      if (!matchedToken) {
+        throw new AppError("Invalid or expired token", 400);
+      }
+
+      // Hash new password and update user
+      const passwordHash = await bcrypt.hash(newPassword, 12);
+      await db
+        .update(users)
+        .set({ passwordHash })
+        .where(eq(users.id, matchedToken.userId));
+
+      // Mark token as used
+      await db
+        .update(passwordResetTokens)
+        .set({ usedAt: new Date() })
+        .where(eq(passwordResetTokens.id, matchedToken.id));
+
+      // Invalidate all refresh tokens for this user (force re-login)
+      await db
+        .delete(refreshTokens)
+        .where(eq(refreshTokens.userId, matchedToken.userId));
+
+      res.status(200).json({ message: "Password updated successfully" });
     } catch (err) {
       next(err);
     }
