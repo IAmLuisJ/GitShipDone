@@ -319,7 +319,7 @@
     "title": "POST /api/projects/:id/journal — create journal entry",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-46.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-47",

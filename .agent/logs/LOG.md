@@ -3,12 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 44
-**Current Task:** TASK-45 Complete
+**Tasks Completed:** 45
+**Current Task:** TASK-46 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-46: POST /api/projects/:id/journal — create journal entry
+- Created `server/src/validators/journal.ts` with `createJournalSchema` (title min 1/max 500, body min 1, optional mood enum)
+- Created `server/src/routes/journal.ts` with POST handler: validates ownership, inserts journal entry, awards +5 points, logs journal timeline event
+- Mounted router at `/api/projects/:id/journal` in `app.ts` with `mergeParams: true`
+- 11 unit tests covering: auth 401, project 404, missing title/body 400, empty title/body 400, invalid mood 400, successful creation 201, optional mood, +5 points award, timeline event insertion
+- 437 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-45: POST /api/projects/:id/points — manual points adjustment with reason
 - Added `manualPointsSchema` to `server/src/validators/projects.ts` — validates delta (int, -500..500) and reason (1-255 chars)
