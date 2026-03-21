@@ -3,10 +3,27 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 22
-**Current Task:** TASK-22 Complete
+**Tasks Completed:** 23
+**Current Task:** TASK-23 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-21 — TASK-23: GET /api/auth/github — initiate GitHub OAuth login flow
+- Installed `passport-github2` with type definitions
+- Added GitHubStrategy to `server/src/config/passport.ts`
+  - Find-or-create user by github_id or email
+  - Updates github_id on existing email-matched users
+  - Creates new OAuth-only users with no password_hash
+  - Handles missing email gracefully (GitHub users can have private email)
+- Added `GET /api/auth/github` route — redirects to GitHub consent screen with `user:email` scope
+- Added `GET /api/auth/github/callback` — handles callback, issues tokens, redirects to frontend
+  - On success: redirects to `FRONTEND_URL/auth/callback?token=ACCESS_TOKEN`
+  - On failure: redirects to `FRONTEND_URL/login?error=oauth_failed`
+  - Sets HttpOnly refresh token cookie and stores hashed token in DB
+- 6 unit tests covering route registration, failure redirect, success redirect, cookie setting, token storage
+- 233 total unit tests passing, type checks clean
 
 ## Session Log
 

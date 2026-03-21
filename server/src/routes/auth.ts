@@ -506,4 +506,67 @@ router.get(
   },
 );
 
+/**
+ * GET /api/auth/github
+ * Redirect to GitHub OAuth consent screen.
+ */
+router.get(
+  "/github",
+  passport.authenticate("github", {
+    scope: ["user:email"],
+    session: false,
+  }),
+);
+
+/**
+ * GET /api/auth/github/callback
+ * Handle GitHub OAuth callback — issue tokens and redirect to frontend.
+ */
+router.get(
+  "/github/callback",
+  (req: Request, res: Response, next: NextFunction) => {
+    passport.authenticate(
+      "github",
+      { session: false },
+      async (err: Error | null, user: { id: string; email: string; name: string } | false) => {
+        try {
+          if (err || !user) {
+            const errorUrl = `${FRONTEND_URL}/login?error=oauth_failed`;
+            res.redirect(errorUrl);
+            return;
+          }
+
+          // Issue tokens
+          const accessToken = signAccessToken(user.id);
+          const rawRefreshToken = signRefreshToken(user.id);
+
+          // Store hashed refresh token
+          const tokenHash = await bcrypt.hash(rawRefreshToken, 10);
+          const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+          await db.insert(refreshTokens).values({
+            userId: user.id,
+            tokenHash,
+            expiresAt,
+          });
+
+          // Set refresh token cookie
+          res.cookie("refreshToken", rawRefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+            path: "/",
+          });
+
+          // Redirect to frontend with access token
+          const callbackUrl = `${FRONTEND_URL}/auth/callback?token=${encodeURIComponent(accessToken)}`;
+          res.redirect(callbackUrl);
+        } catch (error) {
+          next(error);
+        }
+      },
+    )(req, res, next);
+  },
+);
+
 export default router;

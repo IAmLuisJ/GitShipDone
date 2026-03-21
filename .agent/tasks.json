@@ -158,7 +158,7 @@
     "title": "GET /api/auth/github — initiate GitHub OAuth login flow",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-23.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-24",
