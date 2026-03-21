@@ -207,4 +207,35 @@ router.post(
   },
 );
 
+/**
+ * DELETE /api/projects/:id/milestones/:mid
+ * Delete a milestone. Linked todos have milestone_id set to null via FK set null.
+ */
+router.delete(
+  "/:mid",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const milestoneId = req.params.mid as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      const [deleted] = await db
+        .delete(milestones)
+        .where(
+          and(eq(milestones.id, milestoneId), eq(milestones.projectId, projectId)),
+        )
+        .returning();
+
+      if (!deleted) {
+        res.status(404).json({ error: "Milestone not found" });
+        return;
+      }
+
+      res.status(200).json({ message: "Milestone deleted" });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
 export default router;

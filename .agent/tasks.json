@@ -256,7 +256,7 @@
     "title": "DELETE /api/projects/:id/milestones/:mid — delete milestone",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-37.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-38",

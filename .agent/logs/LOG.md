@@ -3,12 +3,18 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 34
-**Current Task:** TASK-35 Complete
+**Tasks Completed:** 37
+**Current Task:** TASK-37 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-37: DELETE /api/projects/:id/milestones/:mid — delete milestone
+- Added `DELETE /:mid` handler to `server/src/routes/milestones.ts` — validates ownership, deletes milestone by id+projectId, returns 200 with message or 404
+- Linked todos have milestone_id set to null via FK set null on delete (handled at DB level)
+- 5 unit tests covering: auth 401, project 404, milestone not found 404, successful deletion 200, db.delete call verification
+- 353 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-36: POST /api/projects/:id/milestones/:mid/complete — complete milestone and award points
 - Added `POST /:mid/complete` handler to `server/src/routes/milestones.ts` — validates ownership, finds milestone, checks not already completed
