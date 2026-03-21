@@ -263,7 +263,7 @@
     "title": "POST /api/projects/:id/todos — create to-do",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-38.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-39",

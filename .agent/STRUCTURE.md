@@ -36,7 +36,8 @@ gitshipdone/
 │   │   │   ├── health.ts
 │   │   │   ├── auth.ts
 │   │   │   ├── projects.ts
-│   │   │   └── milestones.ts
+│   │   │   ├── milestones.ts
+│   │   │   └── todos.ts
 │   │   ├── config/
 │   │   │   └── passport.ts
 │   │   ├── services/
@@ -50,7 +51,8 @@ gitshipdone/
 │   │   ├── validators/
 │   │   │   ├── auth.ts
 │   │   │   ├── projects.ts
-│   │   │   └── milestones.ts
+│   │   │   ├── milestones.ts
+│   │   │   └── todos.ts
 │   │   ├── types/
 │   │   │   └── express.d.ts
 │   │   └── middleware/

@@ -3,12 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 37
-**Current Task:** TASK-37 Complete
+**Tasks Completed:** 38
+**Current Task:** TASK-38 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-38: POST /api/projects/:id/todos — create to-do
+- Created `server/src/validators/todos.ts` with `createTodoSchema` (title, milestoneId, dueDate, isUrgent)
+- Created `server/src/routes/todos.ts` with POST handler: validates ownership, optional milestone linkage, computes sort_order, inserts todo, recalculates progress
+- Mounted router at `/api/projects/:id/todos` in `app.ts` with `mergeParams: true`
+- 11 unit tests covering: auth 401, project 404, missing/empty title 400, sort_order 0/max+1, optional fields, milestone linkage, milestone not found 404, invalid milestoneId 400, recalculateProgress called
+- 364 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-37: DELETE /api/projects/:id/milestones/:mid — delete milestone
 - Added `DELETE /:mid` handler to `server/src/routes/milestones.ts` — validates ownership, deletes milestone by id+projectId, returns 200 with message or 404
