@@ -294,3 +294,13 @@
   - Deletes old refresh tokens for the user, stores new hashed refresh token
   - Sets HttpOnly cookie for refresh token, returns 200 with user + accessToken
 - 179 unit tests passing (9 new for auth-login), type checks clean
+
+### 2026-03-21 — TASK-27: POST /api/projects — create a project
+- Created `server/src/validators/projects.ts` with Zod createProjectSchema
+- Created `server/src/routes/projects.ts` with POST / handler
+  - Validates input with Zod, inserts project in a DB transaction
+  - Optionally seeds milestone templates with sort_order
+  - Logs a timeline event (status_change: null → active)
+  - Returns 201 with created project
+- Mounted projects router in app.ts behind requireAuth middleware
+- 268 unit tests passing (10 new for project creation), type checks clean

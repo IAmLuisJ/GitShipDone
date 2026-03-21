@@ -1,25 +1,26 @@
-import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import cookieParser from 'cookie-parser';
-import passport from 'passport';
-import healthRouter from './routes/health';
-import authRouter from './routes/auth';
-import { configurePassport } from './config/passport';
-import { requireAuth } from './middleware/requireAuth';
-import { errorHandler, AppError } from './middleware/errorHandler';
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import passport from "passport";
+import healthRouter from "./routes/health";
+import authRouter from "./routes/auth";
+import projectsRouter from "./routes/projects";
+import { configurePassport } from "./config/passport";
+import { requireAuth } from "./middleware/requireAuth";
+import { errorHandler, AppError } from "./middleware/errorHandler";
 
 const app = express();
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 app.use(helmet());
@@ -28,15 +29,17 @@ app.use(cookieParser());
 app.use(passport.initialize());
 configurePassport();
 
-app.use('/api/health', healthRouter);
-app.use('/api/auth', authRouter);
+app.use("/api/health", healthRouter);
+app.use("/api/auth", authRouter);
 
 /* --- Protected routes below this line --- */
-app.use('/api', requireAuth);
+app.use("/api", requireAuth);
+
+app.use("/api/projects", projectsRouter);
 
 /** Catch-all for unmatched routes */
 app.use((_req, _res, next) => {
-  next(new AppError('Not found', 404));
+  next(new AppError("Not found", 404));
 });
 
 app.use(errorHandler);

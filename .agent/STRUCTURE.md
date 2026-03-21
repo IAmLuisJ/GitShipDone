@@ -34,7 +34,8 @@ gitshipdone/
 │   │   │       └── githubReleases.ts
 │   │   ├── routes/
 │   │   │   ├── health.ts
-│   │   │   └── auth.ts
+│   │   │   ├── auth.ts
+│   │   │   └── projects.ts
 │   │   ├── config/
 │   │   │   └── passport.ts
 │   │   ├── services/
@@ -42,7 +43,8 @@ gitshipdone/
 │   │   ├── utils/
 │   │   │   └── jwt.ts
 │   │   ├── validators/
-│   │   │   └── auth.ts
+│   │   │   ├── auth.ts
+│   │   │   └── projects.ts
 │   │   ├── types/
 │   │   │   └── express.d.ts
 │   │   └── middleware/

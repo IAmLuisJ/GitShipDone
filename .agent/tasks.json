@@ -186,7 +186,7 @@
     "title": "POST /api/projects — create a project",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-27.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-28",
