@@ -3,12 +3,20 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 60
-**Current Task:** TASK-59 Complete
+**Tasks Completed:** 61
+**Current Task:** TASK-60 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-60: DELETE /api/projects/:id/github/disconnect — remove GitHub repo link
+- Added DELETE `/disconnect` handler in `server/src/routes/github.ts`
+- Checks project ownership, returns 400 if no GitHub repo connected
+- Clears `githubRepoId` and `githubRepoName` on the project, leaves imported commits/releases untouched
+- Returns 200 `{ message: "GitHub repo disconnected" }`
+- 6 unit tests: 401 no auth, 404 not found, 400 no repo connected, 200 success, db.update called, no delete of imported data
+- 579 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-59: GitHub polling cron job — fetch new commits and releases every 60 minutes
 - Installed `node-cron` and `@types/node-cron` in server

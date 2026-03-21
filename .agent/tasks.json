@@ -417,7 +417,7 @@
     "title": "DELETE /api/projects/:id/github/disconnect — remove GitHub repo link",
     "category": "integration",
     "specFilePath": ".agent/tasks/TASK-60.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-61",

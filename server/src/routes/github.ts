@@ -53,9 +53,7 @@ router.post(
       try {
         repoData = await getRepo(octokit, repoOwner, repoName);
       } catch {
-        res
-          .status(400)
-          .json({ error: "Repo not found or no access" });
+        res.status(400).json({ error: "Repo not found or no access" });
         return;
       }
 
@@ -74,6 +72,41 @@ router.post(
       importCommits(projectId, octokit, repoOwner, repoName).catch(() => {});
 
       res.json({ repoName: fullRepoName, importStatus: "importing" });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * DELETE /api/projects/:id/github/disconnect
+ * Remove GitHub repo link from a project.
+ * Imported commits and releases remain in the database.
+ */
+router.delete(
+  "/disconnect",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const project = await getOwnedProject(projectId, req.userId!);
+
+      if (!project.githubRepoName) {
+        res
+          .status(400)
+          .json({ error: "No GitHub repo is connected to this project" });
+        return;
+      }
+
+      await db
+        .update(projects)
+        .set({
+          githubRepoId: null,
+          githubRepoName: null,
+          updatedAt: new Date(),
+        })
+        .where(eq(projects.id, projectId));
+
+      res.json({ message: "GitHub repo disconnected" });
     } catch (err) {
       next(err);
     }
