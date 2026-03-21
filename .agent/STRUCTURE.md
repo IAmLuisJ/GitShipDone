@@ -30,10 +30,13 @@ gitshipdone/
 │   │   │       ├── githubCommits.ts
 │   │   │       ├── notifications.ts
 │   │   │       ├── refreshTokens.ts
+│   │   │       ├── passwordResetTokens.ts
 │   │   │       └── githubReleases.ts
 │   │   ├── routes/
 │   │   │   ├── health.ts
 │   │   │   └── auth.ts
+│   │   ├── services/
+│   │   │   └── email.ts
 │   │   ├── utils/
 │   │   │   └── jwt.ts
 │   │   ├── validators/
@@ -53,6 +56,7 @@ gitshipdone/
 │   │   ├── 0009_create_github_releases.sql
 │   │   ├── 0010_create_notifications.sql
 │   │   ├── 0011_create_refresh_tokens.sql
+│   │   ├── 0012_create_password_reset_tokens.sql
 │   │   └── meta/
 │   │       ├── _journal.json
 │   │       └── 0000_snapshot.json

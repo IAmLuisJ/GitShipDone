@@ -3,12 +3,23 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 19
-**Current Task:** TASK-19 Complete
+**Tasks Completed:** 20
+**Current Task:** TASK-20 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-20: POST /api/auth/forgot-password — send reset email
+- Created `password_reset_tokens` table schema and migration (0012)
+- Created `server/src/services/email.ts` with Resend integration + dev console stub
+- Added `POST /api/auth/forgot-password` endpoint to `server/src/routes/auth.ts`
+- Always returns 200 with generic message (prevents email enumeration)
+- Generates crypto.randomBytes(32) token, stores bcrypt hash, expires in 1 hour
+- Sends reset email via email service; gracefully handles email failures
+- Skips token generation for non-existent or soft-deleted users
+- 9 unit tests for forgot-password, 10 for password_reset_tokens schema
+- 212 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-19: POST /api/auth/logout — invalidate refresh token
 - Added `POST /api/auth/logout` endpoint to `server/src/routes/auth.ts`

@@ -10,3 +10,4 @@ export * from "./githubCommits";
 export * from "./githubReleases";
 export * from "./notifications";
 export * from "./refreshTokens";
+export * from "./passwordResetTokens";

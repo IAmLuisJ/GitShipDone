@@ -1,16 +1,21 @@
 import { Router, Request, Response, NextFunction } from "express";
+import crypto from "crypto";
 import bcrypt from "bcryptjs";
-import { eq, and, gt } from "drizzle-orm";
+import { eq, and, gt, isNull } from "drizzle-orm";
 import { db } from "../db";
-import { users } from "../db/schema";
-import { refreshTokens } from "../db/schema";
-import { registerSchema, loginSchema } from "../validators/auth";
+import { users, refreshTokens, passwordResetTokens } from "../db/schema";
+import {
+  registerSchema,
+  loginSchema,
+  forgotPasswordSchema,
+} from "../validators/auth";
 import {
   signAccessToken,
   signRefreshToken,
   verifyRefreshToken,
 } from "../utils/jwt";
 import { AppError } from "../middleware/errorHandler";
+import { sendPasswordResetEmail } from "../services/email";
 
 const router = Router();
 
@@ -304,6 +309,63 @@ router.post(
       });
 
       res.status(200).json({ message: "Logged out" });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * POST /api/auth/forgot-password
+ * Generate a password reset token and send email. Always returns 200.
+ */
+router.post(
+  "/forgot-password",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const parsed = forgotPasswordSchema.safeParse(req.body);
+      if (!parsed.success) {
+        // Still return 200 to prevent enumeration
+        res
+          .status(200)
+          .json({ message: "If that email exists, a reset link has been sent." });
+        return;
+      }
+
+      const { email } = parsed.data;
+
+      // Look up user by email, exclude soft-deleted
+      const [user] = await db
+        .select({ id: users.id, deletedAt: users.deletedAt })
+        .from(users)
+        .where(eq(users.email, email.toLowerCase()))
+        .limit(1);
+
+      if (user && !user.deletedAt) {
+        // Generate cryptographically secure reset token
+        const rawToken = crypto.randomBytes(32).toString("hex");
+        const tokenHash = await bcrypt.hash(rawToken, 10);
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+        // Store hashed token
+        await db.insert(passwordResetTokens).values({
+          userId: user.id,
+          tokenHash,
+          expiresAt,
+        });
+
+        // Send reset email (fire-and-forget, don't leak errors)
+        try {
+          await sendPasswordResetEmail(email.toLowerCase(), rawToken);
+        } catch (emailErr) {
+          console.error("Failed to send password reset email:", emailErr);
+        }
+      }
+
+      // Always return 200 regardless of whether email exists
+      res
+        .status(200)
+        .json({ message: "If that email exists, a reset link has been sent." });
     } catch (err) {
       next(err);
     }
