@@ -3,7 +3,11 @@ import { eq, max, and, asc, SQL } from "drizzle-orm";
 
 import { db } from "../db";
 import { todos, milestones } from "../db/schema";
-import { createTodoSchema, updateTodoSchema } from "../validators/todos";
+import {
+  createTodoSchema,
+  updateTodoSchema,
+  reorderTodosSchema,
+} from "../validators/todos";
 import { getOwnedProject } from "../utils/projectOwnership";
 import { recalculateProgress } from "../services/progressService";
 import { awardPoints } from "../services/pointsService";
@@ -111,6 +115,62 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 });
+
+/**
+ * PATCH /api/projects/:id/todos/reorder
+ * Accept an ordered list of todo IDs and update sort_order based on array position.
+ * Must be defined BEFORE /:tid to avoid Express matching 'reorder' as a :tid param.
+ */
+router.patch(
+  "/reorder",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      const parsed = reorderTodosSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          error: "Validation failed",
+          details: parsed.error.flatten().fieldErrors,
+        });
+        return;
+      }
+
+      const { orderedIds } = parsed.data;
+
+      // Verify all IDs belong to this project
+      const projectTodos = await db
+        .select({ id: todos.id })
+        .from(todos)
+        .where(eq(todos.projectId, projectId));
+
+      const projectTodoIds = new Set(projectTodos.map((t) => t.id));
+      const foreignIds = orderedIds.filter((id) => !projectTodoIds.has(id));
+
+      if (foreignIds.length > 0) {
+        res
+          .status(400)
+          .json({ error: "Some todo IDs do not belong to this project" });
+        return;
+      }
+
+      // Update sort_order in a transaction
+      await db.transaction(async (tx) => {
+        for (let i = 0; i < orderedIds.length; i++) {
+          await tx
+            .update(todos)
+            .set({ sortOrder: i, updatedAt: new Date() })
+            .where(eq(todos.id, orderedIds[i]));
+        }
+      });
+
+      res.status(200).json({ message: "Order updated" });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 /**
  * PATCH /api/projects/:id/todos/:tid

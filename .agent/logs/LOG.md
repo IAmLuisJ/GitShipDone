@@ -3,12 +3,20 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-21
-**Tasks Completed:** 41
-**Current Task:** TASK-41 Complete
+**Tasks Completed:** 42
+**Current Task:** TASK-42 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-21 — TASK-42: PATCH /api/projects/:id/todos/reorder — update todo sort order
+- Added `reorderTodosSchema` to `server/src/validators/todos.ts` — validates `{ orderedIds: uuid[] }` with min 1
+- Added `PATCH /reorder` handler to `server/src/routes/todos.ts` (defined before `/:tid` to avoid param collision)
+- Validates project ownership, verifies all IDs belong to the project (400 if foreign), updates sort_order in a transaction
+- Returns 200 `{ message: 'Order updated' }` on success
+- 8 unit tests covering: auth 401, project 404, missing orderedIds 400, non-uuid 400, foreign IDs 400, successful reorder 200, transaction call, empty array 400
+- 397 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-41: DELETE /api/projects/:id/todos/:tid — delete to-do
 - Added `DELETE /:tid` handler to `server/src/routes/todos.ts` — validates ownership, finds todo by id+projectId, deletes permanently, recalculates progress

@@ -291,7 +291,7 @@
     "title": "PATCH /api/projects/:id/todos/reorder — update todo sort order",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-42.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-43",
