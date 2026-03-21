@@ -67,7 +67,7 @@
     "title": "Points log table schema and migration",
     "category": "data-model",
     "specFilePath": ".agent/tasks/TASK-10.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-11",

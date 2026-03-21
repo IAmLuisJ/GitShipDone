@@ -3,8 +3,8 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-20
-**Tasks Completed:** 8
-**Current Task:** TASK-8 Complete
+**Tasks Completed:** 9
+**Current Task:** TASK-10 Complete
 
 ----------------------------------------------
 
@@ -96,6 +96,16 @@
 - Hand-wrote migration SQL `0004_create_journal_entries.sql`
 - Migration runs successfully, table verified in PostgreSQL
 - 73 unit tests passing (12 new for journal entries schema), type checks clean
+
+### 2026-03-21 — TASK-10: Points log table schema and migration
+- Created `server/src/db/schema/pointsLog.ts` with all required columns
+- Defined `pointSourceEnum` with 6 sources (todo, milestone, journal, github_commit, github_release, manual)
+- FK to `projects.id` with cascade delete, index on `project_id`
+- `delta` as integer (positive or negative), `reason` as varchar(255)
+- Exported `PointsLog` and `NewPointsLog` types, added to schema barrel
+- Hand-wrote migration SQL `0006_create_points_log.sql`
+- Migration runs successfully, table verified in PostgreSQL
+- 95 unit tests passing (11 new for points log schema), type checks clean
 
 ### 2026-03-21 — TASK-9: Timeline events table schema and migration
 - Created `server/src/db/schema/timelineEvents.ts` with all required columns

@@ -43,6 +43,13 @@
       "when": 1742918400000,
       "tag": "0005_create_timeline_events",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1743004800000,
+      "tag": "0006_create_points_log",
+      "breakpoints": true
     }
   ]
 }
