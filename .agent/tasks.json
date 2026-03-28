@@ -438,7 +438,7 @@
     "title": "GET /api/share/:token — public read-only project data endpoint",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-63.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-64",

@@ -3,12 +3,21 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 63
-**Current Task:** TASK-62 Complete
+**Tasks Completed:** 64
+**Current Task:** TASK-63 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-28 — TASK-63: GET /api/share/:token — public read-only project data endpoint
+- Created `server/src/routes/publicShare.ts` with GET `/:token` endpoint (no auth required)
+- Looks up project by share_token WHERE is_public = true AND deleted_at IS NULL
+- Returns project (name, type, description, status, progress, points, level, createdAt) plus milestones, todos, journal entries (non-deleted), and last 50 timeline events
+- Does NOT expose sensitive fields: userId, shareToken, isPublic, githubRepoId, githubRepoName, deletedAt
+- Mounted at `/api/share` BEFORE requireAuth middleware in app.ts
+- 6 unit tests: 404 invalid token, no auth required, 200 with project data, returns all related data, no sensitive fields, 404 for private project
+- 598 total unit tests passing, type checks clean
 
 ### 2026-03-28 — TASK-62: POST /api/projects/:id/share/revoke — revoke and regenerate share token
 - Added POST `/revoke` handler in `server/src/routes/share.ts`

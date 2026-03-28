@@ -15,6 +15,7 @@ import timelineRouter from "./routes/timeline";
 import parkingLotRouter from "./routes/parkingLot";
 import githubRouter from "./routes/github";
 import shareRouter from "./routes/share";
+import publicShareRouter from "./routes/publicShare";
 import { configurePassport } from "./config/passport";
 import { requireAuth } from "./middleware/requireAuth";
 import { errorHandler, AppError } from "./middleware/errorHandler";
@@ -38,6 +39,7 @@ configurePassport();
 
 app.use("/api/health", healthRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/share", publicShareRouter);
 
 /* --- Protected routes below this line --- */
 app.use("/api", requireAuth);
