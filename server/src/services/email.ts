@@ -1,7 +1,9 @@
 /**
- * Email service — sends transactional emails via Resend.
+ * Email service — sends transactional emails via Resend SDK.
  * In development (no RESEND_API_KEY), logs emails to console instead.
  */
+import { Resend } from "resend";
+import { passwordResetEmail } from "../emails/passwordReset";
 
 export interface EmailOptions {
   to: string;
@@ -10,7 +12,8 @@ export interface EmailOptions {
 }
 
 /**
- * Send an email. Uses Resend in production, logs to console otherwise.
+ * Send an email. Uses Resend SDK in production, logs to console otherwise.
+ * Errors are caught and logged — callers are not interrupted by email failures.
  */
 export async function sendEmail(options: EmailOptions): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
@@ -23,23 +26,16 @@ export async function sendEmail(options: EmailOptions): Promise<void> {
     return;
   }
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  try {
+    const resend = new Resend(apiKey);
+    await resend.emails.send({
       from: fromAddress,
       to: options.to,
       subject: options.subject,
       html: options.html,
-    }),
-  });
-
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Resend API error ${res.status}: ${body}`);
+    });
+  } catch (error) {
+    console.error("[EMAIL ERROR] Failed to send email:", error);
   }
 }
 
@@ -50,18 +46,13 @@ export async function sendPasswordResetEmail(
   email: string,
   resetToken: string,
 ): Promise<void> {
-  const frontendUrl =
-    process.env.FRONTEND_URL || "http://localhost:3000";
+  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
   const resetLink = `${frontendUrl}/reset-password?token=${resetToken}`;
+  const settingsUrl = `${frontendUrl}/settings`;
 
   await sendEmail({
     to: email,
     subject: "Reset your GitShipDone password",
-    html: `
-      <h2>Password Reset</h2>
-      <p>You requested a password reset for your GitShipDone account.</p>
-      <p><a href="${resetLink}">Click here to reset your password</a></p>
-      <p>This link expires in 1 hour. If you didn't request this, you can safely ignore this email.</p>
-    `,
+    html: passwordResetEmail(resetLink, settingsUrl),
   });
 }

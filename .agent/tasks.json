@@ -473,7 +473,7 @@
     "title": "Email service setup with Resend — transactional email templates",
     "category": "integration",
     "specFilePath": ".agent/tasks/TASK-68.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-69",

@@ -3,10 +3,23 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 67
-**Current Task:** TASK-66 Complete
+**Tasks Completed:** 68
+**Current Task:** TASK-68 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-28 — TASK-68: Email service setup with Resend — transactional email templates
+- Installed `resend` SDK in server dependencies
+- Refactored `server/src/services/email.ts` to use Resend SDK (`new Resend(apiKey)`) with console stub fallback
+- Created `server/src/emails/passwordReset.ts` — HTML template with reset URL and unsubscribe link
+- Created `server/src/emails/milestoneReminder.ts` — HTML template with milestone/project/due date and unsubscribe link
+- Created `server/src/emails/todoReminder.ts` — HTML template with todo/project/due date and unsubscribe link
+- All templates include CAN-SPAM compliant unsubscribe footer linking to `?tab=notifications`
+- Updated `sendPasswordResetEmail` to use the new template
+- 15 unit tests: service tests (stub logging, Resend SDK usage, custom FROM, error handling, no-throw) + template tests (content rendering, unsubscribe links)
+- 634 total unit tests passing, type checks clean
 
 ## Session Log
 

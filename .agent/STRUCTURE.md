@@ -46,6 +46,10 @@ gitshipdone/
 │   │   │   └── github.ts
 │   │   ├── config/
 │   │   │   └── passport.ts
+│   │   ├── emails/
+│   │   │   ├── passwordReset.ts
+│   │   │   ├── milestoneReminder.ts
+│   │   │   └── todoReminder.ts
 │   │   ├── jobs/
 │   │   │   └── githubSync.ts
 │   │   ├── services/
