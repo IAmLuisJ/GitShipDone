@@ -3,12 +3,23 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 74
-**Current Task:** TASK-74 Complete
+**Tasks Completed:** 75
+**Current Task:** TASK-75 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-28 — TASK-75: POST /api/projects/:id/ai/chat — AI PM chat endpoint (multi-provider)
+- Installed `openai` and `@anthropic-ai/sdk` SDKs
+- Created `server/src/services/aiContextService.ts` — builds concise project context string (name, type, vision, status, progress, level, milestones, journal, todos)
+- Created `server/src/routes/ai.ts` — POST `/chat` handler with multi-provider support (OpenAI gpt-4o / Anthropic claude-sonnet-4-6)
+- Validates auth + project ownership, checks user has AI API key configured
+- Decrypts API key, builds project context, calls appropriate AI provider
+- Returns `{ response: string }` or 500 "AI service unavailable" on failure
+- Mounted at `/api/projects/:id/ai` in app.ts
+- 12 new tests: 4 context builder tests + 8 endpoint tests (401 no auth, 400 no key, 400 empty/missing message, 200 OpenAI, 200 Anthropic, 404 wrong project, 500 API failure)
+- 694 total unit tests passing, type checks clean
 
 ### 2026-03-28 — TASK-74: DELETE /api/users/me — soft delete account
 - Added DELETE `/me` endpoint to `server/src/routes/users.ts`

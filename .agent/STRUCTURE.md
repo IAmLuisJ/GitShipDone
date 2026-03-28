@@ -44,7 +44,8 @@ gitshipdone/
 │   │   │   ├── publicShare.ts
 │   │   │   ├── notifications.ts
 │   │   │   ├── users.ts
-│   │   │   └── github.ts
+│   │   │   ├── github.ts
+│   │   │   └── ai.ts
 │   │   ├── config/
 │   │   │   └── passport.ts
 │   │   ├── emails/
@@ -59,7 +60,8 @@ gitshipdone/
 │   │   │   ├── pointsService.ts
 │   │   │   ├── progressService.ts
 │   │   │   ├── timelineService.ts
-│   │   │   └── githubService.ts
+│   │   │   ├── githubService.ts
+│   │   │   └── aiContextService.ts
 │   │   ├── utils/
 │   │   │   ├── encryption.ts
 │   │   │   ├── jwt.ts

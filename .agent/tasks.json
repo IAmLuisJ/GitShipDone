@@ -522,7 +522,7 @@
     "title": "POST /api/projects/:id/ai/chat — AI PM chat endpoint (multi-provider)",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-75.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-76",

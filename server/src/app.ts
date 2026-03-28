@@ -18,6 +18,7 @@ import shareRouter from "./routes/share";
 import publicShareRouter from "./routes/publicShare";
 import notificationsRouter from "./routes/notifications";
 import usersRouter from "./routes/users";
+import aiRouter from "./routes/ai";
 import { configurePassport } from "./config/passport";
 import { requireAuth } from "./middleware/requireAuth";
 import { errorHandler, AppError } from "./middleware/errorHandler";
@@ -54,6 +55,7 @@ app.use("/api/projects/:id/timeline", timelineRouter);
 app.use("/api/projects/:id/parking-lot", parkingLotRouter);
 app.use("/api/projects/:id/github", githubRouter);
 app.use("/api/projects/:id/share", shareRouter);
+app.use("/api/projects/:id/ai", aiRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/users", usersRouter);
 
