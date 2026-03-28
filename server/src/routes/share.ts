@@ -34,13 +34,42 @@ router.post(
           .where(eq(projects.id, projectId));
       }
 
-      const frontendUrl =
-        process.env.FRONTEND_URL || "http://localhost:5173";
+      const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
 
       res.status(200).json({
         shareToken,
         shareUrl: `${frontendUrl}/share/${shareToken}`,
       });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * POST /api/projects/:id/share/revoke
+ * Revoke the current share token (old URL becomes invalid),
+ * generate a new token, and set is_public = false.
+ */
+router.post(
+  "/revoke",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      const newToken = crypto.randomUUID();
+
+      await db
+        .update(projects)
+        .set({
+          isPublic: false,
+          shareToken: newToken,
+          updatedAt: new Date(),
+        })
+        .where(eq(projects.id, projectId));
+
+      res.status(200).json({ message: "Share link revoked" });
     } catch (err) {
       next(err);
     }

@@ -431,7 +431,7 @@
     "title": "POST /api/projects/:id/share/revoke — revoke and regenerate share token",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-62.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-63",

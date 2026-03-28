@@ -3,12 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 62
-**Current Task:** TASK-61 Complete
+**Tasks Completed:** 63
+**Current Task:** TASK-62 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-28 — TASK-62: POST /api/projects/:id/share/revoke — revoke and regenerate share token
+- Added POST `/revoke` handler in `server/src/routes/share.ts`
+- Generates new UUID share token (old one becomes invalid), sets `isPublic = false`
+- Returns 200 `{ message: "Share link revoked" }`
+- 6 unit tests: 401 no auth, 404 not found, 200 success, db.update called, new token differs from old, works without existing token
+- 592 total unit tests passing, type checks clean
 
 ### 2026-03-28 — TASK-61: POST /api/projects/:id/share/enable — generate public share token
 - Route `server/src/routes/share.ts` with `mergeParams: true`, POST `/enable` endpoint
