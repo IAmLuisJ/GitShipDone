@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { eq, and, isNull, desc, lt, or, sql, count } from "drizzle-orm";
+import { eq, and, isNull, desc, lt, or, count } from "drizzle-orm";
 
 import { db } from "../db";
 import { notifications } from "../db/schema";
@@ -21,7 +21,10 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 
     const baseConditions = [
       eq(notifications.userId, userId),
-      or(isNull(notifications.snoozedUntil), lt(notifications.snoozedUntil, now)),
+      or(
+        isNull(notifications.snoozedUntil),
+        lt(notifications.snoozedUntil, now),
+      ),
     ];
 
     const listConditions = unreadOnly
@@ -42,7 +45,10 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
         and(
           eq(notifications.userId, userId),
           eq(notifications.isRead, false),
-          or(isNull(notifications.snoozedUntil), lt(notifications.snoozedUntil, now)),
+          or(
+            isNull(notifications.snoozedUntil),
+            lt(notifications.snoozedUntil, now),
+          ),
         ),
       );
 
@@ -51,5 +57,71 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 });
+
+/**
+ * PATCH /api/notifications/:nid/read
+ * Mark a single notification as read.
+ */
+router.patch(
+  "/:nid/read",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.userId!;
+      const nid = req.params.nid as string;
+
+      const [notification] = await db
+        .select()
+        .from(notifications)
+        .where(and(eq(notifications.id, nid), eq(notifications.userId, userId)))
+        .limit(1);
+
+      if (!notification) {
+        res.status(404).json({ error: "Notification not found" });
+        return;
+      }
+
+      await db
+        .update(notifications)
+        .set({ isRead: true })
+        .where(eq(notifications.id, nid));
+
+      res.json({ message: "Notification marked as read" });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * POST /api/notifications/read-all
+ * Mark all unread notifications for the authenticated user as read.
+ */
+router.post(
+  "/read-all",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.userId!;
+
+      const result = await db
+        .update(notifications)
+        .set({ isRead: true })
+        .where(
+          and(
+            eq(notifications.userId, userId),
+            eq(notifications.isRead, false),
+          ),
+        );
+
+      const updated =
+        typeof (result as unknown as { rowCount: number }).rowCount === "number"
+          ? (result as unknown as { rowCount: number }).rowCount
+          : 0;
+
+      res.json({ updated });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 export default router;

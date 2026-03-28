@@ -452,7 +452,7 @@
     "title": "PATCH /api/notifications/:nid/read — mark notification as read",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-65.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-66",

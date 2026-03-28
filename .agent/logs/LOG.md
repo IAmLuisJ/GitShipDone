@@ -3,12 +3,19 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 65
-**Current Task:** TASK-64 Complete
+**Tasks Completed:** 66
+**Current Task:** TASK-65 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-28 — TASK-65: PATCH /api/notifications/:nid/read — mark notification as read
+- Added PATCH `/:nid/read` endpoint to mark a single notification as read (checks ownership, returns 404 if not found)
+- Added POST `/read-all` endpoint to mark all user unread notifications as read, returns `{ updated: rowCount }`
+- 8 unit tests: 401 no auth (x2), 404 not found, 200 mark single read, db.update called, read-all with count, read-all with 0, read-all db.update called once
+- 612 total unit tests passing, type checks clean
+
 
 ### 2026-03-28 — TASK-64: GET /api/notifications — list user notifications
 - Created `server/src/routes/notifications.ts` with GET `/` handler
