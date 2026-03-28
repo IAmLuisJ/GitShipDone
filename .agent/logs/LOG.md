@@ -3,10 +3,20 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 66
-**Current Task:** TASK-65 Complete
+**Tasks Completed:** 67
+**Current Task:** TASK-66 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-28 — TASK-66: PATCH /api/notifications/:nid/snooze — snooze notification until date
+- Added PATCH `/:nid/snooze` endpoint in `server/src/routes/notifications.ts`
+- Validates `snoozeUntil` is a valid ISO datetime string and in the future (400 if not)
+- Finds notification by id AND user_id (404 if not found)
+- Sets `snoozed_until` on the notification, returns 200 with updated notification via `.returning()`
+- 7 unit tests: 401 no auth, 400 missing snoozeUntil, 400 past date, 404 not found, 200 success, db.update called, 400 invalid datetime
+- 619 total unit tests passing, type checks clean
 
 ## Session Log
 

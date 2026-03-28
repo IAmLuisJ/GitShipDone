@@ -459,7 +459,7 @@
     "title": "PATCH /api/notifications/:nid/snooze — snooze notification until date",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-66.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-67",

@@ -124,4 +124,58 @@ router.post(
   },
 );
 
+/**
+ * PATCH /api/notifications/:nid/snooze
+ * Snooze a notification until a specified date/time.
+ * Body: { snoozeUntil: ISO datetime string }
+ * snoozeUntil must be in the future.
+ */
+router.patch(
+  "/:nid/snooze",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.userId!;
+      const nid = req.params.nid as string;
+      const { snoozeUntil } = req.body;
+
+      if (!snoozeUntil || typeof snoozeUntil !== "string") {
+        res.status(400).json({ error: "snoozeUntil is required and must be an ISO datetime string" });
+        return;
+      }
+
+      const snoozeDate = new Date(snoozeUntil);
+      if (isNaN(snoozeDate.getTime())) {
+        res.status(400).json({ error: "snoozeUntil must be a valid ISO datetime string" });
+        return;
+      }
+
+      if (snoozeDate <= new Date()) {
+        res.status(400).json({ error: "snoozeUntil must be in the future" });
+        return;
+      }
+
+      const [notification] = await db
+        .select()
+        .from(notifications)
+        .where(and(eq(notifications.id, nid), eq(notifications.userId, userId)))
+        .limit(1);
+
+      if (!notification) {
+        res.status(404).json({ error: "Notification not found" });
+        return;
+      }
+
+      const [updated] = await db
+        .update(notifications)
+        .set({ snoozedUntil: snoozeDate })
+        .where(eq(notifications.id, nid))
+        .returning();
+
+      res.json({ notification: updated });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
 export default router;
