@@ -15,19 +15,19 @@
       "step": 1,
       "description": "Create share router and enable endpoint",
       "details": "Create server/src/routes/share.ts with mergeParams: true. POST /enable: 1) getOwnedProject. 2) If project.shareToken is null, generate new UUID: crypto.randomUUID(). 3) Update project: is_public = true, share_token = token (if not already set). 4) Return 200 { shareToken, shareUrl: FRONTEND_URL + '/share/' + token }.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Mount share router",
       "details": "Mount at /api/projects/:id/share with requireAuth.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Test",
       "details": "Enable sharing — verify is_public=true and share_token set. Enable again — verify same token returned (idempotent). Share URL is correct format.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-29"],

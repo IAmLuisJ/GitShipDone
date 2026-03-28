@@ -424,7 +424,7 @@
     "title": "POST /api/projects/:id/share/enable — generate public share token",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-61.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-62",

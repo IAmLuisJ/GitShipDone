@@ -2,13 +2,22 @@
 
 `Current Status`
 =================
-**Last Updated:** 2026-03-21
-**Tasks Completed:** 61
-**Current Task:** TASK-60 Complete
+**Last Updated:** 2026-03-28
+**Tasks Completed:** 62
+**Current Task:** TASK-61 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-28 — TASK-61: POST /api/projects/:id/share/enable — generate public share token
+- Route `server/src/routes/share.ts` with `mergeParams: true`, POST `/enable` endpoint
+- Uses `getOwnedProject` for auth + ownership, generates UUID v4 share token via `crypto.randomUUID()`
+- Sets `isPublic = true` and `shareToken` on project; idempotent (returns existing token if already public)
+- Returns 200 `{ shareToken, shareUrl }` with FRONTEND_URL prefix
+- Mounted at `/api/projects/:id/share` with `requireAuth` in `app.ts`
+- 7 unit tests: 401 no auth, 404 not found, 200 success with token/url, db.update called, idempotent existing token, regenerate if public but no token, shareUrl format
+- 586 total unit tests passing, type checks clean
 
 ### 2026-03-21 — TASK-60: DELETE /api/projects/:id/github/disconnect — remove GitHub repo link
 - Added DELETE `/disconnect` handler in `server/src/routes/github.ts`
