@@ -1,9 +1,15 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { eq, and, isNull } from "drizzle-orm";
 import { z } from "zod";
+import bcrypt from "bcryptjs";
 
 import { db } from "../db";
-import { users } from "../db/schema";
+import { users, refreshTokens } from "../db/schema";
+
+const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(8),
+});
 
 const updateProfileSchema = z.object({
   name: z.string().min(1).max(255).optional(),
@@ -101,5 +107,62 @@ router.patch("/me", async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 });
+
+/**
+ * PATCH /api/users/me/password
+ * Change password with current password verification.
+ * Not available for OAuth-only accounts (no passwordHash).
+ */
+router.patch(
+  "/me/password",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.userId!;
+
+      const parsed = changePasswordSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues });
+      }
+
+      const { currentPassword, newPassword } = parsed.data;
+
+      const rows = await db
+        .select()
+        .from(users)
+        .where(and(eq(users.id, userId), isNull(users.deletedAt)));
+
+      if (rows.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const user = rows[0];
+
+      if (!user.passwordHash) {
+        return res
+          .status(400)
+          .json({ error: "Password login not available for OAuth accounts" });
+      }
+
+      const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+      if (!valid) {
+        return res.status(401).json({ error: "Current password is incorrect" });
+      }
+
+      const newHash = await bcrypt.hash(newPassword, 12);
+
+      await db
+        .update(users)
+        .set({ passwordHash: newHash, updatedAt: new Date() })
+        .where(eq(users.id, userId));
+
+      // Invalidate all refresh tokens to force re-login
+      await db.delete(refreshTokens).where(eq(refreshTokens.userId, userId));
+
+      return res.json({ message: "Password changed successfully" });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 export default router;

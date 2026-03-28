@@ -3,10 +3,22 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 71
-**Current Task:** TASK-70 Complete
+**Tasks Completed:** 72
+**Current Task:** TASK-71 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-28 — TASK-71: PATCH /api/users/me/password — change password with current password verification
+- Added PATCH `/me/password` endpoint to `server/src/routes/users.ts`
+- Validates `{ currentPassword, newPassword }` with Zod (newPassword min 8 chars)
+- Returns 400 for OAuth-only accounts (no passwordHash)
+- Returns 401 if currentPassword doesn't match (bcrypt.compare)
+- Hashes new password with bcrypt (cost 12), updates user record
+- Invalidates all refresh tokens for the user (force re-login)
+- 7 new tests: 401 no auth, 400 short password, 400 missing field, 400 OAuth account, 401 wrong password, 200 success, 404 soft-deleted
+- 666 total unit tests passing, type checks clean
 
 ## Session Log
 
