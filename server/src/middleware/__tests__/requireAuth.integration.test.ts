@@ -42,12 +42,12 @@ describe('requireAuth integration', () => {
     expect(res.status).toBe(401);
   });
 
-  it('protected routes pass auth with valid token (hits 404 since route not yet implemented)', async () => {
+  it('protected routes pass auth with valid token (not 401)', async () => {
     const token = signAccessToken('test-user-id');
     const res = await request(app)
       .get('/api/users/me')
       .set('Authorization', `Bearer ${token}`);
-    // The middleware passes, but no route is registered yet → 404
-    expect(res.status).toBe(404);
+    // Auth middleware passes — response is NOT 401 (route may error without full DB mock)
+    expect(res.status).not.toBe(401);
   });
 });

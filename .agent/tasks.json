@@ -480,7 +480,7 @@
     "title": "GET /api/users/me — get current user profile",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-69.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-70",

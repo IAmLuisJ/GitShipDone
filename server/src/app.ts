@@ -17,6 +17,7 @@ import githubRouter from "./routes/github";
 import shareRouter from "./routes/share";
 import publicShareRouter from "./routes/publicShare";
 import notificationsRouter from "./routes/notifications";
+import usersRouter from "./routes/users";
 import { configurePassport } from "./config/passport";
 import { requireAuth } from "./middleware/requireAuth";
 import { errorHandler, AppError } from "./middleware/errorHandler";
@@ -54,6 +55,7 @@ app.use("/api/projects/:id/parking-lot", parkingLotRouter);
 app.use("/api/projects/:id/github", githubRouter);
 app.use("/api/projects/:id/share", shareRouter);
 app.use("/api/notifications", notificationsRouter);
+app.use("/api/users", usersRouter);
 
 /** Catch-all for unmatched routes */
 app.use((_req, _res, next) => {

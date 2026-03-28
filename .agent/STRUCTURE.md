@@ -43,6 +43,7 @@ gitshipdone/
 │   │   │   ├── timeline.ts
 │   │   │   ├── publicShare.ts
 │   │   │   ├── notifications.ts
+│   │   │   ├── users.ts
 │   │   │   └── github.ts
 │   │   ├── config/
 │   │   │   └── passport.ts

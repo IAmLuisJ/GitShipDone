@@ -3,10 +3,22 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 69
-**Current Task:** TASK-67 Complete
+**Tasks Completed:** 70
+**Current Task:** TASK-69 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-28 — TASK-69: GET /api/users/me — get current user profile
+- Created `server/src/routes/users.ts` with GET `/me` endpoint
+- Returns sanitized profile: id, email, name, avatarUrl, aiProvider, hasAiKey (bool), emailNotificationsEnabled, githubConnected (bool), createdAt
+- Never exposes passwordHash, aiApiKey, or githubAccessToken
+- Returns 404 for soft-deleted users (deletedAt IS NOT NULL)
+- Mounted at `/api/users` in app.ts (behind requireAuth middleware)
+- Fixed requireAuth integration test that expected 404 for now-implemented route
+- 6 unit tests: 401 no auth, 404 not found, 200 correct fields, no sensitive data, hasAiKey=false, githubConnected=false
+- 652 total unit tests passing, type checks clean
 
 ## Session Log
 
