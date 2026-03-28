@@ -42,6 +42,7 @@ gitshipdone/
 │   │   │   ├── parkingLot.ts
 │   │   │   ├── timeline.ts
 │   │   │   ├── publicShare.ts
+│   │   │   ├── notifications.ts
 │   │   │   └── github.ts
 │   │   ├── config/
 │   │   │   └── passport.ts

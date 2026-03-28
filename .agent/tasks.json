@@ -445,7 +445,7 @@
     "title": "GET /api/notifications — list user notifications",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-64.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-65",

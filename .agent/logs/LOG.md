@@ -3,12 +3,21 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 64
-**Current Task:** TASK-63 Complete
+**Tasks Completed:** 65
+**Current Task:** TASK-64 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-28 — TASK-64: GET /api/notifications — list user notifications
+- Created `server/src/routes/notifications.ts` with GET `/` handler
+- Filters out snoozed notifications where `snoozed_until > NOW()`
+- Supports `?unreadOnly=true` query param to filter only unread
+- Returns `{ notifications, unreadCount }` ordered by `created_at DESC`, limit 50
+- Mounted at `/api/notifications` with `requireAuth` in `app.ts`
+- 6 unit tests: 401 no auth, 200 with all notifications + unread count, ordered by date, unreadOnly filter, empty list, db.select called twice
+- 604 total unit tests passing, type checks clean
 
 ### 2026-03-28 — TASK-63: GET /api/share/:token — public read-only project data endpoint
 - Created `server/src/routes/publicShare.ts` with GET `/:token` endpoint (no auth required)
