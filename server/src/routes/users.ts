@@ -7,6 +7,10 @@ import { db } from "../db";
 import { users, refreshTokens } from "../db/schema";
 import { encrypt } from "../utils/encryption";
 
+const deleteAccountSchema = z.object({
+  confirmPassword: z.string().min(1),
+});
+
 const changePasswordSchema = z.object({
   currentPassword: z.string().min(1),
   newPassword: z.string().min(8),
@@ -204,6 +208,64 @@ router.patch(
       }
 
       return res.json({ message: "AI settings saved", provider });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * DELETE /api/users/me
+ * Soft delete the user's account. Requires password confirmation.
+ * Invalidates all refresh tokens to force logout everywhere.
+ */
+router.delete(
+  "/me",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.userId!;
+
+      const parsed = deleteAccountSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues });
+      }
+
+      const { confirmPassword } = parsed.data;
+
+      const rows = await db
+        .select()
+        .from(users)
+        .where(and(eq(users.id, userId), isNull(users.deletedAt)));
+
+      if (rows.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const user = rows[0];
+
+      if (!user.passwordHash) {
+        return res
+          .status(400)
+          .json({
+            error: "Password verification not available for OAuth accounts",
+          });
+      }
+
+      const valid = await bcrypt.compare(confirmPassword, user.passwordHash);
+      if (!valid) {
+        return res.status(401).json({ error: "Password is incorrect" });
+      }
+
+      // Soft delete user
+      await db
+        .update(users)
+        .set({ deletedAt: new Date(), updatedAt: new Date() })
+        .where(eq(users.id, userId));
+
+      // Invalidate all refresh tokens
+      await db.delete(refreshTokens).where(eq(refreshTokens.userId, userId));
+
+      return res.json({ message: "Account deleted" });
     } catch (err) {
       next(err);
     }

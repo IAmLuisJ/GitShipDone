@@ -3,12 +3,24 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 73
-**Current Task:** TASK-72 Complete
+**Tasks Completed:** 74
+**Current Task:** TASK-74 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-28 — TASK-74: DELETE /api/users/me — soft delete account
+- Added DELETE `/me` endpoint to `server/src/routes/users.ts`
+- Validates `{ confirmPassword: string }` with Zod
+- Fetches user, verifies password via bcrypt.compare
+- Returns 400 for OAuth-only accounts (no passwordHash)
+- Returns 401 if password is incorrect
+- Sets `deletedAt = NOW()` and `updatedAt = NOW()` on user record
+- Deletes all refresh tokens for user (forces logout everywhere)
+- Returns 200 `{ message: "Account deleted" }`
+- 7 new tests: 401 no auth, 400 missing password, 404 soft-deleted, 400 OAuth account, 401 wrong password, 200 success (verifies soft delete + token cleanup), 400 empty string
+- 682 total unit tests passing, type checks clean
 
 ### 2026-03-28 — TASK-72: PATCH /api/users/me/ai-settings — save AI provider and encrypted API key
 - Added PATCH `/me/ai-settings` endpoint to `server/src/routes/users.ts`

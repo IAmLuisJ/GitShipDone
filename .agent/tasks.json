@@ -515,7 +515,7 @@
     "title": "DELETE /api/users/me — soft delete account",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-74.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-75",
