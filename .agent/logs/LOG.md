@@ -3,10 +3,23 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 72
-**Current Task:** TASK-71 Complete
+**Tasks Completed:** 73
+**Current Task:** TASK-72 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-28 — TASK-72: PATCH /api/users/me/ai-settings — save AI provider and encrypted API key
+- Added PATCH `/me/ai-settings` endpoint to `server/src/routes/users.ts`
+- Validates `{ provider: 'openai' | 'anthropic', apiKey: string(10-500) }` with Zod
+- Encrypts API key using AES-256-CBC (via `encrypt()` from encryption utility)
+- Updates user record: `aiProvider` and `aiApiKey` (encrypted)
+- Returns 200 `{ message: "AI settings saved", provider }`
+- Returns 400 for invalid provider, missing fields, or short API key
+- Returns 404 for soft-deleted users
+- 9 new tests: 401 no auth, 400 invalid provider, 400 short key, 400 missing provider, 400 missing key, 200 openai, 200 anthropic, 404 soft-deleted, GET /me hasAiKey=true
+- 675 total unit tests passing, type checks clean
 
 ## Session Log
 

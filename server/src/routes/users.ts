@@ -5,10 +5,16 @@ import bcrypt from "bcryptjs";
 
 import { db } from "../db";
 import { users, refreshTokens } from "../db/schema";
+import { encrypt } from "../utils/encryption";
 
 const changePasswordSchema = z.object({
   currentPassword: z.string().min(1),
   newPassword: z.string().min(8),
+});
+
+const aiSettingsSchema = z.object({
+  provider: z.enum(["openai", "anthropic"]),
+  apiKey: z.string().min(10).max(500),
 });
 
 const updateProfileSchema = z.object({
@@ -159,6 +165,45 @@ router.patch(
       await db.delete(refreshTokens).where(eq(refreshTokens.userId, userId));
 
       return res.json({ message: "Password changed successfully" });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * PATCH /api/users/me/ai-settings
+ * Save the user's AI provider choice and encrypted API key.
+ */
+router.patch(
+  "/me/ai-settings",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.userId!;
+
+      const parsed = aiSettingsSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues });
+      }
+
+      const { provider, apiKey } = parsed.data;
+      const encryptedKey = encrypt(apiKey);
+
+      const rows = await db
+        .update(users)
+        .set({
+          aiProvider: provider,
+          aiApiKey: encryptedKey,
+          updatedAt: new Date(),
+        })
+        .where(and(eq(users.id, userId), isNull(users.deletedAt)))
+        .returning();
+
+      if (rows.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      return res.json({ message: "AI settings saved", provider });
     } catch (err) {
       next(err);
     }

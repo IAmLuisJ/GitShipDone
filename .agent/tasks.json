@@ -501,7 +501,7 @@
     "title": "PATCH /api/users/me/ai-settings — save AI provider and encrypted API key",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-72.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-73",
