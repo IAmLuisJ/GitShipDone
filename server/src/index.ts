@@ -1,6 +1,7 @@
 import app from './app';
 import { pool } from './db';
 import { startGithubSyncJob } from './jobs/githubSync';
+import { startReminderJob } from './jobs/reminders';
 
 const PORT = process.env.PORT || 3001;
 
@@ -9,6 +10,7 @@ pool
   .then(() => {
     console.log('[DB] Connected to PostgreSQL');
     startGithubSyncJob();
+    startReminderJob();
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });

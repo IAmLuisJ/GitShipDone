@@ -3,10 +3,22 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 68
-**Current Task:** TASK-68 Complete
+**Tasks Completed:** 69
+**Current Task:** TASK-67 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-28 — TASK-67: Reminder cron job — send in-app and email reminders for upcoming milestones and todos
+- Created `server/src/jobs/reminders.ts` with `runReminderCheck()` and `startReminderJob()`
+- Daily cron at 8:00 AM UTC queries milestones (status != completed, due within 3 days) and urgent todos (incomplete, due within 3 days)
+- Creates in-app notifications with deduplication (checks if same type+message already created today)
+- Sends reminder emails via Resend when user has `emailNotificationsEnabled = true`
+- Errors per-item are logged but do not stop processing of remaining items
+- Wired `startReminderJob()` into `server/src/index.ts` after DB connection
+- 12 unit tests: milestone/todo notification creation, email send/skip, deduplication, error resilience, cron scheduling
+- 646 total unit tests passing, type checks clean
 
 ## Session Log
 

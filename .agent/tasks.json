@@ -466,7 +466,7 @@
     "title": "Reminder cron job — send in-app and email reminders for upcoming milestones and todos",
     "category": "functional",
     "specFilePath": ".agent/tasks/TASK-67.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-68",
