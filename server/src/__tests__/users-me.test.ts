@@ -46,6 +46,7 @@ vi.mock("../db", () => ({
 import { db } from "../db";
 
 const mockSelect = vi.mocked(db.select);
+const mockUpdate = vi.mocked(db.update);
 
 const fakeUser = {
   id: "user-uuid-123",
@@ -154,5 +155,108 @@ describe("GET /api/users/me", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.githubConnected).toBe(false);
+  });
+});
+
+describe("PATCH /api/users/me", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns 401 without auth token", async () => {
+    const res = await request(app).patch("/api/users/me").send({ name: "New" });
+    expect(res.status).toBe(401);
+  });
+
+  it("updates name and returns sanitized profile", async () => {
+    const updatedUser = { ...fakeUser, name: "Updated Name" };
+    const mockSet = vi.fn().mockReturnThis();
+    const mockWhere = vi.fn().mockReturnThis();
+    const mockReturning = vi.fn().mockResolvedValue([updatedUser]);
+    mockUpdate.mockReturnValue({
+      set: mockSet,
+      where: mockWhere,
+      returning: mockReturning,
+    } as any);
+
+    const res = await request(app)
+      .patch("/api/users/me")
+      .set("Authorization", "Bearer valid-token")
+      .send({ name: "Updated Name" });
+
+    expect(res.status).toBe(200);
+    expect(res.body.name).toBe("Updated Name");
+    expect(res.body).not.toHaveProperty("passwordHash");
+    expect(res.body).not.toHaveProperty("aiApiKey");
+  });
+
+  it("updates avatarUrl and returns sanitized profile", async () => {
+    const updatedUser = {
+      ...fakeUser,
+      avatarUrl: "https://example.com/new-avatar.png",
+    };
+    const mockSet = vi.fn().mockReturnThis();
+    const mockWhere = vi.fn().mockReturnThis();
+    const mockReturning = vi.fn().mockResolvedValue([updatedUser]);
+    mockUpdate.mockReturnValue({
+      set: mockSet,
+      where: mockWhere,
+      returning: mockReturning,
+    } as any);
+
+    const res = await request(app)
+      .patch("/api/users/me")
+      .set("Authorization", "Bearer valid-token")
+      .send({ avatarUrl: "https://example.com/new-avatar.png" });
+
+    expect(res.status).toBe(200);
+    expect(res.body.avatarUrl).toBe("https://example.com/new-avatar.png");
+  });
+
+  it("returns 400 if email is included in body", async () => {
+    const res = await request(app)
+      .patch("/api/users/me")
+      .set("Authorization", "Bearer valid-token")
+      .send({ email: "new@example.com" });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe("Email changes not supported");
+  });
+
+  it("returns 400 if no valid fields provided", async () => {
+    const res = await request(app)
+      .patch("/api/users/me")
+      .set("Authorization", "Bearer valid-token")
+      .send({});
+
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 400 for invalid avatarUrl", async () => {
+    const res = await request(app)
+      .patch("/api/users/me")
+      .set("Authorization", "Bearer valid-token")
+      .send({ avatarUrl: "not-a-url" });
+
+    expect(res.status).toBe(400);
+  });
+
+  it("returns 404 if user not found (soft-deleted)", async () => {
+    const mockSet = vi.fn().mockReturnThis();
+    const mockWhere = vi.fn().mockReturnThis();
+    const mockReturning = vi.fn().mockResolvedValue([]);
+    mockUpdate.mockReturnValue({
+      set: mockSet,
+      where: mockWhere,
+      returning: mockReturning,
+    } as any);
+
+    const res = await request(app)
+      .patch("/api/users/me")
+      .set("Authorization", "Bearer valid-token")
+      .send({ name: "Ghost" });
+
+    expect(res.status).toBe(404);
+    expect(res.body.error).toBe("User not found");
   });
 });

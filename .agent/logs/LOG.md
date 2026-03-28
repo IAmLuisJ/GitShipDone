@@ -3,10 +3,21 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-28
-**Tasks Completed:** 70
-**Current Task:** TASK-69 Complete
+**Tasks Completed:** 71
+**Current Task:** TASK-70 Complete
 
 ----------------------------------------------
+
+## Session Log
+
+### 2026-03-28 — TASK-70: PATCH /api/users/me — update profile (name, avatar, email)
+- Added PATCH `/me` endpoint to `server/src/routes/users.ts`
+- Accepts partial updates: `name` (string 1-255) and `avatarUrl` (valid URL, max 2000)
+- Returns 400 if `email` field is included (not supported in MVP)
+- Returns 400 for invalid input or empty update body
+- Updates `updatedAt` timestamp, returns sanitized profile (no sensitive fields)
+- 7 new tests: 401 no auth, update name, update avatarUrl, reject email change, empty body, invalid URL, 404 soft-deleted
+- 659 total unit tests passing, type checks clean
 
 ## Session Log
 
