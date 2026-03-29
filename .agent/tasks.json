@@ -543,7 +543,7 @@
     "title": "POST /api/projects/:id/github/releases/:rid/summarize — AI changelog summary from commits",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-78.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-79",

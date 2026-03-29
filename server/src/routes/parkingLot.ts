@@ -331,7 +331,10 @@ router.post(
       if (e.status === 404 || e.statusCode === 404) {
         return next(err);
       }
-      console.error("[AI Pathway] Error:", (e as Error).message);
+      console.error(
+        "[AI Pathway] Error:",
+        err instanceof Error ? err.message : String(err),
+      );
       res.status(500).json({ error: "AI service unavailable" });
     }
   },

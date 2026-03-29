@@ -3,12 +3,25 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-29
-**Tasks Completed:** 77
-**Current Task:** TASK-77 Complete
+**Tasks Completed:** 78
+**Current Task:** TASK-78 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-29 — TASK-78: POST /api/projects/:id/github/releases/:rid/summarize — AI changelog summary
+- Added `POST /releases/:rid/summarize` endpoint to `server/src/routes/github.ts`
+- Validates auth + project ownership, checks user has AI API key configured
+- Finds release by id+projectId, fetches previous release by published_at DESC
+- Fetches commits between previous release and current release dates
+- Builds prompt with tag name, commit list (message + author), and markdown format instructions
+- Calls OpenAI or Anthropic based on user's AI provider setting
+- Saves generated summary to `github_releases.ai_summary` field
+- Returns 200 `{ summary: string }`, 400 no AI key, 404 release not found, 500 AI failure
+- Fixed pre-existing TS error in parkingLot.ts catch block
+- 9 new tests: 401 no auth, 400 no key, 404 not found, 200 OpenAI, 200 Anthropic, 404 wrong project, 500 API failure, prompt content check, first release (no previous)
+- 711 total unit tests passing, type checks clean
 
 ### 2026-03-29 — TASK-77: POST /api/projects/:id/parking-lot/:pid/ai-pathway — generate AI pathway
 - Added `POST /:pid/ai-pathway` endpoint to `server/src/routes/parkingLot.ts`
