@@ -7,6 +7,7 @@ import {
   createProjectSchema,
   updateProjectSchema,
   manualPointsSchema,
+  progressOverrideSchema,
 } from "../validators/projects";
 import { awardPoints } from "../services/pointsService";
 import { logTimelineEvent } from "../services/timelineService";
@@ -200,6 +201,49 @@ router.post(
         pointsTotal: result.newTotal,
         level: result.level,
         didLevelUp: result.didLevelUp,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * PATCH /api/projects/:id/progress
+ * Manually set or clear progress override. Logs a progress_change timeline event.
+ */
+router.patch(
+  "/:id/progress",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const parsed = progressOverrideSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          error: "Validation failed",
+          details: parsed.error.flatten().fieldErrors,
+        });
+        return;
+      }
+
+      const projectId = req.params.id as string;
+      const project = await getOwnedProject(projectId, req.userId!);
+
+      const { progressManual } = parsed.data;
+
+      const [updated] = await db
+        .update(projects)
+        .set({ progressManual, updatedAt: new Date() })
+        .where(eq(projects.id, project.id))
+        .returning();
+
+      await logTimelineEvent(project.id, "progress_change", {
+        isManual: true,
+        to: progressManual,
+      });
+
+      res.status(200).json({
+        progressAuto: updated.progressAuto,
+        progressManual: updated.progressManual,
       });
     } catch (err) {
       next(err);

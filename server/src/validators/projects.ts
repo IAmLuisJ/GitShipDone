@@ -19,6 +19,10 @@ export const manualPointsSchema = z.object({
   reason: z.string().min(1).max(255),
 });
 
+export const progressOverrideSchema = z.object({
+  progressManual: z.number().int().min(0).max(100).nullable(),
+});
+
 export const updateProjectSchema = z.object({
   name: z.string().min(1).max(255).optional(),
   description: z.string().max(5000).optional(),

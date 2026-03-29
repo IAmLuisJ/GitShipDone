@@ -3,12 +3,21 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-29
-**Tasks Completed:** 78
-**Current Task:** TASK-78 Complete
+**Tasks Completed:** 79
+**Current Task:** TASK-79 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-29 — TASK-79: PATCH /api/projects/:id/progress — manual progress override
+- Added `progressOverrideSchema` validator (int 0-100 or null) to `server/src/validators/projects.ts`
+- Added `PATCH /:id/progress` handler to `server/src/routes/projects.ts`
+- Validates auth + project ownership, accepts `{ progressManual: number | null }`
+- Sets or clears `progress_manual` on the project, logs `progress_change` timeline event with `{ isManual: true, to: value }`
+- Returns `{ progressAuto, progressManual }`
+- 10 new tests: 401 no auth, 404 not found, 400 >100, 400 <0, 400 non-int, 400 missing field, 200 set to 75, 200 clear with null, timeline event logged, 404 wrong user
+- 721 total unit tests passing, type checks clean
 
 ### 2026-03-29 — TASK-78: POST /api/projects/:id/github/releases/:rid/summarize — AI changelog summary
 - Added `POST /releases/:rid/summarize` endpoint to `server/src/routes/github.ts`
