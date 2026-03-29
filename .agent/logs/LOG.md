@@ -3,12 +3,22 @@
 `Current Status`
 =================
 **Last Updated:** 2026-03-29
-**Tasks Completed:** 76
-**Current Task:** TASK-76 Complete
+**Tasks Completed:** 77
+**Current Task:** TASK-77 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-29 — TASK-77: POST /api/projects/:id/parking-lot/:pid/ai-pathway — generate AI pathway
+- Added `POST /:pid/ai-pathway` endpoint to `server/src/routes/parkingLot.ts`
+- Validates auth + project ownership, checks user has AI API key configured
+- Fetches parking lot item, builds prompt with title + description + project context
+- Calls OpenAI or Anthropic based on user's AI provider setting
+- Saves generated pathway to `parking_lot_items.ai_pathway` field
+- Returns 200 `{ pathway: string }`, 400 no AI key, 404 item not found, 500 AI failure
+- 8 new tests: 401 no auth, 400 no key, 404 not found, 200 OpenAI, 200 Anthropic, 404 wrong project, 500 API failure, prompt content check
+- 702 total unit tests passing, type checks clean
 
 ### 2026-03-29 — TASK-76: AI context builder service — assemble project context for AI prompt injection
 - Service already implemented in TASK-75 at `server/src/services/aiContextService.ts`

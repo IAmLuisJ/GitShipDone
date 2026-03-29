@@ -536,7 +536,7 @@
     "title": "POST /api/projects/:id/parking-lot/:pid/ai-pathway — generate AI pathway for parking lot item",
     "category": "api-endpoint",
     "specFilePath": ".agent/tasks/TASK-77.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-78",

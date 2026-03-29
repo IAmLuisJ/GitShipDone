@@ -1,9 +1,13 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { eq, and, isNull, desc, max } from "drizzle-orm";
+import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 
 import { db } from "../db";
-import { parkingLotItems, milestones, todos } from "../db/schema";
+import { parkingLotItems, milestones, todos, users } from "../db/schema";
 import { getOwnedProject } from "../utils/projectOwnership";
+import { decrypt } from "../utils/encryption";
+import { buildProjectContext } from "../services/aiContextService";
 import {
   createParkingLotSchema,
   updateParkingLotSchema,
@@ -104,9 +108,7 @@ router.patch(
         description === undefined &&
         archived === undefined
       ) {
-        res
-          .status(400)
-          .json({ error: "At least one field must be provided" });
+        res.status(400).json({ error: "At least one field must be provided" });
         return;
       }
 
@@ -236,6 +238,101 @@ router.post(
       res.json({ created });
     } catch (err) {
       next(err);
+    }
+  },
+);
+
+/**
+ * POST /api/projects/:id/parking-lot/:pid/ai-pathway
+ * Generate an AI step-by-step implementation pathway for a parking lot item.
+ */
+router.post(
+  "/:pid/ai-pathway",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const pid = req.params.pid as string;
+      const userId = req.userId!;
+
+      await getOwnedProject(projectId, userId);
+
+      // Check user has AI key configured
+      const [user] = await db
+        .select()
+        .from(users)
+        .where(and(eq(users.id, userId), isNull(users.deletedAt)))
+        .limit(1);
+
+      if (!user || !user.aiApiKey || !user.aiProvider) {
+        res.status(400).json({
+          error: "AI API key not configured. Please set up AI settings first.",
+        });
+        return;
+      }
+
+      // Find parking lot item
+      const [item] = await db
+        .select()
+        .from(parkingLotItems)
+        .where(
+          and(
+            eq(parkingLotItems.id, pid),
+            eq(parkingLotItems.projectId, projectId),
+          ),
+        )
+        .limit(1);
+
+      if (!item) {
+        res.status(404).json({ error: "Parking lot item not found" });
+        return;
+      }
+
+      const apiKey = decrypt(user.aiApiKey);
+      const context = await buildProjectContext(projectId);
+
+      const prompt =
+        "Generate a step-by-step implementation pathway for this idea: " +
+        item.title +
+        (item.description ? ". Description: " + item.description : "") +
+        ". Project context: " +
+        context +
+        ". Return a numbered list of clear, actionable steps.";
+
+      let pathway: string;
+
+      if (user.aiProvider === "openai") {
+        const client = new OpenAI({ apiKey });
+        const completion = await client.chat.completions.create({
+          model: "gpt-4o",
+          messages: [{ role: "user", content: prompt }],
+          max_tokens: 1024,
+        });
+        pathway = completion.choices[0]?.message?.content || "";
+      } else {
+        const client = new Anthropic({ apiKey });
+        const message = await client.messages.create({
+          model: "claude-sonnet-4-6",
+          max_tokens: 1024,
+          messages: [{ role: "user", content: prompt }],
+        });
+        const block = message.content[0];
+        pathway = block.type === "text" ? block.text : "";
+      }
+
+      // Save pathway to item
+      await db
+        .update(parkingLotItems)
+        .set({ aiPathway: pathway, updatedAt: new Date() })
+        .where(eq(parkingLotItems.id, pid));
+
+      res.status(200).json({ pathway });
+    } catch (err: unknown) {
+      const e = err as Record<string, unknown>;
+      if (e.status === 404 || e.statusCode === 404) {
+        return next(err);
+      }
+      console.error("[AI Pathway] Error:", (e as Error).message);
+      res.status(500).json({ error: "AI service unavailable" });
     }
   },
 );
