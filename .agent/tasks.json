@@ -529,7 +529,7 @@
     "title": "AI context builder service — assemble project context for AI prompt injection",
     "category": "functional",
     "specFilePath": ".agent/tasks/TASK-76.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-77",

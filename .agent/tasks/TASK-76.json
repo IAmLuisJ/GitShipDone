@@ -16,13 +16,13 @@
       "step": 1,
       "description": "Create context builder service",
       "details": "Create server/src/services/aiContextService.ts. Export async function buildProjectContext(projectId: string): Promise<string>. Fetch: project, milestones (top 5 by sort_order), last 3 journal entries (titles only), todo counts. Format as: 'Project: NAME (TYPE)\\nVision: VISION\\nStatus: STATUS | Progress: N%\\nLevel: LEVEL (N pts)\\nMilestones: [list]\\nRecent journal: [titles]\\nOpen todos: N'.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Test context builder",
       "details": "Call buildProjectContext with a well-populated project. Verify output is readable and under token limit. Verify it includes all key fields.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-5", "TASK-6", "TASK-7", "TASK-8"],

@@ -2,13 +2,21 @@
 
 `Current Status`
 =================
-**Last Updated:** 2026-03-28
-**Tasks Completed:** 75
-**Current Task:** TASK-75 Complete
+**Last Updated:** 2026-03-29
+**Tasks Completed:** 76
+**Current Task:** TASK-76 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-29 — TASK-76: AI context builder service — assemble project context for AI prompt injection
+- Service already implemented in TASK-75 at `server/src/services/aiContextService.ts`
+- `buildProjectContext(projectId)` fetches project, top 5 milestones, last 3 journal titles, open todo count
+- Returns formatted string with name, type, vision (truncated 500 chars), status, progress%, level, points
+- Uses `progressManual ?? progressAuto`, handles missing project, empty data gracefully
+- 4 existing tests cover: all fields present, missing project, empty data, manual progress override
+- All tests passing, type checks clean
 
 ### 2026-03-28 — TASK-75: POST /api/projects/:id/ai/chat — AI PM chat endpoint (multi-provider)
 - Installed `openai` and `@anthropic-ai/sdk` SDKs
