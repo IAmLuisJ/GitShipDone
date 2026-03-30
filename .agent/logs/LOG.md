@@ -2,13 +2,28 @@
 
 `Current Status`
 =================
-**Last Updated:** 2026-03-29
-**Tasks Completed:** 79
-**Current Task:** TASK-79 Complete
+**Last Updated:** 2026-03-30
+**Tasks Completed:** 80
+**Current Task:** TASK-80 Complete
 
 ----------------------------------------------
 
 ## Session Log
+
+### 2026-03-30 — TASK-80: Frontend: Configure Vite proxy, React Router, Zustand, TanStack Query
+- Installed react-router-dom, zustand, @tanstack/react-query, @tanstack/react-query-devtools, axios, date-fns, framer-motion
+- Configured Vite proxy: `/api` → `http://localhost:3001` in `vite.config.ts`
+- Added `@` path alias in Vite and tsconfig.app.json
+- Created Zustand auth store (`src/stores/authStore.ts`) with `user`, `accessToken`, `setAuth`, `clearAuth`
+- Created TanStack Query client (`src/lib/queryClient.ts`) with 30s staleTime, retry: 1
+- Created Axios instance (`src/lib/api.ts`) with auth interceptor and 401 refresh token retry logic
+- Created React Router routes (`src/routes/index.tsx`) with `ProtectedRoute` wrapper
+- Routes: `/` landing, `/login`, `/register`, `/forgot-password`, `/reset-password`, `/share/:token`, protected: `/dashboard`, `/projects/:id`, `/settings`
+- Created placeholder page components for all routes
+- Configured frontend vitest with jsdom environment and @testing-library/jest-dom setup
+- 19 frontend tests: auth store (3), query client (2), api instance (3), route rendering (11)
+- Screenshot: `.agent/screenshots/TASK-80-1.png`
+- 721 server tests + 19 frontend tests passing, type checks clean
 
 ### 2026-03-29 — TASK-79: PATCH /api/projects/:id/progress — manual progress override
 - Added `progressOverrideSchema` validator (int 0-100 or null) to `server/src/validators/projects.ts`

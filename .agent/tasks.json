@@ -557,7 +557,7 @@
     "title": "Frontend: Configure Vite proxy, React Router, Zustand, TanStack Query",
     "category": "functional",
     "specFilePath": ".agent/tasks/TASK-80.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-81",

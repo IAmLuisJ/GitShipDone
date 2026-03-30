@@ -4,12 +4,31 @@
 gitshipdone/
 ├── src/
 │   ├── App.tsx
-│   ├── App.css
 │   ├── main.tsx
 │   ├── index.css
 │   ├── assets/
+│   ├── lib/
+│   │   ├── api.ts
+│   │   └── queryClient.ts
+│   ├── stores/
+│   │   └── authStore.ts
+│   ├── routes/
+│   │   ├── index.tsx
+│   │   └── ProtectedRoute.tsx
+│   ├── pages/
+│   │   ├── LandingPage.tsx
+│   │   ├── LoginPage.tsx
+│   │   ├── RegisterPage.tsx
+│   │   ├── ForgotPasswordPage.tsx
+│   │   ├── ResetPasswordPage.tsx
+│   │   ├── Dashboard.tsx
+│   │   ├── ProjectDetail.tsx
+│   │   ├── PublicSharePage.tsx
+│   │   ├── SettingsPage.tsx
+│   │   └── NotFoundPage.tsx
 │   ├── playwright.config.ts
-│   └── vitest.config.ts
+│   ├── vitest.config.ts
+│   └── vitest.setup.ts
 ├── server/
 │   ├── src/
 │   │   ├── index.ts
