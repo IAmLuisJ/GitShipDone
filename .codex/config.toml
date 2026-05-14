@@ -1,0 +1,25 @@
+[mcp_servers.context7]
+args = [
+    "-y",
+    "@upstash/context7-mcp",
+]
+command = "npx"
+
+[mcp_servers.playwright]
+args = [
+    "-y",
+    "@playwright/mcp@latest",
+    "--headless",
+    "--no-sandbox",
+    "--install",
+    "--executable-path",
+    "/home/agent/.cache/ms-playwright/chromium-1208/chrome-linux/chrome",
+]
+command = "npx"
+
+[mcp_servers.sequential-thinking]
+args = [
+    "-y",
+    "@modelcontextprotocol/server-sequential-thinking",
+]
+command = "npx"

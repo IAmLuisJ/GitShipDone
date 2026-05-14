@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitShipDone Production Readiness</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18231f;
+      --muted: #65736e;
+      --paper: #f7f4ec;
+      --panel: #fffdf6;
+      --line: #d9d1bd;
+      --green: #2e6d50;
+      --amber: #9a631a;
+      --red: #a33a2a;
+      --blue: #335c81;
+      --shadow: 0 18px 45px rgb(38 30 18 / 10%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    header {
+      padding: 56px clamp(20px, 5vw, 72px) 36px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf0 0%, var(--paper) 100%);
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 64px;
+    }
+
+    h1, h2, h3 { line-height: 1.08; margin: 0; }
+    h1 { max-width: 980px; font-size: clamp(40px, 7vw, 82px); letter-spacing: 0; }
+    h2 { font-size: clamp(28px, 4vw, 44px); margin-bottom: 18px; }
+    h3 { font-size: 19px; margin-bottom: 10px; }
+    p { margin: 0; color: var(--muted); }
+    code { background: #efe7d5; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+
+    .lede {
+      max-width: 780px;
+      color: #43534d;
+      font-size: 20px;
+      margin-top: 22px;
+    }
+
+    .band {
+      border-bottom: 1px solid var(--line);
+      padding: 34px 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .metric {
+      font-size: 38px;
+      font-weight: 850;
+      color: var(--ink);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid currentColor;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      padding: 5px 10px;
+      text-transform: uppercase;
+    }
+
+    .red { color: var(--red); }
+    .amber { color: var(--amber); }
+    .green { color: var(--green); }
+    .blue { color: var(--blue); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 13px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #4d5b55;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+    ul, ol { margin: 0; padding-left: 20px; }
+    li { margin: 7px 0; }
+
+    .split {
+      display: grid;
+      gap: 22px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .callout {
+      border-left: 5px solid var(--red);
+      background: #fff7ef;
+      padding: 18px 20px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 72px 1fr;
+      align-items: start;
+    }
+
+    .step strong {
+      color: var(--green);
+      font-size: 14px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 780px) {
+      header { padding-top: 36px; }
+      .split, .step { grid-template-columns: 1fr; }
+      table { font-size: 14px; }
+      th, td { padding: 11px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Production readiness artifact</div>
+    <h1>GitShipDone is backend-heavy, frontend-thin, and not production-ready yet.</h1>
+    <p class="lede">The PRD describes a solo-builder project tracker with journals, milestones, GitHub changelogs, AI guidance, reminders, and public sharing. The repository has substantial backend/API work, but the user-facing app is still mostly placeholder screens and the release pipeline is not yet dependable.</p>
+  </header>
+
+  <main>
+    <section class="band">
+      <div class="grid">
+        <div class="card">
+          <div class="metric">80 / 120</div>
+          <p>Task index entries marked passing. The remaining 40 are frontend/UI/accessibility tasks.</p>
+        </div>
+        <div class="card">
+          <div class="metric red">No ship</div>
+          <p>Frontend build, root lint, and root test checks currently fail.</p>
+        </div>
+        <div class="card">
+          <div class="metric green">API base</div>
+          <p>Backend routes, Drizzle schema, migrations, auth, jobs, AI, email, and GitHub integration exist.</p>
+        </div>
+        <div class="card">
+          <div class="metric amber">40</div>
+          <p>Known incomplete tasks are UI, shadcn setup, screens, responsive behavior, dark mode, and WCAG audit.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <h2>What Exists</h2>
+      <div class="split">
+        <div class="card">
+          <h3>Product scope from docs</h3>
+          <p>GitShipDone targets solo developers and indie makers who need project tracking without Jira/Linear overhead. Core flows are project creation, daily updates, milestone completion, GitHub repo connection, public sharing, and AI consultation.</p>
+        </div>
+        <div class="card">
+          <h3>Implementation shape</h3>
+          <p>React 19 + Vite frontend, Express + TypeScript backend, Drizzle ORM, PostgreSQL 15, JWT/Passport auth, Resend email, OpenAI/Anthropic support, GitHub OAuth, and node-cron jobs.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <h2>Readiness Gaps</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Priority</th>
+            <th>Area</th>
+            <th>What needs to be done</th>
+            <th>Evidence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="pill red">P0</span></td>
+            <td>Frontend product</td>
+            <td>Build the actual app screens: landing, auth forms, dashboard, project detail tabs, public share page, settings, notifications, AI chat, GitHub/sharing settings, loading states, empty states, mobile layout, dark mode.</td>
+            <td>All page files inspected are placeholder three-line components. Task index marks TASK-81 through TASK-120 as failing.</td>
+          </tr>
+          <tr>
+            <td><span class="pill red">P0</span></td>
+            <td>Build correctness</td>
+            <td>Restore missing shadcn dependencies or remove incomplete component imports. Fix test files included in the production TypeScript build.</td>
+            <td><code>npm run build</code> fails on missing <code>@/lib/utils</code>, missing <code>@/components/ui/label</code>, and strict test typing errors.</td>
+          </tr>
+          <tr>
+            <td><span class="pill red">P0</span></td>
+            <td>Verification hygiene</td>
+            <td>Scope lint/test/build commands so they ignore <code>.agent</code>, <code>.claude</code>, <code>.codex</code>, generated <code>server/dist</code>, reports, and unrelated worktrees.</td>
+            <td><code>npm run lint</code> scans agent assets, generated files, and nested worktrees. Root <code>npm run test -- --run</code> scans nested worktrees and server tests.</td>
+          </tr>
+          <tr>
+            <td><span class="pill red">P0</span></td>
+            <td>Deployment architecture</td>
+            <td>Add production deployment files: frontend build config, backend runtime config, migration command, process manager/container, secrets inventory, and health checks.</td>
+            <td>No <code>Dockerfile</code>, <code>vercel.json</code>, CI workflow, process file, or production infra manifest exists.</td>
+          </tr>
+          <tr>
+            <td><span class="pill amber">P1</span></td>
+            <td>Security hardening</td>
+            <td>Validate production secrets at boot, disable dev JWT fallbacks, set cookie domain/SameSite strategy, add request body limits, sanitize rich text rendering, review OAuth scopes, and protect cron endpoints/jobs from duplicate execution.</td>
+            <td>JWT helpers have dev fallback secrets; PRD requires DOMPurify sanitization but no render path exists yet; repo OAuth uses broad <code>repo</code> scope.</td>
+          </tr>
+          <tr>
+            <td><span class="pill amber">P1</span></td>
+            <td>Operational durability</td>
+            <td>Move Postgres to managed persistent storage, add backups, migration rollback policy, structured logs, error tracking, metrics, uptime checks, and alerting.</td>
+            <td>Current Docker Compose is local-only and uses tmpfs for database data.</td>
+          </tr>
+          <tr>
+            <td><span class="pill amber">P1</span></td>
+            <td>Code organization</td>
+            <td>Split large backend route files by responsibility and extract shared helpers before expanding production behavior.</td>
+            <td><code>auth.ts</code> is 617 lines, <code>parkingLot.ts</code> 343, <code>todos.ts</code> 316, above the local 200-300 line standard.</td>
+          </tr>
+          <tr>
+            <td><span class="pill blue">P2</span></td>
+            <td>Docs</td>
+            <td>Fix README env path mismatch, document production env variables, OAuth callback URLs, migration procedure, and local smoke-test flow.</td>
+            <td>README says <code>cp server/.env.example server/.env</code>, but this checkout has root <code>.env.example</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="band">
+      <h2>Release Gate</h2>
+      <div class="callout">
+        <h3>Do not deploy as a real production app until these gates pass.</h3>
+        <ul>
+          <li><code>npm run build</code> succeeds for the frontend.</li>
+          <li><code>cd server && npm run build</code> succeeds, as it does now.</li>
+          <li>Frontend and backend test suites pass in clean installs with Node 22.</li>
+          <li>Lint runs only against intended source files and passes.</li>
+          <li>Playwright covers signup, login, create project, add todo, complete milestone, log journal, connect/share flows, and public share view.</li>
+          <li>OAuth, email, AI, GitHub import, cron jobs, and migrations are smoke-tested against staging services.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="band">
+      <h2>Vercel Deployment Plan</h2>
+      <div class="timeline">
+        <div class="step"><strong>Best fit</strong><p>Use Vercel for the React frontend. Keep the Express API on a persistent Node host or VPS unless the backend is refactored into serverless handlers and cron-safe jobs.</p></div>
+        <div class="step"><strong>1</strong><p>Create managed Postgres, preferably Neon/Supabase/RDS. Set <code>DATABASE_URL</code>, run Drizzle migrations from CI or a one-off release command.</p></div>
+        <div class="step"><strong>2</strong><p>Set frontend env/build: Vercel project root at repo root, build command <code>npm run build</code>, output <code>dist</code>. Add production API base URL support instead of relying only on the Vite dev proxy.</p></div>
+        <div class="step"><strong>3</strong><p>Deploy backend separately as a Node service if avoiding refactor. Configure <code>BACKEND_URL</code>, <code>FRONTEND_URL</code>, OAuth callback URLs, JWT secrets, encryption key, Resend, and provider keys.</p></div>
+        <div class="step"><strong>4</strong><p>If forcing all-in Vercel, create API route adapters, remove long-lived process assumptions, move cron jobs to Vercel Cron, and make GitHub/reminder jobs idempotent.</p></div>
+        <div class="step"><strong>5</strong><p>Add CI checks before Vercel deploy: install frontend and server dependencies, typecheck, lint, unit tests, backend build, frontend build, then Playwright against preview.</p></div>
+        <div class="step"><strong>6</strong><p>Promote preview to production only after OAuth callbacks, cookies, CORS, public share URLs, email links, and AI/GitHub flows pass on the preview domain.</p></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <h2>VPS Deployment Plan</h2>
+      <div class="timeline">
+        <div class="step"><strong>Best fit</strong><p>VPS hosting is the least refactor path because the backend is a normal Express server with startup jobs and cron scheduling.</p></div>
+        <div class="step"><strong>1</strong><p>Provision a VPS with Ubuntu LTS, a non-root deploy user, firewall rules for SSH/HTTP/HTTPS, automatic security updates, DNS for <code>app.gitshipdone.com</code>, and TLS through Caddy or Nginx plus Certbot.</p></div>
+        <div class="step"><strong>2</strong><p>Use managed Postgres if possible. If Postgres runs on the VPS, place it on a persistent volume, restrict it to localhost, schedule encrypted off-server backups, and test restore before launch.</p></div>
+        <div class="step"><strong>3</strong><p>Add Dockerfiles: one static web container for <code>dist</code> or a Caddy/Nginx static site, and one Node 22 backend container that runs <code>node dist/index.js</code>. Add a migration command that runs before each deploy.</p></div>
+        <div class="step"><strong>4</strong><p>Deploy with Docker Compose or systemd. Run one backend process if cron stays in-process; if scaling later, split reminders and GitHub sync into a dedicated worker so jobs do not duplicate.</p></div>
+        <div class="step"><strong>5</strong><p>Configure the reverse proxy: serve frontend assets, proxy <code>/api</code> to the backend, enforce HTTPS, set upload/body limits, and allow only the production frontend origin through CORS.</p></div>
+        <div class="step"><strong>6</strong><p>Add observability: structured logs, request IDs, error tracking, disk/CPU/RAM checks, DB metrics, job success/failure metrics, uptime checks, and alert routes.</p></div>
+        <div class="step"><strong>7</strong><p>Release through staging first, migrate database, smoke test, take backup, then deploy production with a rollbackable image tag or previous release directory.</p></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <h2>Recommended Path</h2>
+      <div class="card">
+        <p>Ship the first production version as <strong>Vercel frontend + VPS-hosted Node backend + managed Postgres</strong>. That gives the frontend a fast hosted workflow while preserving the backend’s current Express and cron architecture. A single VPS can also host both frontend and backend once Dockerfiles, reverse proxy config, backups, and deploy scripts are in place.</p>
+      </div>
+    </section>
+
+    <section class="band">
+      <h2>Verification Snapshot</h2>
+      <table>
+        <thead>
+          <tr><th>Command</th><th>Result</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>npm run build</code></td><td><span class="pill red">Fail</span></td><td>Frontend cannot produce a production build yet.</td></tr>
+          <tr><td><code>npm run lint</code></td><td><span class="pill red">Fail</span></td><td>Lint config scans unintended directories and source/test issues.</td></tr>
+          <tr><td><code>npm run test -- --run</code></td><td><span class="pill red">Fail</span></td><td>Root test command scans nested worktrees and lacks proper frontend jsdom config.</td></tr>
+          <tr><td><code>cd server && npm run build</code></td><td><span class="pill green">Pass</span></td><td>Backend TypeScript compiles.</td></tr>
+          <tr><td><code>cd server && npm run test</code></td><td><span class="pill amber">Blocked</span></td><td>Local optional native binding for Rolldown is missing; clean install should be verified.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
