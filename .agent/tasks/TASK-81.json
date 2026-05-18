@@ -15,25 +15,25 @@
       "step": 1,
       "description": "Initialize shadcn/ui",
       "details": "Run: npx shadcn@latest init. When prompted: style=Default, base color=Slate, CSS variables=Yes, path aliases configured. This creates components.json and updates tailwind.config.js and src/index.css.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Install all required components",
       "details": "Run in one command: npx shadcn@latest add button input label card dialog sheet tabs badge progress avatar dropdown-menu tooltip separator skeleton scroll-area select checkbox textarea switch form toast sonner popover command.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Verify Tailwind dark mode config",
       "details": "In tailwind.config.js, verify darkMode: ['class'] is set. This allows toggling dark mode via className on the html element.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Render a test component",
       "details": "In src/App.tsx, temporarily render <Button>Test</Button>. Start dev server — verify button renders with correct shadcn/ui styles and no console errors.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-80"],

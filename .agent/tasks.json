@@ -564,7 +564,7 @@
     "title": "Frontend: Install and configure shadcn/ui component library",
     "category": "functional",
     "specFilePath": ".agent/tasks/TASK-81.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-82",
