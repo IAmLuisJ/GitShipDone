@@ -16,25 +16,25 @@
       "step": 1,
       "description": "Create LandingPage component",
       "details": "Create src/pages/LandingPage.tsx. If user is authenticated (check authStore), redirect to /dashboard. Otherwise render the marketing page.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Build hero section",
       "details": "Hero: centered layout, large headline ('Build more. Track effortlessly. Ship with confidence.'), sub-headline, two CTA buttons using shadcn/ui Button (primary: 'Get Started Free' → /register, secondary: 'Sign In' → /login).",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Build feature highlights grid",
       "details": "6-card grid using shadcn/ui Card. Features: Timeline history, GitHub changelogs, AI PM copilot, Points & levels, Project sharing, Parking lot ideas. Each card: icon (lucide-react), title, 2-line description.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Open http://localhost:5173. Verify landing page renders. Click 'Get Started Free' — navigate to /register. Resize to 375px — verify mobile layout.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-81", "TASK-88"],

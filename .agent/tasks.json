@@ -578,7 +578,7 @@
     "title": "Frontend: Landing / marketing page with hero and feature highlights",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-83.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-84",
