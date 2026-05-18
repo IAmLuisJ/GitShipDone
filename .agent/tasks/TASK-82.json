@@ -17,31 +17,31 @@
       "step": 1,
       "description": "Create AppLayout component",
       "details": "Create src/components/layout/AppLayout.tsx. Structure: <div class='flex h-screen'>. Sidebar on left (fixed width 240px, collapsible to 60px). Main content: <main class='flex-1 overflow-y-auto p-6'>. Render <Outlet /> in main for nested routes.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Create Sidebar component",
       "details": "Create src/components/layout/Sidebar.tsx. Use shadcn/ui ScrollArea for project list. Fetch projects from /api/projects using useQuery. Render each as a NavLink with project name and type badge. Collapse button toggles width with CSS transition. Mobile: use Sheet component.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Create user menu at sidebar bottom",
       "details": "Use shadcn/ui DropdownMenu anchored to user avatar. Items: 'Settings' (link to /settings), 'Logout' (calls POST /api/auth/logout, clears auth store, navigates to /login).",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Wire layout to router",
       "details": "Update router: wrap all authenticated routes inside AppLayout. The layout renders Outlet for its children. Apply ProtectedRoute wrapper to AppLayout.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 5,
       "description": "Verify in browser using Playwright",
       "details": "Log in, verify sidebar shows projects. Click collapse — verify icon-only mode. Click a project in sidebar — verify navigation. On mobile viewport — verify sidebar shows as drawer.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-81", "TASK-88", "TASK-28"],

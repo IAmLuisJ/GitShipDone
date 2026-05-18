@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import AppLayout from "@/components/layout/AppLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
@@ -22,9 +23,11 @@ export default function AppRoutes() {
       <Route path="/share/:token" element={<PublicSharePage />} />
 
       <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/projects/:id" element={<ProjectDetail />} />
-        <Route path="/settings" element={<SettingsPage />} />
+        <Route element={<AppLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

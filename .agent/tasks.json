@@ -571,7 +571,7 @@
     "title": "Frontend: Global layout — collapsible sidebar + main content area",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-82.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-83",
