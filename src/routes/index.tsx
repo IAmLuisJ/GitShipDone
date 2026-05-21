@@ -1,11 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import AppLayout from "@/components/layout/AppLayout";
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
 import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
+import AuthCallbackPage from "@/pages/AuthCallbackPage";
 import Dashboard from "@/pages/Dashboard";
 import ProjectDetail from "@/pages/ProjectDetail";
 import PublicSharePage from "@/pages/PublicSharePage";
@@ -20,6 +21,7 @@ export default function AppRoutes() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/auth/callback" element={<AuthCallbackPage />} />
       <Route path="/share/:token" element={<PublicSharePage />} />
 
       <Route element={<ProtectedRoute />}>

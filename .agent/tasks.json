@@ -613,7 +613,7 @@
     "title": "Frontend: Auth context, token storage, and protected route wrapper",
     "category": "functional",
     "specFilePath": ".agent/tasks/TASK-88.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-89",

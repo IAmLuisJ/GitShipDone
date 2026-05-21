@@ -56,6 +56,12 @@ describe("AppRoutes", () => {
     expect(screen.getByTestId("login-page")).toBeInTheDocument();
   });
 
+  it("redirects to /login when only a token is present", () => {
+    useAuthStore.setState({ user: null, accessToken: "tok123" });
+    renderWithRouter(["/dashboard"]);
+    expect(screen.getByTestId("login-page")).toBeInTheDocument();
+  });
+
   it("renders dashboard when authenticated", () => {
     useAuthStore.setState({
       user: {

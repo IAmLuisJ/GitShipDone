@@ -16,31 +16,31 @@
       "step": 1,
       "description": "Create useInitAuth hook",
       "details": "Create src/hooks/useInitAuth.ts. On mount: try POST /api/auth/refresh. If success, GET /api/users/me with the new token, then setAuth(user, accessToken). If fail, clearAuth. Set isLoading = false when done. Return { isLoading }.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Show loading state during init",
       "details": "In App.tsx or root layout, call useInitAuth(). While isLoading is true, show a full-page spinner. This prevents flash of unauthenticated content.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Create ProtectedRoute component",
       "details": "Create src/components/ProtectedRoute.tsx. If !authStore.user, return <Navigate to='/login' replace />. Otherwise render <Outlet />.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Create OAuth callback page",
       "details": "Create src/pages/AuthCallbackPage.tsx at route /auth/callback. Read ?token= from URL. If present: store as accessToken in authStore. GET /api/users/me with token. Store user. Navigate to /dashboard. If no token: navigate to /login?error=oauth_failed.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 5,
       "description": "Test auth flow",
       "details": "Login, reload page — verify still authenticated (token refreshed). Access /dashboard without auth — verify redirect to /login. Complete Google OAuth — verify callback page sets auth and redirects.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-18", "TASK-80"],
