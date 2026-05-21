@@ -17,19 +17,19 @@
       "step": 1,
       "description": "Create DashboardPage",
       "details": "Create src/pages/DashboardPage.tsx. Use useQuery to fetch /api/projects. Show skeleton cards while loading. Render ProjectCard for each project in a CSS grid (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4). 'New Project' button in header triggers create modal.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Create empty state",
       "details": "If projects.length === 0, render an EmptyState component with an illustration, 'No projects yet' title, and 'Create your first project' button.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Verify in browser using Playwright",
       "details": "Login and navigate to dashboard. Verify projects display. Create a project — verify it appears. Check on mobile viewport — verify single column grid.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-82", "TASK-90", "TASK-91", "TASK-116", "TASK-117"],

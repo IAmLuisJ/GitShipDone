@@ -620,7 +620,7 @@
     "title": "Frontend: Projects dashboard — grid of project cards",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-89.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-90",
