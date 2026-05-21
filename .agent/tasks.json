@@ -627,7 +627,7 @@
     "title": "Frontend: Project card component — name, type badge, progress bar, points/level, last updated",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-90.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-91",

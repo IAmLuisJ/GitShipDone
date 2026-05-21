@@ -11,16 +11,9 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import type { Project, ProjectStatus, ProjectType } from "@/types/project";
+import type { Project, ProjectStatus } from "@/types/project";
 
-const typeClasses: Record<ProjectType, string> = {
-  software: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-200",
-  design: "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-200",
-  physical: "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-200",
-  content: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-200",
-  learning: "bg-yellow-100 text-yellow-800 dark:bg-yellow-950 dark:text-yellow-200",
-  other: "bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-200",
-};
+import { getStatusVariant, getTypeColor } from "./ProjectCard.utils";
 
 const statusLabels: Record<ProjectStatus, string> = {
   active: "Active",
@@ -59,10 +52,12 @@ export function ProjectCard({ project }: { project: Project }) {
                 {project.description || "No description yet."}
               </CardDescription>
             </div>
-            <Badge variant="outline">{statusLabels[project.status]}</Badge>
+            <Badge variant={getStatusVariant(project.status)}>
+              {statusLabels[project.status]}
+            </Badge>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Badge className={cn("capitalize", typeClasses[project.type])}>
+            <Badge className={cn("capitalize", getTypeColor(project.type))}>
               {project.type}
             </Badge>
             <Badge variant="secondary">{project.level}</Badge>

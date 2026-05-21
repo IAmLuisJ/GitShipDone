@@ -16,19 +16,19 @@
       "step": 1,
       "description": "Create ProjectCard component",
       "details": "Create src/components/projects/ProjectCard.tsx. Accept project as prop. Wrap in a link to /projects/:id. Use shadcn/ui Card, Badge, Progress components. Display effective progress = progressManual ?? progressAuto. Use date-fns formatDistanceToNow for last updated.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Add type and status badges",
       "details": "Create utility function getTypeColor(type): string that returns Tailwind color classes per type. Create getStatusVariant(status): Badge variant. Apply to shadcn/ui Badge components.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Verify in browser using Playwright",
       "details": "Render dashboard with multiple project types. Verify each card shows correct data. Verify clicking card navigates to project detail.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-81"],
