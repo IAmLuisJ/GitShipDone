@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { FolderKanban, Plus } from "lucide-react";
 
 import { CreateProjectModal } from "@/components/projects/CreateProjectModal";
@@ -29,7 +29,6 @@ function ProjectCardSkeleton() {
 
 export default function Dashboard() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const queryClient = useQueryClient();
   const projectsQuery = useQuery({
     queryKey: ["projects"],
     queryFn: async () => {
@@ -39,14 +38,6 @@ export default function Dashboard() {
   });
 
   const projects = projectsQuery.data ?? [];
-
-  function handleProjectCreated(project: Project) {
-    queryClient.setQueryData<Project[]>(["projects"], (current = []) => [
-      project,
-      ...current,
-    ]);
-    void queryClient.invalidateQueries({ queryKey: ["projects", "sidebar"] });
-  }
 
   return (
     <div data-testid="dashboard-page" className="grid gap-6">
@@ -99,7 +90,6 @@ export default function Dashboard() {
       <CreateProjectModal
         open={isCreateOpen}
         onOpenChange={setIsCreateOpen}
-        onProjectCreated={handleProjectCreated}
       />
     </div>
   );

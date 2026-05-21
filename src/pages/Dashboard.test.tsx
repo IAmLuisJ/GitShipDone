@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import api from "@/lib/api";
@@ -35,7 +35,13 @@ function renderDashboard() {
   return render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter>
-        <Dashboard />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route
+            path="/projects/:id"
+            element={<div data-testid="project-detail-page" />}
+          />
+        </Routes>
       </MemoryRouter>
     </QueryClientProvider>,
   );
@@ -80,28 +86,14 @@ describe("Dashboard", () => {
     expect(screen.getByLabelText(/project name/i)).toBeInTheDocument();
   });
 
-  it("creates a project and adds it to the grid", async () => {
+  it("opens the create flow from the header", async () => {
     const user = userEvent.setup();
-    const createdProject = { ...project, id: "project-2", name: "New Build" };
     vi.mocked(api.get).mockResolvedValue({ data: [] });
-    vi.mocked(api.post).mockResolvedValue({ data: createdProject });
 
     renderDashboard();
 
     await user.click(await screen.findByRole("button", { name: /new project/i }));
-    await user.type(screen.getByLabelText(/project name/i), "New Build");
-    await user.click(screen.getByRole("button", { name: /^software$/i }));
-    await user.click(screen.getByRole("button", { name: /create project/i }));
-
-    await waitFor(() =>
-      expect(api.post).toHaveBeenCalledWith("/projects", {
-        name: "New Build",
-        type: "software",
-      }),
-    );
-    expect(await screen.findByRole("link", { name: /new build/i })).toHaveAttribute(
-      "href",
-      "/projects/project-2",
-    );
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /next/i })).toBeInTheDocument();
   });
 });

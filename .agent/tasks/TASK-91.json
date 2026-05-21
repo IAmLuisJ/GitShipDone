@@ -18,25 +18,25 @@
       "step": 1,
       "description": "Create CreateProjectModal component",
       "details": "Create src/components/projects/CreateProjectModal.tsx. Use shadcn/ui Dialog. Manage step state (1, 2, 3). Step 1: controlled Input for name + type cards (6 options, each as a clickable Card with icon and label). Step 2: Textarea for description. Step 3: depends on type.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Build software milestone templates step",
       "details": "PREDEFINED_SOFTWARE_MILESTONES = ['Set up repository and CI/CD', 'Configure authentication', 'Set up database and ORM', 'Build core features', 'Write tests', 'Set up production deployment', 'Launch v1.0']. Render as Checkbox list. User can select which to include.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Submit and handle success",
       "details": "On Create: POST /api/projects with { name, description, type, milestoneTemplates: selectedTemplates }. On success: queryClient.invalidateQueries(['projects']), close dialog, navigate('/projects/' + newProject.id).",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Open modal, fill name, select 'software' type, add vision, select 3 milestone templates. Create — verify navigates to new project. Verify milestones are pre-created.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-27", "TASK-81"],

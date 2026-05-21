@@ -634,7 +634,7 @@
     "title": "Frontend: Create project modal/wizard — name, type, vision, optional milestone templates",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-91.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-92",
