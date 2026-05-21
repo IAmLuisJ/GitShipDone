@@ -592,7 +592,7 @@
     "title": "Frontend: Login page with email/password and OAuth buttons",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-85.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-86",

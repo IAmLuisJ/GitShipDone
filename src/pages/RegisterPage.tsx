@@ -1,11 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Github, LoaderCircle } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 import api from "@/lib/api";
+import {
+  getAuthApiError,
+  normalizeAuthUser,
+  type AuthResponse,
+} from "@/lib/authResponse";
+import { OAuthButtons } from "@/components/auth/OAuthButtons";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,7 +29,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAuthStore, type User } from "@/stores/authStore";
+import { useAuthStore } from "@/stores/authStore";
 
 const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -34,65 +40,6 @@ const registerSchema = z.object({
 });
 
 type RegisterValues = z.infer<typeof registerSchema>;
-
-type RegisterResponse = {
-  user: Pick<User, "id" | "email" | "name"> &
-    Partial<Pick<User, "avatarUrl" | "aiProvider" | "createdAt">>;
-  accessToken: string;
-};
-
-function GoogleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" data-icon="inline-start">
-      <path
-        fill="currentColor"
-        d="M21.6 12.23c0-.74-.07-1.45-.19-2.13H12v4.03h5.38a4.6 4.6 0 0 1-2 3.02v2.51h3.24c1.89-1.74 2.98-4.3 2.98-7.43Z"
-      />
-      <path
-        fill="currentColor"
-        d="M12 22c2.7 0 4.96-.9 6.62-2.43l-3.24-2.51c-.9.6-2.04.96-3.38.96-2.6 0-4.8-1.76-5.59-4.12H3.07v2.59A9.99 9.99 0 0 0 12 22Z"
-      />
-      <path
-        fill="currentColor"
-        d="M6.41 13.9A6.01 6.01 0 0 1 6.1 12c0-.66.11-1.3.31-1.9V7.51H3.07A9.99 9.99 0 0 0 2 12c0 1.61.39 3.14 1.07 4.49l3.34-2.59Z"
-      />
-      <path
-        fill="currentColor"
-        d="M12 5.98c1.47 0 2.78.5 3.82 1.49l2.87-2.87C16.95 2.98 14.69 2 12 2a9.99 9.99 0 0 0-8.93 5.51l3.34 2.59C7.2 7.74 9.4 5.98 12 5.98Z"
-      />
-    </svg>
-  );
-}
-
-function normalizeUser(user: RegisterResponse["user"]): User {
-  return {
-    id: user.id,
-    email: user.email,
-    name: user.name,
-    avatarUrl: user.avatarUrl ?? null,
-    aiProvider: user.aiProvider ?? null,
-    createdAt: user.createdAt ?? new Date().toISOString(),
-  };
-}
-
-function getApiError(error: unknown) {
-  if (
-    typeof error === "object" &&
-    error !== null &&
-    "response" in error &&
-    typeof error.response === "object" &&
-    error.response !== null &&
-    "data" in error.response &&
-    typeof error.response.data === "object" &&
-    error.response.data !== null &&
-    "error" in error.response.data &&
-    typeof error.response.data.error === "string"
-  ) {
-    return error.response.data.error;
-  }
-
-  return "Unable to create your account. Please try again.";
-}
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -110,11 +57,13 @@ export default function RegisterPage() {
   async function onSubmit(values: RegisterValues) {
     setApiError(null);
     try {
-      const response = await api.post<RegisterResponse>("/auth/register", values);
-      setAuth(normalizeUser(response.data.user), response.data.accessToken);
+      const response = await api.post<AuthResponse>("/auth/register", values);
+      setAuth(normalizeAuthUser(response.data.user), response.data.accessToken);
       navigate("/dashboard", { replace: true });
     } catch (error) {
-      setApiError(getApiError(error));
+      setApiError(
+        getAuthApiError(error, "Unable to create your account. Please try again."),
+      );
     }
   }
 
@@ -133,20 +82,7 @@ export default function RegisterPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-3">
-            <Button asChild variant="outline">
-              <a href="/api/auth/google">
-                <GoogleIcon />
-                Continue with Google
-              </a>
-            </Button>
-            <Button asChild variant="outline">
-              <a href="/api/auth/github">
-                <Github data-icon="inline-start" />
-                Continue with GitHub
-              </a>
-            </Button>
-          </div>
+          <OAuthButtons />
 
           <div className="my-6 h-px bg-border" />
 

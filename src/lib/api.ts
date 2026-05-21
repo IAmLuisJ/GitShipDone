@@ -1,6 +1,19 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/authStore";
 
+type RefreshableRequestConfig = {
+  url?: string;
+  _retry?: boolean;
+  headers: Record<string, string>;
+};
+
+type RefreshableError = {
+  response?: {
+    status?: number;
+  };
+  config?: RefreshableRequestConfig;
+};
+
 const api = axios.create({
   baseURL: "/api",
 });
@@ -30,11 +43,26 @@ function processQueue(error: unknown, token: string | null = null) {
   failedQueue = [];
 }
 
+function isAuthEndpoint(url: string | undefined) {
+  return /(^|\/)auth\//.test(url ?? "");
+}
+
+export function shouldAttemptTokenRefresh(error: RefreshableError) {
+  const originalRequest = error.config;
+
+  return (
+    error.response?.status === 401 &&
+    Boolean(originalRequest) &&
+    !originalRequest?._retry &&
+    !isAuthEndpoint(originalRequest?.url)
+  );
+}
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response?.status !== 401 || originalRequest._retry) {
+    if (!shouldAttemptTokenRefresh(error)) {
       return Promise.reject(error);
     }
 

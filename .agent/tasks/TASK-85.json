@@ -17,19 +17,19 @@
       "step": 1,
       "description": "Create LoginPage with form",
       "details": "src/pages/LoginPage.tsx. React Hook Form with email + password. On submit: POST /api/auth/login. On success: setAuth + navigate('/dashboard'). On error: show error message.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Add links and OAuth buttons",
       "details": "Add 'Forgot password?' link to /forgot-password. 'Don't have an account? Sign up' link to /register. Google and GitHub OAuth buttons.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Verify in browser using Playwright",
       "details": "Login with valid credentials — redirect to dashboard. Login with wrong password — see error. Click forgot password — navigate to correct page.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-17", "TASK-81"],
