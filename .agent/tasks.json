@@ -662,7 +662,7 @@
     "title": "Frontend: Milestones tab — list, create, complete, delete, reorder with drag-and-drop",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-95.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-96",

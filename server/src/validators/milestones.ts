@@ -17,3 +17,7 @@ export const updateMilestoneSchema = z
   .refine((data) => Object.keys(data).length > 0, {
     message: "At least one field must be provided",
   });
+
+export const reorderMilestonesSchema = z.object({
+  milestoneIds: z.array(z.string().min(1)).min(1),
+});

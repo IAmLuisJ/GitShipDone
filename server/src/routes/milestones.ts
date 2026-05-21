@@ -5,6 +5,7 @@ import { db } from "../db";
 import { milestones, projects } from "../db/schema";
 import {
   createMilestoneSchema,
+  reorderMilestonesSchema,
   updateMilestoneSchema,
 } from "../validators/milestones";
 import { getOwnedProject } from "../utils/projectOwnership";
@@ -78,6 +79,65 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 });
+
+/**
+ * PATCH /api/projects/:id/milestones/reorder
+ * Persist a new milestone order for a project.
+ */
+router.patch(
+  "/reorder",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      await getOwnedProject(projectId, req.userId!);
+
+      const parsed = reorderMilestonesSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          error: "Validation failed",
+          details: parsed.error.flatten().fieldErrors,
+        });
+        return;
+      }
+
+      const { milestoneIds } = parsed.data;
+      const existing = await db
+        .select({ id: milestones.id })
+        .from(milestones)
+        .where(eq(milestones.projectId, projectId));
+      const existingIds = new Set(existing.map((milestone) => milestone.id));
+
+      if (milestoneIds.some((milestoneId) => !existingIds.has(milestoneId))) {
+        res.status(400).json({ error: "Invalid milestone order" });
+        return;
+      }
+
+      await Promise.all(
+        milestoneIds.map((milestoneId, sortOrder) =>
+          db
+            .update(milestones)
+            .set({ sortOrder, updatedAt: new Date() })
+            .where(
+              and(
+                eq(milestones.id, milestoneId),
+                eq(milestones.projectId, projectId),
+              ),
+            ),
+        ),
+      );
+
+      const result = await db
+        .select()
+        .from(milestones)
+        .where(eq(milestones.projectId, projectId))
+        .orderBy(asc(milestones.sortOrder));
+
+      res.status(200).json({ milestones: result });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 /**
  * PATCH /api/projects/:id/milestones/:mid

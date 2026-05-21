@@ -140,7 +140,7 @@ export default function ProjectDetailPage() {
           <TimelineTab />
         </TabsContent>
         <TabsContent value="milestones">
-          <MilestonesTab />
+          <MilestonesTab projectId={project.id} />
         </TabsContent>
         <TabsContent value="todos">
           <TodosTab />
