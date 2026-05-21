@@ -641,7 +641,7 @@
     "title": "Frontend: Software project milestone template wizard step",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-92.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-93",

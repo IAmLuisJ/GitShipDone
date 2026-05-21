@@ -1,4 +1,4 @@
-import { Check, LoaderCircle } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import type { FormEvent } from "react";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -18,6 +18,8 @@ import { Textarea } from "@/components/ui/textarea";
 import api from "@/lib/api";
 import { cn } from "@/lib/utils";
 import type { Project, ProjectType } from "@/types/project";
+import { MilestoneTemplatesStep } from "./MilestoneTemplatesStep";
+import { PREDEFINED_SOFTWARE_MILESTONES } from "./milestoneTemplates";
 
 const projectTypes: Array<{ value: ProjectType; label: string }> = [
   { value: "software", label: "Software" },
@@ -26,16 +28,6 @@ const projectTypes: Array<{ value: ProjectType; label: string }> = [
   { value: "content", label: "Content" },
   { value: "learning", label: "Learning" },
   { value: "other", label: "Other" },
-];
-
-const predefinedSoftwareMilestones = [
-  "Set up repository and CI/CD",
-  "Configure authentication",
-  "Set up database and ORM",
-  "Build core features",
-  "Write tests",
-  "Set up production deployment",
-  "Launch v1.0",
 ];
 
 type CreateProjectModalProps = {
@@ -53,7 +45,9 @@ export function CreateProjectModal({
   const [name, setName] = useState("");
   const [type, setType] = useState<ProjectType>("other");
   const [description, setDescription] = useState("");
-  const [selectedTemplates, setSelectedTemplates] = useState<string[]>([]);
+  const [selectedTemplates, setSelectedTemplates] = useState<string[]>(
+    PREDEFINED_SOFTWARE_MILESTONES.map((milestone) => milestone.name),
+  );
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -62,7 +56,9 @@ export function CreateProjectModal({
     setName("");
     setType("other");
     setDescription("");
-    setSelectedTemplates([]);
+    setSelectedTemplates(
+      PREDEFINED_SOFTWARE_MILESTONES.map((milestone) => milestone.name),
+    );
     setError(null);
     setIsSubmitting(false);
   }
@@ -80,14 +76,6 @@ export function CreateProjectModal({
   function handleBack() {
     setError(null);
     setStep((current) => Math.max(current - 1, 1));
-  }
-
-  function toggleTemplate(template: string) {
-    setSelectedTemplates((current) =>
-      current.includes(template)
-        ? current.filter((item) => item !== template)
-        : [...current, template],
-    );
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -191,50 +179,20 @@ export function CreateProjectModal({
           ) : null}
 
           {step === 3 && type === "software" ? (
-            <div className="grid gap-3">
-              <div>
-                <h3 className="font-medium">Milestone templates</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Select any starting milestones you want created with the project.
-                </p>
-              </div>
-              <div className="grid gap-2">
-                {predefinedSoftwareMilestones.map((template) => {
-                  const isSelected = selectedTemplates.includes(template);
-
-                  return (
-                    <button
-                      key={template}
-                      aria-checked={isSelected}
-                      className={cn(
-                        "flex items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm transition-colors",
-                        isSelected && "border-primary bg-primary/10",
-                      )}
-                      onClick={() => toggleTemplate(template)}
-                      role="checkbox"
-                      type="button"
-                    >
-                      <span
-                        aria-hidden="true"
-                        className={cn(
-                          "grid size-4 place-items-center rounded border border-input",
-                          isSelected &&
-                            "border-primary bg-primary text-primary-foreground",
-                        )}
-                      >
-                        {isSelected ? <Check className="size-3" /> : null}
-                      </span>
-                      {template}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+            <MilestoneTemplatesStep
+              selectedTemplates={selectedTemplates}
+              onChange={setSelectedTemplates}
+              onSkip={() => setSelectedTemplates([])}
+            />
           ) : null}
 
           {step === 3 && type !== "software" ? (
-            <div className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
-              AI milestone suggestions can be added after the project is created.
+            <div className="rounded-lg border bg-muted/40 p-4 text-sm">
+              <h3 className="font-medium">Ready to create!</h3>
+              <p className="mt-1 text-muted-foreground">
+                Your project details are set. You can add milestones after the
+                project is created.
+              </p>
             </div>
           ) : null}
 

@@ -16,19 +16,19 @@
       "step": 1,
       "description": "Create MilestoneTemplatesStep component",
       "details": "Create src/components/projects/MilestoneTemplatesStep.tsx. Show list of PREDEFINED_SOFTWARE_MILESTONES as Checkbox + Label pairs with descriptions. Initialize all as checked. Pass selected array up to parent via onChange prop.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Integrate into CreateProjectModal step 3",
       "details": "In step 3 of wizard: if type === 'software', render MilestoneTemplatesStep. Otherwise, render a 'Ready to create!' confirmation message.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Verify in browser",
       "details": "Select 'software' type, reach step 3 — verify templates shown. Uncheck 2 — verify only selected templates created on submit.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-91"],

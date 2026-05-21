@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import api from "@/lib/api";
 import { CreateProjectModal } from "./CreateProjectModal";
+import { PREDEFINED_SOFTWARE_MILESTONES } from "./milestoneTemplates";
 
 vi.mock("@/lib/api", () => ({
   default: {
@@ -82,21 +83,30 @@ describe("CreateProjectModal", () => {
     );
     await user.click(screen.getByRole("button", { name: /next/i }));
 
-    await user.click(screen.getByRole("checkbox", { name: /set up repository and ci\/cd/i }));
-    await user.click(screen.getByRole("checkbox", { name: /configure authentication/i }));
+    expect(screen.getAllByRole("checkbox")).toHaveLength(7);
+    expect(
+      screen.getByRole("checkbox", { name: /set up repository and ci\/cd/i }),
+    ).toHaveAttribute("aria-checked", "true");
+
+    await user.click(
+      screen.getByRole("checkbox", { name: /configure authentication/i }),
+    );
     await user.click(screen.getByRole("checkbox", { name: /write tests/i }));
     await user.click(screen.getByRole("button", { name: /create project/i }));
+
+    const expectedTemplates = PREDEFINED_SOFTWARE_MILESTONES.map(
+      (milestone) => milestone.name,
+    ).filter(
+      (template) =>
+        template !== "Configure authentication" && template !== "Write tests",
+    );
 
     await waitFor(() =>
       expect(api.post).toHaveBeenCalledWith("/projects", {
         name: "Launch Pad",
         description: "A careful v1 launch",
         type: "software",
-        milestoneTemplates: [
-          "Set up repository and CI/CD",
-          "Configure authentication",
-          "Write tests",
-        ],
+        milestoneTemplates: expectedTemplates,
       }),
     );
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: ["projects"] });
@@ -119,5 +129,18 @@ describe("CreateProjectModal", () => {
       "aria-pressed",
       "true",
     );
+  });
+
+  it("shows a ready confirmation instead of templates for non-software projects", async () => {
+    const user = userEvent.setup();
+    renderModal();
+
+    await user.type(screen.getByLabelText(/project name/i), "Learning Plan");
+    await user.click(screen.getByRole("button", { name: /^learning$/i }));
+    await user.click(screen.getByRole("button", { name: /next/i }));
+    await user.click(screen.getByRole("button", { name: /next/i }));
+
+    expect(screen.getByText(/ready to create!/i)).toBeInTheDocument();
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
   });
 });
