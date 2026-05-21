@@ -15,31 +15,31 @@
       "step": 1,
       "description": "Create OverviewTab component",
       "details": "Create src/components/project/tabs/OverviewTab.tsx. Accept project as prop. Layout: 2-column on desktop (vision + stats on left, recent activity on right). Single column on mobile.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Build vision card",
       "details": "Display project.description in a Card with edit button (pencil icon) that opens an inline edit form. If no description, show placeholder text 'No vision statement yet. Add one to keep your project focused.'",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Build stats section",
       "details": "Progress bar with label showing auto% and manual% (if set). Milestones: 'X of Y completed'. Points and level. All in a Card grid.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Build recent activity mini-timeline",
       "details": "Fetch GET /api/projects/:id/timeline?limit=5. Render each event as a compact row: icon + event description + time ago.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 5,
       "description": "Verify in browser using Playwright",
       "details": "Open overview tab. Verify vision, stats, and recent activity render. Add a journal entry — verify it appears in recent activity. Edit vision inline — verify it saves.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-93", "TASK-51"],

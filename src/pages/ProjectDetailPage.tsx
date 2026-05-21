@@ -134,7 +134,7 @@ export default function ProjectDetailPage() {
         </div>
 
         <TabsContent value="overview">
-          <OverviewTab project={project} />
+          <OverviewTab project={project} onSelectTab={handleTabChange} />
         </TabsContent>
         <TabsContent value="timeline">
           <TimelineTab />

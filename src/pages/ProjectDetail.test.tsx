@@ -55,6 +55,24 @@ function renderProjectDetail(initialEntry = "/projects/project-1") {
   );
 }
 
+function mockProjectRequests() {
+  vi.mocked(api.get).mockImplementation((url) => {
+    if (url === "/projects/project-1") {
+      return Promise.resolve({ data: project });
+    }
+
+    if (url === "/projects/project-1/milestones") {
+      return Promise.resolve({ data: [] });
+    }
+
+    if (url === "/projects/project-1/timeline?limit=5") {
+      return Promise.resolve({ data: { events: [], total: 0, page: 1, limit: 5 } });
+    }
+
+    return Promise.reject(new Error(`Unhandled GET ${url}`));
+  });
+}
+
 describe("ProjectDetail", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -62,15 +80,15 @@ describe("ProjectDetail", () => {
 
   it("fetches the project and renders the header, actions, and tabs", async () => {
     const user = userEvent.setup();
-    vi.mocked(api.get).mockResolvedValue({ data: project });
+    mockProjectRequests();
     renderProjectDetail();
 
     expect(await screen.findByRole("heading", { name: /ship mvp/i })).toBeVisible();
     expect(api.get).toHaveBeenCalledWith("/projects/project-1");
     expect(screen.getByText("Software")).toBeInTheDocument();
     expect(screen.getByText("Active")).toBeInTheDocument();
-    expect(screen.getByText("Sprout")).toBeInTheDocument();
-    expect(screen.getByText("420 pts")).toBeInTheDocument();
+    expect(screen.getAllByText("Sprout")).not.toHaveLength(0);
+    expect(screen.getAllByText("420 pts")).not.toHaveLength(0);
     expect(screen.getByText(/64% complete/i)).toBeInTheDocument();
     expect(screen.getAllByRole("tab")).toHaveLength(7);
     expect(screen.getByTestId("overview-tab")).toBeInTheDocument();
@@ -92,7 +110,7 @@ describe("ProjectDetail", () => {
 
   it("syncs the active tab with the URL search param", async () => {
     const user = userEvent.setup();
-    vi.mocked(api.get).mockResolvedValue({ data: project });
+    mockProjectRequests();
     renderProjectDetail("/projects/project-1?tab=milestones");
 
     expect(await screen.findByRole("heading", { name: /ship mvp/i })).toBeVisible();

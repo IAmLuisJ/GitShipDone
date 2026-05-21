@@ -655,7 +655,7 @@
     "title": "Frontend: Project overview tab — vision, stats, recent activity summary",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-94.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-95",
