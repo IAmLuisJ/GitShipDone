@@ -17,13 +17,13 @@
       "step": 1,
       "description": "Create ResetPasswordPage",
       "details": "src/pages/ResetPasswordPage.tsx. useSearchParams to get token. Form: newPassword + confirmPassword with validation (min 8, must match). POST /api/auth/reset-password with { token, newPassword }. On success: show 'Password updated! Sign in.' On error: show error.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Verify in browser",
       "details": "Navigate to /reset-password with valid token — submit new password — verify success. Try with expired/invalid token — verify error. Try without token in URL — verify error shown immediately.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-21", "TASK-81"],

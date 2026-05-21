@@ -606,7 +606,7 @@
     "title": "Frontend: Reset password page",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-87.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-88",
