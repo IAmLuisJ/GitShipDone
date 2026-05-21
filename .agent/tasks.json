@@ -599,7 +599,7 @@
     "title": "Frontend: Forgot password page",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-86.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-87",

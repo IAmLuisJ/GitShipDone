@@ -16,13 +16,13 @@
       "step": 1,
       "description": "Create ForgotPasswordPage",
       "details": "src/pages/ForgotPasswordPage.tsx. Email-only form. On submit: show loading, POST /api/auth/forgot-password. On response (success or error): show 'If that email exists, a reset link has been sent.' Always show this message.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Verify in browser",
       "details": "Submit with valid email — verify success message. Submit with unknown email — verify same message (no info leak).",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-20", "TASK-81"],
