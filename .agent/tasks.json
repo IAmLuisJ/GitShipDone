@@ -648,7 +648,7 @@
     "title": "Frontend: Project detail page — tabbed layout",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-93.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-94",

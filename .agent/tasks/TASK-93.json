@@ -18,25 +18,25 @@
       "step": 1,
       "description": "Create ProjectDetailPage",
       "details": "Create src/pages/ProjectDetailPage.tsx. Fetch project using useQuery(['project', id], GET /api/projects/:id). Show loading skeleton, then render project header + Tabs. Use useSearchParams to sync active tab with URL.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Build project header",
       "details": "Show: project name (large heading), type badge, status badge, level badge (e.g., 'Sprout'), points total. Action buttons: 'AI PM' (opens chat drawer), options dropdown (edit, delete). Progress bar component below header.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Set up tabs",
       "details": "Use shadcn/ui Tabs. Tab values: overview, timeline, milestones, todos, journal, parking-lot, settings. Default to 'overview'. Each TabsContent renders the corresponding tab component (lazy/conditional render).",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Navigate to /projects/:id. Verify header shows correct project data. Click each tab — verify content renders. Reload with ?tab=milestones — verify milestones tab is active.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-29", "TASK-82", "TASK-81"],
