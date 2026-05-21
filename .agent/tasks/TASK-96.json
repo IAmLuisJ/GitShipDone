@@ -14,25 +14,25 @@
       "step": 1,
       "description": "Install canvas-confetti",
       "details": "npm install canvas-confetti. npm install -D @types/canvas-confetti.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Create useConfetti hook",
       "details": "Create src/hooks/useConfetti.ts. Export function fireConfetti(): void. Call confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }). Export the hook.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Call fireConfetti on milestone completion",
       "details": "In MilestoneItem, after the complete API call succeeds, call fireConfetti().",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser",
       "details": "Complete a milestone — verify confetti fires. Verify it doesn't interfere with clicking other elements.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-81"],

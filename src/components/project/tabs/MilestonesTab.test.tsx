@@ -6,6 +6,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import api from "@/lib/api";
 import { MilestonesTab } from "./MilestonesTab";
 
+const { fireConfettiMock } = vi.hoisted(() => ({
+  fireConfettiMock: vi.fn(),
+}));
+
 vi.mock("@/lib/api", () => ({
   default: {
     delete: vi.fn(),
@@ -13,6 +17,10 @@ vi.mock("@/lib/api", () => ({
     patch: vi.fn(),
     post: vi.fn(),
   },
+}));
+
+vi.mock("@/hooks/useConfetti", () => ({
+  fireConfetti: fireConfettiMock,
 }));
 
 const milestones = [
@@ -86,6 +94,7 @@ describe("MilestonesTab", () => {
         "/projects/project-1/milestones/m2/complete",
       ),
     );
+    expect(fireConfettiMock).toHaveBeenCalledTimes(1);
 
     await user.type(screen.getByLabelText(/milestone name/i), "Write docs");
     await user.type(screen.getByLabelText(/due date/i), "2026-06-20");

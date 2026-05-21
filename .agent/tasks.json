@@ -669,7 +669,7 @@
     "title": "Frontend: Milestone completion confetti animation",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-96.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-97",

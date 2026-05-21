@@ -21,6 +21,7 @@ import { MilestoneItem, type Milestone } from "@/components/project/MilestoneIte
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { fireConfetti } from "@/hooks/useConfetti";
 import api from "@/lib/api";
 
 type MilestonesTabProps = {
@@ -118,6 +119,7 @@ export function MilestonesTab({ projectId }: MilestonesTabProps) {
 
   async function handleComplete(milestone: Milestone) {
     await api.post(`/projects/${projectId}/milestones/${milestone.id}/complete`);
+    fireConfetti();
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: milestoneQueryKey }),
       queryClient.invalidateQueries({ queryKey: ["project", projectId] }),
