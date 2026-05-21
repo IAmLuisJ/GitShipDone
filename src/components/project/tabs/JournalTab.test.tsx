@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import api from "@/lib/api";
 import { JournalTab } from "./JournalTab";
@@ -49,6 +49,27 @@ let entries = [
     updatedAt: "2026-05-18T12:00:00.000Z",
   },
 ];
+
+beforeAll(() => {
+  window.scrollBy = vi.fn();
+  document.elementFromPoint = vi.fn(() => document.querySelector(".ProseMirror"));
+  HTMLElement.prototype.getClientRects = vi.fn(
+    () =>
+      ({
+        length: 1,
+        item: () => new DOMRect(0, 0, 100, 20),
+        [0]: new DOMRect(0, 0, 100, 20),
+      }) as DOMRectList,
+  );
+  Range.prototype.getClientRects = vi.fn(
+    () =>
+      ({
+        length: 1,
+        item: () => new DOMRect(0, 0, 100, 20),
+        [0]: new DOMRect(0, 0, 100, 20),
+      }) as DOMRectList,
+  );
+});
 
 function renderJournal() {
   const queryClient = new QueryClient({
@@ -129,7 +150,7 @@ describe("JournalTab", () => {
     await waitFor(() =>
       expect(api.post).toHaveBeenCalledWith("/projects/project-1/journal", {
         title: "Fresh win",
-        body: "We shipped the thing.",
+        body: expect.stringContaining("We shipped the thing."),
         mood: "win",
       }),
     );
@@ -141,11 +162,14 @@ describe("JournalTab", () => {
     await user.type(screen.getByLabelText(/entry title/i), "Middle update edited");
     await user.click(screen.getByRole("button", { name: /save entry/i }));
     await waitFor(() =>
-      expect(api.patch).toHaveBeenCalledWith("/projects/project-1/journal/j2", {
-        title: "Middle update edited",
-        body: entries.find((entry) => entry.id === "j2")?.body,
-        mood: "steady",
-      }),
+      expect(api.patch).toHaveBeenCalledWith(
+        "/projects/project-1/journal/j2",
+        expect.objectContaining({
+          title: "Middle update edited",
+          body: expect.stringContaining("hidden ending"),
+          mood: "steady",
+        }),
+      ),
     );
     expect(await screen.findByText("Middle update edited")).toBeInTheDocument();
 

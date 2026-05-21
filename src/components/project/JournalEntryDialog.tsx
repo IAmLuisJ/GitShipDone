@@ -1,6 +1,8 @@
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 
+import { RichTextEditor } from "@/components/editor/RichTextEditor";
+import { normalizeRichTextContent } from "@/components/editor/richText";
 import type { JournalEntry, JournalMood } from "@/components/project/JournalEntryCard";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +14,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 type JournalEntryDialogProps = {
   entry?: JournalEntry | null;
@@ -47,7 +48,7 @@ export function JournalEntryDialog({
   useEffect(() => {
     if (!open) return;
     setTitle(entry?.title ?? "");
-    setBody(entry?.body ?? "");
+    setBody(normalizeRichTextContent(entry?.body ?? ""));
     setMood(entry?.mood ?? "");
   }, [entry, open]);
 
@@ -95,10 +96,14 @@ export function JournalEntryDialog({
               ))}
             </select>
           </label>
-          <label className="grid gap-1 text-sm font-medium">
-            Entry body
-            <Textarea value={body} onChange={(event) => setBody(event.target.value)} />
-          </label>
+          <div className="grid gap-1 text-sm font-medium">
+            <span>Entry body</span>
+            <RichTextEditor
+              ariaLabel="Entry body"
+              content={body}
+              onChange={setBody}
+            />
+          </div>
           <DialogFooter>
             <Button type="submit" disabled={isSaving || !title.trim() || !body.trim()}>
               Save entry

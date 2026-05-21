@@ -15,6 +15,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { RichTextViewer } from "@/components/editor/RichTextViewer";
+import { getRichTextPlainText } from "@/components/editor/richText";
 
 export type JournalMood = "excited" | "blocked" | "steady" | "win" | "learning";
 
@@ -41,30 +43,13 @@ const moodEmoji: Record<JournalMood, string> = {
   learning: "📚",
 };
 
-function collectTiptapText(node: unknown): string {
-  if (!node || typeof node !== "object") return "";
-  const record = node as { text?: string; content?: unknown[] };
-  const ownText = record.text ?? "";
-  const childText = record.content?.map(collectTiptapText).join(" ") ?? "";
-  return `${ownText} ${childText}`.trim();
-}
-
-function getJournalBodyText(body: string) {
-  try {
-    const parsed = JSON.parse(body) as unknown;
-    return collectTiptapText(parsed) || body;
-  } catch {
-    return body;
-  }
-}
-
 export function JournalEntryCard({
   entry,
   onDelete,
   onEdit,
 }: JournalEntryCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const bodyText = getJournalBodyText(entry.body);
+  const bodyText = getRichTextPlainText(entry.body);
   const preview =
     bodyText.length > 150 ? `${bodyText.slice(0, 150).trim()}...` : bodyText;
 
@@ -100,9 +85,11 @@ export function JournalEntryCard({
         </DropdownMenu>
       </CardHeader>
       <CardContent className="grid gap-3">
-        <p className="whitespace-pre-wrap text-sm text-muted-foreground">
-          {isExpanded ? bodyText : preview}
-        </p>
+        {isExpanded ? (
+          <RichTextViewer content={entry.body} />
+        ) : (
+          <p className="whitespace-pre-wrap text-sm text-muted-foreground">{preview}</p>
+        )}
         {bodyText.length > 150 ? (
           <Button
             type="button"

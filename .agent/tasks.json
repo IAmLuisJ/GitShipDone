@@ -690,7 +690,7 @@
     "title": "Frontend: Tiptap rich text editor integration (bold, italic, lists, links, code blocks)",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-99.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-100",

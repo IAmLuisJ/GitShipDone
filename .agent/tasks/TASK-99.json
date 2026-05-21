@@ -16,31 +16,31 @@
       "step": 1,
       "description": "Install Tiptap packages",
       "details": "npm install @tiptap/react @tiptap/pm @tiptap/starter-kit @tiptap/extension-link @tiptap/extension-code-block-lowlight lowlight.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Create RichTextEditor component",
       "details": "Create src/components/editor/RichTextEditor.tsx. Use useEditor from Tiptap with extensions: StarterKit, Link, CodeBlockLowlight. Props: content (JSON string), onChange(json: string), readOnly: boolean. Show toolbar with icon buttons for formatting. Use EditorContent to render.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Create RichTextViewer component",
       "details": "Create src/components/editor/RichTextViewer.tsx. Read-only Tiptap instance that renders stored JSON. Used in journal entry cards and share page.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Integrate into journal entry form",
       "details": "In the create/edit journal entry dialog (TASK-98), replace basic textarea with RichTextEditor. Store editor.getJSON() as the body value.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 5,
       "description": "Verify in browser",
       "details": "Open journal entry form. Type formatted content (bold text, a list, a code block). Submit — verify saved. View entry — verify formatting renders correctly.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-81"],
