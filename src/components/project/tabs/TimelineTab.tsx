@@ -2,8 +2,8 @@ import { useMemo, useState } from "react";
 import { format, formatDistanceToNow } from "date-fns";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { TimelineEventIcon } from "@/components/project/TimelineEventIcon";
-import { describeTimelineEvent, type TimelineEvent } from "@/components/project/timelineEvent";
+import { TimelineEventRenderer } from "@/components/project/timeline/TimelineEventRenderer";
+import type { TimelineEvent } from "@/components/project/timelineEvent";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -55,23 +55,14 @@ function TimelineItem({ event }: { event: TimelineEvent }) {
         <span className="size-2 rounded-full bg-primary" />
       </span>
       <article className="grid gap-1 rounded-lg border bg-card p-3">
-        <div className="flex items-start gap-3">
-          <div className="mt-0.5">
-            <TimelineEventIcon type={event.type} />
-          </div>
-          <div className="min-w-0">
-            <div className="text-sm font-medium" data-testid="timeline-event-summary">
-              {describeTimelineEvent(event)}
-            </div>
-            <time
-              className="text-xs text-muted-foreground"
-              dateTime={event.createdAt}
-              title={timeLabels.absolute}
-            >
-              {timeLabels.relative}
-            </time>
-          </div>
-        </div>
+        <TimelineEventRenderer event={event} />
+        <time
+          className="pl-7 text-xs text-muted-foreground"
+          dateTime={event.createdAt}
+          title={timeLabels.absolute}
+        >
+          {timeLabels.relative}
+        </time>
       </article>
     </li>
   );

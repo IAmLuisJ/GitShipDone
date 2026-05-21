@@ -704,7 +704,7 @@
     "title": "Frontend: Timeline event components for all event types",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-101.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-102",

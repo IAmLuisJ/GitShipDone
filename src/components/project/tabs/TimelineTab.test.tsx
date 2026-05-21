@@ -66,8 +66,8 @@ describe("TimelineTab", () => {
 
     renderTimelineTab();
 
-    expect(await screen.findByText("Journal: Launch notes")).toBeVisible();
-    expect(screen.getByText("Completed milestone: Beta shipped")).toBeVisible();
+    expect(await screen.findByText("Launch notes")).toBeVisible();
+    expect(screen.getByText("Beta shipped")).toBeVisible();
     expect(screen.getByTestId("timeline-list")).toHaveClass("border-l");
     expect(screen.getAllByTestId("timeline-dot")).toHaveLength(2);
     expect(screen.getAllByTestId("timeline-event-icon")).toHaveLength(2);
@@ -76,11 +76,8 @@ describe("TimelineTab", () => {
       "May 21, 2026, 10:00 AM",
     );
 
-    const summaries = screen.getAllByTestId("timeline-event-summary");
-    expect(summaries.map((summary) => summary.textContent)).toEqual([
-      "Journal: Launch notes",
-      "Completed milestone: Beta shipped",
-    ]);
+    expect(screen.getByTestId("timeline-event-journal")).toBeInTheDocument();
+    expect(screen.getByTestId("timeline-event-milestone_completed")).toBeInTheDocument();
     expect(api.get).toHaveBeenCalledWith("/projects/project-1/timeline?page=1&limit=50");
   });
 
@@ -116,7 +113,7 @@ describe("TimelineTab", () => {
 
     renderTimelineTab();
 
-    expect(await screen.findByText("Journal: Launch notes")).toBeVisible();
+    expect(await screen.findByText("Launch notes")).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Milestones" }));
 
     await waitFor(() =>
@@ -124,14 +121,14 @@ describe("TimelineTab", () => {
         "/projects/project-1/timeline?page=1&limit=50&type=milestones",
       ),
     );
-    expect(await screen.findByText("Completed milestone: Beta shipped")).toBeVisible();
-    expect(screen.queryByText("Journal: Launch notes")).not.toBeInTheDocument();
+    expect(await screen.findByText("Beta shipped")).toBeVisible();
+    expect(screen.queryByText("Launch notes")).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "All" }));
-    expect(await screen.findByText("Journal: Launch notes")).toBeVisible();
+    expect(await screen.findByText("Launch notes")).toBeVisible();
 
     await user.click(screen.getByRole("button", { name: "Load more" }));
-    expect(await screen.findByText("Progress changed to 80%")).toBeVisible();
+    expect(await screen.findByText("0% -> 80%")).toBeVisible();
   });
 
   it("shows an empty state when there are no events", async () => {
