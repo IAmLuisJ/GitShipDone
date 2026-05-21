@@ -683,7 +683,7 @@
     "title": "Frontend: Journal tab — list entries, create entry with mood picker",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-98.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-99",

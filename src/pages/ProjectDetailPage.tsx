@@ -146,7 +146,7 @@ export default function ProjectDetailPage() {
           <TodosTab projectId={project.id} />
         </TabsContent>
         <TabsContent value="journal">
-          <JournalTab />
+          <JournalTab projectId={project.id} />
         </TabsContent>
         <TabsContent value="parking-lot">
           <ParkingLotTab />

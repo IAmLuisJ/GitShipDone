@@ -17,25 +17,25 @@
       "step": 1,
       "description": "Create JournalTab component",
       "details": "Create src/components/project/tabs/JournalTab.tsx. Fetch entries with useInfiniteQuery (paginated). 'Log Update' button fixed/prominent. Map entries to JournalEntryCard.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Create JournalEntryCard component",
       "details": "Card showing title, mood emoji (excited=🚀, blocked=🚧, steady=⚡, win=🏆, learning=📚), date, body truncated to 150 chars. Click to expand full Tiptap render. Edit/delete actions in dropdown.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Connect edit/delete actions",
       "details": "Edit: open the create/edit dialog prefilled. Delete: shadcn/ui AlertDialog confirmation → DELETE API call → invalidate query.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Create 3 journal entries. Verify listed newest first. Expand one — verify full content visible. Delete one — verify removed.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-46", "TASK-47", "TASK-48", "TASK-49", "TASK-99"],
