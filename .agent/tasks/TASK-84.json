@@ -18,25 +18,25 @@
       "step": 1,
       "description": "Create RegisterPage with React Hook Form + Zod",
       "details": "Create src/pages/RegisterPage.tsx. Use useForm with zodResolver. Schema: { name: string.min(1), email: string.email(), password: string.min(8) }. Use shadcn/ui Form, FormField, FormItem, FormLabel, FormControl, FormMessage components for consistent error display.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Connect to API and handle response",
       "details": "On submit, call POST /api/auth/register. On success: call authStore.setAuth(user, accessToken), navigate('/dashboard'). On API error: display error message from response body below the form.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Add OAuth buttons",
       "details": "Add 'Continue with Google' and 'Continue with GitHub' buttons. On click, navigate to /api/auth/google or /api/auth/github (these redirect to OAuth providers). Handle /auth/callback route to capture the token from query params.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Open /register. Try submitting empty form — verify validation errors. Submit with short password — verify error. Submit valid data — verify redirect to dashboard. Try duplicate email — verify error message.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-16", "TASK-81", "TASK-88"],

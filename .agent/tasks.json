@@ -585,7 +585,7 @@
     "title": "Frontend: Registration page with form validation",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-84.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-85",
