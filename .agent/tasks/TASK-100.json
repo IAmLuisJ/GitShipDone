@@ -17,31 +17,31 @@
       "step": 1,
       "description": "Create TimelineTab component",
       "details": "Create src/components/project/tabs/TimelineTab.tsx. Fetch /api/projects/:id/timeline with pagination. Filter state for event type. Render TimelineEvent components.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Build timeline visual structure",
       "details": "CSS: relative container, each item has absolute left border and a dot. Use Tailwind: 'relative border-l border-muted ml-4' for container. Each event: 'relative pl-6 pb-6' with a dot: 'absolute -left-2 w-4 h-4 rounded-full bg-primary'.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Add filter chips",
       "details": "Horizontal scrollable row of chip buttons (shadcn/ui Badge as toggle). Selecting a type filters the API query (adds ?type= param). 'All' clears filter.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Add load more",
       "details": "'Load more' button at bottom — fetches next page and appends to list (useInfiniteQuery).",
-      "pass": false
+      "pass": true
     },
     {
       "step": 5,
       "description": "Verify in browser using Playwright",
       "details": "Create journal entry, complete milestone — both appear in timeline. Filter by 'Milestones' — verify only milestone events. Verify relative timestamps show correctly.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-51", "TASK-101"],

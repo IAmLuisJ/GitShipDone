@@ -137,7 +137,7 @@ export default function ProjectDetailPage() {
           <OverviewTab project={project} onSelectTab={handleTabChange} />
         </TabsContent>
         <TabsContent value="timeline">
-          <TimelineTab />
+          <TimelineTab projectId={project.id} />
         </TabsContent>
         <TabsContent value="milestones">
           <MilestonesTab projectId={project.id} />
