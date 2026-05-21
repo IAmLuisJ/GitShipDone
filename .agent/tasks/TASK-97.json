@@ -19,25 +19,25 @@
       "step": 1,
       "description": "Create TodosTab with sortable list",
       "details": "Create src/components/project/tabs/TodosTab.tsx. Similar drag-and-drop pattern to milestones using @dnd-kit/sortable. State: filter ('all'|'active'|'completed'|'urgent'). Filter tabs at top.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Create TodoItem component",
       "details": "Create src/components/project/TodoItem.tsx. Drag handle, checkbox (toggles is_completed), title, urgent badge (if is_urgent), due date. On completion toggle: call PATCH API, show toast '+10 pts' or '-10 pts'. Long-press or hover → show delete button.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Add inline create form",
       "details": "Input at bottom of list. Enter to submit. Optional: due date picker and urgent toggle before creating. POST /api/projects/:id/todos.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Add 5 todos. Check one — verify progress bar updates, toast shows +10 pts. Filter by 'active' — verify completed hidden. Drag to reorder — verify order persists after reload.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-38", "TASK-39", "TASK-40", "TASK-41", "TASK-42", "TASK-108"],

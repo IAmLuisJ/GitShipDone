@@ -676,7 +676,7 @@
     "title": "Frontend: Todos tab — list, create, check/uncheck, reorder, mark urgent",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-97.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-98",

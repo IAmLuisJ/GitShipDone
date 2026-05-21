@@ -1,5 +1,6 @@
 import { LoaderCircle } from "lucide-react";
 
+import { Toaster } from "@/components/ui/sonner";
 import { useInitAuth } from "@/hooks/useInitAuth";
 import AppRoutes from "@/routes";
 
@@ -20,5 +21,10 @@ export default function App() {
     );
   }
 
-  return <AppRoutes />;
+  return (
+    <>
+      <AppRoutes />
+      <Toaster />
+    </>
+  );
 }

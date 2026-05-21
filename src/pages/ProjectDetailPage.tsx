@@ -143,7 +143,7 @@ export default function ProjectDetailPage() {
           <MilestonesTab projectId={project.id} />
         </TabsContent>
         <TabsContent value="todos">
-          <TodosTab />
+          <TodosTab projectId={project.id} />
         </TabsContent>
         <TabsContent value="journal">
           <JournalTab />
