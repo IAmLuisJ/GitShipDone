@@ -68,11 +68,6 @@ export function ParkingLotTab({ projectId }: ParkingLotTabProps) {
     await invalidateParkingLot();
   }
 
-  async function handleGeneratePathway(item: ParkingLotIdea) {
-    await api.post(`/projects/${projectId}/parking-lot/${item.id}/ai-pathway`);
-    await invalidateParkingLot();
-  }
-
   async function handlePromote(
     item: ParkingLotIdea,
     targetType: "milestone" | "todo",
@@ -135,8 +130,9 @@ export function ParkingLotTab({ projectId }: ParkingLotTabProps) {
                 key={item.id}
                 item={item}
                 onArchive={handleArchive}
-                onGeneratePathway={handleGeneratePathway}
+                onPathwayChange={invalidateParkingLot}
                 onPromote={handlePromote}
+                projectId={projectId}
               />
             ))}
           </div>

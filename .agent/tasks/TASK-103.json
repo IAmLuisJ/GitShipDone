@@ -15,25 +15,25 @@
       "step": 1,
       "description": "Install react-markdown",
       "details": "npm install react-markdown.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Create AiPathwayPanel component",
       "details": "Create src/components/project/AiPathwayPanel.tsx. Props: itemId, projectId, existingPathway? Renders: loading state, error state, or markdown content via ReactMarkdown. 'Regenerate' button calls the API again and updates.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Add copy button",
       "details": "Copy icon button that calls navigator.clipboard.writeText(pathway). Show 'Copied!' toast on success.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser",
       "details": "Generate pathway — verify markdown renders with numbered steps. Click copy — verify content is in clipboard. Click Regenerate — verify new pathway is fetched.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-77", "TASK-81"],

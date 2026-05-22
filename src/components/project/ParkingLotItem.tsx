@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
 import { Archive, Route, Send } from "lucide-react";
 
+import { AiPathwayPanel } from "@/components/project/AiPathwayPanel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,35 +26,29 @@ export type ParkingLotIdea = {
 type ParkingLotItemProps = {
   item: ParkingLotIdea;
   onArchive: (item: ParkingLotIdea) => Promise<void>;
-  onGeneratePathway: (item: ParkingLotIdea) => Promise<void>;
+  onPathwayChange: () => Promise<void>;
   onPromote: (item: ParkingLotIdea, targetType: "milestone" | "todo") => Promise<void>;
+  projectId: string;
 };
 
 export function ParkingLotItem({
   item,
   onArchive,
-  onGeneratePathway,
+  onPathwayChange,
   onPromote,
+  projectId,
 }: ParkingLotItemProps) {
   const [isPathwayOpen, setIsPathwayOpen] = useState(Boolean(item.aiPathway));
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isPromoteOpen, setIsPromoteOpen] = useState(false);
   const [targetType, setTargetType] = useState<"milestone" | "todo">("milestone");
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationRequest, setGenerationRequest] = useState(0);
   const isArchived = Boolean(item.archivedAt);
 
-  async function handlePathway() {
-    if (item.aiPathway) {
-      setIsPathwayOpen((current) => !current);
-      return;
-    }
-
-    setIsGenerating(true);
-    try {
-      await onGeneratePathway(item);
-      setIsPathwayOpen(true);
-    } finally {
-      setIsGenerating(false);
+  function handlePathway() {
+    setIsPathwayOpen((current) => !current);
+    if (!item.aiPathway) {
+      setGenerationRequest((current) => current + 1);
     }
   }
 
@@ -90,11 +84,10 @@ export function ParkingLotItem({
             type="button"
             variant="outline"
             size="sm"
-            disabled={isGenerating}
             onClick={handlePathway}
           >
             <Route data-icon="inline-start" />
-            {item.aiPathway ? "View Pathway" : isGenerating ? "Generating..." : "Generate Pathway"}
+            {item.aiPathway ? "View Pathway" : "Generate Pathway"}
           </Button>
           <Button type="button" variant="outline" size="sm" onClick={() => setIsPromoteOpen(true)}>
             <Send data-icon="inline-start" />
@@ -113,10 +106,14 @@ export function ParkingLotItem({
         </div>
       </div>
 
-      {isPathwayOpen && item.aiPathway ? (
-        <div className="rounded-lg border bg-muted/30 p-3 text-sm">
-          <ReactMarkdown>{item.aiPathway}</ReactMarkdown>
-        </div>
+      {isPathwayOpen ? (
+        <AiPathwayPanel
+          existingPathway={item.aiPathway}
+          generationRequest={generationRequest}
+          itemId={item.id}
+          onPathwayChange={onPathwayChange}
+          projectId={projectId}
+        />
       ) : null}
 
       <Dialog open={isPromoteOpen} onOpenChange={setIsPromoteOpen}>
