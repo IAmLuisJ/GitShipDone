@@ -711,7 +711,7 @@
     "title": "Frontend: Parking lot tab — list, add, archive, and promote ideas",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-102.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-103",

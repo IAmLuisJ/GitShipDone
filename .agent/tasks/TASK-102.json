@@ -18,31 +18,31 @@
       "step": 1,
       "description": "Create ParkingLotTab component",
       "details": "Create src/components/project/tabs/ParkingLotTab.tsx. Fetch items with useQuery. Toggle state for includeArchived. 'Add Idea' form at top (title + description inputs).",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Create ParkingLotItem component",
       "details": "Create src/components/project/ParkingLotItem.tsx. Shows title, truncated description. Action buttons: AI Pathway (loading spinner while generating), Promote (opens choice dialog), Archive (calls archive API). If ai_pathway exists, show 'View Pathway' toggle button.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Build AI Pathway display",
       "details": "Expandable section below item. If ai_pathway is null: 'Generate Pathway' button → POST /ai-pathway → sets pathway on item. If ai_pathway exists: render as markdown using react-markdown.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Build Promote dialog",
       "details": "shadcn/ui Dialog with two choices (radio buttons): 'Add as Milestone' and 'Add as Todo'. Confirm button: POST /promote, then invalidate milestones or todos query.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 5,
       "description": "Verify in browser using Playwright",
       "details": "Add 2 ideas. Generate pathway for one — verify it displays. Promote one to milestone — verify it appears in milestones tab. Archive one — verify it's gone from list.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-52", "TASK-53", "TASK-54", "TASK-55", "TASK-77"],
