@@ -16,25 +16,25 @@
       "step": 1,
       "description": "Create ProjectSettingsTab",
       "details": "Create src/components/project/tabs/ProjectSettingsTab.tsx. Sections: General (form with name, description, type, status), Sharing (SharingPanel component), GitHub (GithubConnectPanel component), Danger Zone.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Build general settings form",
       "details": "Pre-fill with current project values. On Save: PATCH /api/projects/:id. Invalidate project query. Show success toast.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Build danger zone",
       "details": "Red-bordered Card section. 'Delete Project' button opens AlertDialog: 'This will delete your project. Type the project name to confirm.' Input must match project name before enabling Delete button. On confirm: DELETE /api/projects/:id, navigate to /dashboard.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Change project name — verify saves. Change status to 'on_hold' — verify badge updates. Delete project with correct name confirmation — verify navigates to dashboard.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-30", "TASK-31", "TASK-105", "TASK-106"],

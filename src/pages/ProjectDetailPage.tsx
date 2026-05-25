@@ -152,7 +152,7 @@ export default function ProjectDetailPage() {
           <ParkingLotTab projectId={project.id} />
         </TabsContent>
         <TabsContent value="settings">
-          <ProjectSettingsTab />
+          <ProjectSettingsTab project={project} />
         </TabsContent>
       </Tabs>
     </div>

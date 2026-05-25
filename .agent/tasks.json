@@ -725,7 +725,7 @@
     "title": "Frontend: Project settings tab — name/type/status edit, danger zone",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-104.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-105",
