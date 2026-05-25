@@ -112,7 +112,7 @@ describe("ProjectSettingsTab", () => {
     renderSettings();
 
     expect(screen.getByRole("heading", { name: /sharing/i })).toBeInTheDocument();
-    expect(screen.getByText(/sharing controls/i)).toBeInTheDocument();
+    expect(screen.getByRole("switch", { name: /public sharing/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /github/i })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /connect github account/i }),

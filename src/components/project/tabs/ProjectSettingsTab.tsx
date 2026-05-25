@@ -26,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import api from "@/lib/api";
 import type { Project, ProjectStatus, ProjectType } from "@/types/project";
 import { GithubConnectPanel } from "../GithubConnectPanel";
+import { SharingPanel } from "../SharingPanel";
 
 type ProjectSettingsTabProps = {
   project: Project;
@@ -203,14 +204,7 @@ export function ProjectSettingsTab({ project }: ProjectSettingsTabProps) {
         </form>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <h2 className="font-heading text-base leading-snug font-medium">Sharing</h2>
-          <CardDescription>
-            Public sharing controls will live in the dedicated sharing controls panel.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+      <SharingPanel project={project} />
 
       <GithubConnectPanel project={project} />
 

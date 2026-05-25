@@ -22,4 +22,6 @@ export type Project = {
   githubCommitCount?: number;
   githubRepoId?: string | null;
   githubRepoName?: string | null;
+  isPublic?: boolean;
+  shareToken?: string | null;
 };

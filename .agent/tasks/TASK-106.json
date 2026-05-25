@@ -16,13 +16,13 @@
       "step": 1,
       "description": "Create SharingPanel component",
       "details": "Create src/components/project/SharingPanel.tsx. Use shadcn/ui Switch for toggle. When toggled on: POST /share/enable. Show URL in a read-only Input with a CopyButton. 'Revoke' button: AlertDialog confirmation → POST /share/revoke.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Verify in browser using Playwright",
       "details": "Enable sharing. Copy URL — open in incognito — verify share page loads. Revoke. Try old URL in incognito — verify 404.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-61", "TASK-62", "TASK-115"],

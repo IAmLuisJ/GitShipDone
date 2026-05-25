@@ -739,7 +739,7 @@
     "title": "Frontend: Sharing panel — toggle public, copy share URL, revoke button",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-106.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-107",
