@@ -1,6 +1,7 @@
 import { Bot, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 
+import { AiChatPanel } from "@/components/project/AiChatPanel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,13 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
 import type { Project } from "@/types/project";
 
 type ProjectHeaderProps = {
@@ -92,20 +86,11 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
         <Progress value={progress} />
       </div>
 
-      <Sheet open={isAiPanelOpen} onOpenChange={setIsAiPanelOpen}>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>AI PM</SheetTitle>
-            <SheetDescription>
-              Ask for next steps, risk checks, or a sharper plan for {project.name}.
-            </SheetDescription>
-          </SheetHeader>
-          <div className="px-4 text-sm text-muted-foreground">
-            The project assistant panel will connect to the AI PM workflow in an
-            upcoming task.
-          </div>
-        </SheetContent>
-      </Sheet>
+      <AiChatPanel
+        open={isAiPanelOpen}
+        onOpenChange={setIsAiPanelOpen}
+        project={project}
+      />
     </section>
   );
 }

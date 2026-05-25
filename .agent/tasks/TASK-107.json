@@ -18,25 +18,25 @@
       "step": 1,
       "description": "Create AiChatPanel component",
       "details": "Create src/components/project/AiChatPanel.tsx. Use shadcn/ui Sheet with side='right'. State: messages[{role, content}], isLoading, inputText. Check authStore for hasAiKey — show setup prompt if missing.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Implement message sending",
       "details": "On send: add user message to messages state, set isLoading=true. POST /api/projects/:id/ai/chat with { message: inputText }. On response: add AI message. On error: show error message in chat.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Build message display",
       "details": "ScrollArea for message list. User messages: flex-end, bg-primary, text-primary-foreground. AI messages: flex-start, bg-muted. Animated typing indicator (3 dots) during loading. Auto-scroll to bottom on new messages.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Click AI PM button — drawer opens. Send a question — verify AI responds. Verify user/AI messages on correct sides. Close and reopen — verify messages cleared.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-75", "TASK-81"],

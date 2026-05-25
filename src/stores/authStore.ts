@@ -8,6 +8,7 @@ export interface User {
   aiProvider: string | null;
   createdAt: string;
   githubConnected?: boolean;
+  hasAiKey?: boolean;
 }
 
 interface AuthState {

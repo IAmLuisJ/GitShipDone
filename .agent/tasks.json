@@ -746,7 +746,7 @@
     "title": "Frontend: AI PM chat panel — sliding drawer with message history and input",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-107.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-108",
