@@ -2,7 +2,9 @@ import type { User } from "@/stores/authStore";
 
 export type AuthResponse = {
   user: Pick<User, "id" | "email" | "name"> &
-    Partial<Pick<User, "avatarUrl" | "aiProvider" | "createdAt">>;
+    Partial<
+      Pick<User, "avatarUrl" | "aiProvider" | "createdAt" | "githubConnected">
+    >;
   accessToken: string;
 };
 
@@ -14,6 +16,7 @@ export function normalizeAuthUser(user: AuthResponse["user"]): User {
     avatarUrl: user.avatarUrl ?? null,
     aiProvider: user.aiProvider ?? null,
     createdAt: user.createdAt ?? new Date().toISOString(),
+    githubConnected: user.githubConnected ?? false,
   };
 }
 

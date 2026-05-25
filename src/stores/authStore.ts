@@ -7,6 +7,7 @@ export interface User {
   avatarUrl: string | null;
   aiProvider: string | null;
   createdAt: string;
+  githubConnected?: boolean;
 }
 
 interface AuthState {

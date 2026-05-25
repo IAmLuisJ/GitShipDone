@@ -18,6 +18,7 @@ import shareRouter from "./routes/share";
 import publicShareRouter from "./routes/publicShare";
 import notificationsRouter from "./routes/notifications";
 import usersRouter from "./routes/users";
+import usersGithubRouter from "./routes/usersGithub";
 import aiRouter from "./routes/ai";
 import { configurePassport } from "./config/passport";
 import { requireAuth } from "./middleware/requireAuth";
@@ -57,6 +58,7 @@ app.use("/api/projects/:id/github", githubRouter);
 app.use("/api/projects/:id/share", shareRouter);
 app.use("/api/projects/:id/ai", aiRouter);
 app.use("/api/notifications", notificationsRouter);
+app.use("/api/users/me/github", usersGithubRouter);
 app.use("/api/users", usersRouter);
 
 /** Catch-all for unmatched routes */

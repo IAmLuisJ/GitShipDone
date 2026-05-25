@@ -114,7 +114,9 @@ describe("ProjectSettingsTab", () => {
     expect(screen.getByRole("heading", { name: /sharing/i })).toBeInTheDocument();
     expect(screen.getByText(/sharing controls/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /github/i })).toBeInTheDocument();
-    expect(screen.getByText(/repository connection/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /connect github account/i }),
+    ).toHaveAttribute("href", "/api/auth/github/repo");
   });
 
   it("requires the project name before deleting and navigating away", async () => {

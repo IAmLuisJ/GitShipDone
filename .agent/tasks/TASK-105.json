@@ -16,25 +16,25 @@
       "step": 1,
       "description": "Create GithubConnectPanel component",
       "details": "Create src/components/project/GithubConnectPanel.tsx. Conditional rendering based on user.githubConnected and project.githubRepoName state.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Build repo selection UI",
       "details": "When GitHub is connected but no repo linked: fetch /api/users/me/github/repos (add this endpoint to get user's repos list via Octokit). Show a searchable Select dropdown. On select: POST /api/projects/:id/github/connect with { repoOwner, repoName }.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Build connected state UI",
       "details": "Show: GitHub logo, repo name as a link, 'X commits imported' count, 'Disconnect' button. Disconnect: calls DELETE endpoint, invalidates project query.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Connect GitHub account. Select a repo. Verify commits import. Disconnect — verify repo removed. Reconnect with different repo.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-56", "TASK-57", "TASK-60"],

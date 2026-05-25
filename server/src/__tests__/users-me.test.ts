@@ -29,6 +29,7 @@ vi.mock("../services/githubService", () => ({
   getRepo: vi.fn(),
   importCommits: vi.fn(),
   importCommitsForProject: vi.fn(),
+  listRepos: vi.fn(),
 }));
 
 import app from "../app";
@@ -44,9 +45,12 @@ vi.mock("../db", () => ({
 }));
 
 import { db } from "../db";
+import { getOctokit, listRepos } from "../services/githubService";
 
 const mockSelect = vi.mocked(db.select);
 const mockUpdate = vi.mocked(db.update);
+const mockGetOctokit = vi.mocked(getOctokit);
+const mockListRepos = vi.mocked(listRepos);
 
 const fakeUser = {
   id: "user-uuid-123",
@@ -155,6 +159,65 @@ describe("GET /api/users/me", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.githubConnected).toBe(false);
+  });
+});
+
+describe("GET /api/users/me/github/repos", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockGetOctokit.mockReturnValue({} as any);
+    mockListRepos.mockResolvedValue([
+      {
+        id: 123,
+        fullName: "octocat/hello-world",
+        htmlUrl: "https://github.com/octocat/hello-world",
+        name: "hello-world",
+        owner: "octocat",
+        private: false,
+      },
+    ]);
+  });
+
+  it("returns 401 without auth token", async () => {
+    const res = await request(app).get("/api/users/me/github/repos");
+    expect(res.status).toBe(401);
+  });
+
+  it("returns 400 when GitHub is not connected", async () => {
+    const userNoGithub = { ...fakeUser, githubAccessToken: null };
+    const mockFrom = vi.fn().mockReturnThis();
+    const mockWhere = vi.fn().mockResolvedValue([userNoGithub]);
+    mockSelect.mockReturnValue({ from: mockFrom, where: mockWhere } as any);
+
+    const res = await request(app)
+      .get("/api/users/me/github/repos")
+      .set("Authorization", "Bearer valid-token");
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toContain("GitHub account not connected");
+  });
+
+  it("returns sanitized repositories for a connected GitHub account", async () => {
+    const mockFrom = vi.fn().mockReturnThis();
+    const mockWhere = vi.fn().mockResolvedValue([fakeUser]);
+    mockSelect.mockReturnValue({ from: mockFrom, where: mockWhere } as any);
+
+    const res = await request(app)
+      .get("/api/users/me/github/repos")
+      .set("Authorization", "Bearer valid-token");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual([
+      {
+        id: 123,
+        fullName: "octocat/hello-world",
+        htmlUrl: "https://github.com/octocat/hello-world",
+        name: "hello-world",
+        owner: "octocat",
+        private: false,
+      },
+    ]);
+    expect(mockGetOctokit).toHaveBeenCalledWith("ghp_encrypted_token");
   });
 });
 

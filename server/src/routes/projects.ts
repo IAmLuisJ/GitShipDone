@@ -1,8 +1,8 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { eq, and, isNull, desc } from "drizzle-orm";
+import { eq, and, isNull, desc, count } from "drizzle-orm";
 
 import { db } from "../db";
-import { projects, milestones, todos } from "../db/schema";
+import { projects, milestones, todos, githubCommits } from "../db/schema";
 import {
   createProjectSchema,
   updateProjectSchema,
@@ -101,7 +101,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     const projectId = req.params.id as string;
     const project = await getOwnedProject(projectId, req.userId!);
 
-    const [projectMilestones, projectTodos] = await Promise.all([
+    const [projectMilestones, projectTodos, commitCountRows] = await Promise.all([
       db
         .select()
         .from(milestones)
@@ -112,10 +112,15 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
         .from(todos)
         .where(eq(todos.projectId, project.id))
         .orderBy(todos.sortOrder),
+      db
+        .select({ value: count() })
+        .from(githubCommits)
+        .where(eq(githubCommits.projectId, project.id)),
     ]);
 
     res.status(200).json({
       ...project,
+      githubCommitCount: commitCountRows[0]?.value ?? 0,
       milestones: projectMilestones,
       todos: projectTodos,
     });

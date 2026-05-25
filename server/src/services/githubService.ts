@@ -5,6 +5,15 @@ import { githubCommits, githubReleases } from "../db/schema";
 import { awardPoints } from "./pointsService";
 import { logTimelineEvent } from "./timelineService";
 
+export type GithubRepoSummary = {
+  fullName: string;
+  htmlUrl: string;
+  id: number;
+  name: string;
+  owner: string;
+  private: boolean;
+};
+
 /**
  * Create an authenticated Octokit instance from an encrypted GitHub token.
  */
@@ -23,6 +32,29 @@ export async function getRepo(
 ) {
   const { data } = await octokit.repos.get({ owner, repo });
   return data;
+}
+
+/**
+ * List repositories the authenticated GitHub user can choose for project linking.
+ */
+export async function listRepos(octokit: Octokit): Promise<GithubRepoSummary[]> {
+  const repos = await octokit.paginate(
+    octokit.repos.listForAuthenticatedUser,
+    {
+      affiliation: "owner,collaborator,organization_member",
+      per_page: 100,
+      sort: "updated",
+    },
+  );
+
+  return repos.map((repo) => ({
+    fullName: repo.full_name,
+    htmlUrl: repo.html_url,
+    id: repo.id,
+    name: repo.name,
+    owner: repo.owner.login,
+    private: repo.private,
+  }));
 }
 
 /**

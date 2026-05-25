@@ -25,6 +25,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import api from "@/lib/api";
 import type { Project, ProjectStatus, ProjectType } from "@/types/project";
+import { GithubConnectPanel } from "../GithubConnectPanel";
 
 type ProjectSettingsTabProps = {
   project: Project;
@@ -211,14 +212,7 @@ export function ProjectSettingsTab({ project }: ProjectSettingsTabProps) {
         </CardHeader>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <h2 className="font-heading text-base leading-snug font-medium">GitHub</h2>
-          <CardDescription>
-            Repository connection controls will live in the dedicated GitHub panel.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+      <GithubConnectPanel project={project} />
 
       <Card className="border border-destructive/30 bg-destructive/5 ring-destructive/20">
         <CardHeader>

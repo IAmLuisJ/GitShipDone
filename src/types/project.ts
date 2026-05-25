@@ -19,4 +19,7 @@ export type Project = {
   pointsTotal: number;
   level: string;
   updatedAt: string;
+  githubCommitCount?: number;
+  githubRepoId?: string | null;
+  githubRepoName?: string | null;
 };
