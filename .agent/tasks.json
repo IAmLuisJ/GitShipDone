@@ -753,7 +753,7 @@
     "title": "Frontend: Progress bar component — auto vs manual progress, override input",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-108.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-109",

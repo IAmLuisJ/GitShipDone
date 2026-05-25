@@ -16,19 +16,19 @@
       "step": 1,
       "description": "Create ProjectProgressBar component",
       "details": "Create src/components/project/ProjectProgressBar.tsx. Props: project. Compute effectiveProgress = project.progressManual ?? project.progressAuto. Use shadcn/ui Progress. Show label: 'N%'. If progressManual set, show yellow/orange indicator.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Add manual override input",
       "details": "Pencil icon button → shows inline Input (0-100). Submit on Enter or checkmark button. Calls PATCH /api/projects/:id/progress. On success: invalidate project query. Reset button (x) → sets progressManual to null.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Verify in browser using Playwright",
       "details": "Set manual override to 75 — verify progress bar shows 75% even if auto is 20%. Reset — verify bar returns to auto. Complete more todos — verify auto progress updates independently.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-79", "TASK-81"],

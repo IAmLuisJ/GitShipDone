@@ -2,6 +2,7 @@ import { Bot, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { AiChatPanel } from "@/components/project/AiChatPanel";
+import { ProjectProgressBar } from "@/components/project/ProjectProgressBar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +11,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Progress } from "@/components/ui/progress";
 import type { Project } from "@/types/project";
 
 type ProjectHeaderProps = {
@@ -26,7 +26,6 @@ function formatLabel(value: string) {
 
 export function ProjectHeader({ project }: ProjectHeaderProps) {
   const [isAiPanelOpen, setIsAiPanelOpen] = useState(false);
-  const progress = project.progressManual ?? project.progressAuto;
 
   return (
     <section className="grid gap-4 rounded-xl border bg-card p-4">
@@ -78,13 +77,7 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
         </div>
       </div>
 
-      <div className="grid gap-2">
-        <div className="flex items-center justify-between text-sm">
-          <span className="font-medium">Progress</span>
-          <span className="text-muted-foreground">{progress}% complete</span>
-        </div>
-        <Progress value={progress} />
-      </div>
+      <ProjectProgressBar project={project} />
 
       <AiChatPanel
         open={isAiPanelOpen}
