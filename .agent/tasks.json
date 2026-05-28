@@ -823,7 +823,7 @@
     "title": "Frontend: Dark mode support via Tailwind dark variant and theme toggle",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-118.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-119",

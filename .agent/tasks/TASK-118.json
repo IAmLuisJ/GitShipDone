@@ -17,25 +17,25 @@
       "step": 1,
       "description": "Create useTheme hook",
       "details": "Create src/hooks/useTheme.ts. State: theme ('light'|'dark'|'system'). On mount: read from localStorage, fallback to 'system'. Apply: if theme='dark', add 'dark' class to document.documentElement. If theme='light', remove it. If theme='system', use window.matchMedia('(prefers-color-scheme: dark)'). Persist to localStorage on change.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Create ThemeToggle component",
       "details": "Create src/components/ui/ThemeToggle.tsx. Button with Sun icon (light mode) / Moon icon (dark mode). Cycles through light → dark → system on click. Or use a simple toggle between light and dark.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Add ThemeToggle to layout",
       "details": "Place ThemeToggle in the sidebar bottom or header. Make sure it's visible and accessible.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Click theme toggle — verify dark mode applied (background becomes dark). Reload — verify preference persists. Check all major views in dark mode for visual issues.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-81", "TASK-82"],

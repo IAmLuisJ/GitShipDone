@@ -91,6 +91,7 @@ describe("AppLayout", () => {
     expect(
       screen.getByRole("link", { name: /GitShipDone/i }),
     ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /theme:/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /dashboard/i })).toHaveAttribute(
       "aria-current",
       "page",

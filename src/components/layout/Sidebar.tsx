@@ -33,6 +33,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 type ProjectSummary = {
@@ -240,6 +241,7 @@ function SidebarContent({
         </nav>
       </ScrollArea>
 
+      <ThemeToggle collapsed={collapsed} />
       <NotificationBell collapsed={collapsed} projects={projects} />
       <UserMenu collapsed={collapsed} />
     </div>
