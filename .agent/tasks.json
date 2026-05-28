@@ -795,7 +795,7 @@
     "title": "Frontend: AI settings form — provider select, masked API key input, test connection",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-114.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-115",

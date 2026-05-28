@@ -16,19 +16,19 @@
       "step": 1,
       "description": "Create AiSettingsForm component",
       "details": "Create src/components/settings/AiSettingsForm.tsx. Select for provider (two options). Password input for API key with eye icon toggle. If user.hasAiKey, show masked indicator. 'Save AI Settings' button.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Submit and handle response",
       "details": "On submit: PATCH /api/users/me/ai-settings. On success: update authStore user (hasAiKey = true), show 'AI settings saved!' toast.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Verify in browser",
       "details": "Enter OpenAI key — verify saved. Navigate away and back — verify 'Key saved' indicator shown. Try AI PM panel — verify it works with saved key.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-72", "TASK-81"],

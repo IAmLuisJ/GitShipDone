@@ -3,6 +3,7 @@ import { useState } from "react";
 import { KeyRound, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
+import { AiSettingsForm } from "@/components/settings/AiSettingsForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -14,13 +15,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import api from "@/lib/api";
 import { useAuthStore, type User } from "@/stores/authStore";
@@ -35,8 +29,6 @@ export default function SettingsPage() {
   const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl ?? "");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [aiProvider, setAiProvider] = useState(user?.aiProvider ?? "openai");
-  const [apiKey, setApiKey] = useState("");
   const [emailNotifications, setEmailNotifications] = useState(
     user?.emailNotificationsEnabled ?? true,
   );
@@ -66,16 +58,6 @@ export default function SettingsPage() {
     setCurrentPassword("");
     setNewPassword("");
     toast.success("Password updated");
-  }
-
-  async function handleAiSave(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    await api.patch("/users/me/ai-settings", {
-      provider: aiProvider,
-      apiKey,
-    });
-    setApiKey("");
-    toast.success("AI settings saved");
   }
 
   async function handleNotificationToggle(checked: boolean) {
@@ -162,32 +144,7 @@ export default function SettingsPage() {
           <CardTitle>AI Settings</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="grid gap-3" onSubmit={handleAiSave}>
-            <label className="grid gap-1 text-sm font-medium">
-              Provider
-              <Select value={aiProvider} onValueChange={setAiProvider}>
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="openai">OpenAI</SelectItem>
-                  <SelectItem value="anthropic">Anthropic</SelectItem>
-                </SelectContent>
-              </Select>
-            </label>
-            <label className="grid gap-1 text-sm font-medium">
-              API key
-              <Input
-                type="password"
-                value={apiKey}
-                onChange={(event) => setApiKey(event.target.value)}
-                placeholder={user?.hasAiKey ? "Saved key configured" : "Paste an API key"}
-              />
-            </label>
-            <Button type="submit" className="w-fit">
-              Save AI settings
-            </Button>
-          </form>
+          <AiSettingsForm />
         </CardContent>
       </Card>
 
