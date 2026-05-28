@@ -802,7 +802,7 @@
     "title": "Frontend: Public share page — read-only project view without auth",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-115.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-116",

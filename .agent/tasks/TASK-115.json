@@ -20,31 +20,31 @@
       "step": 1,
       "description": "Create PublicSharePage",
       "details": "Create src/pages/PublicSharePage.tsx. No AppLayout (no sidebar). Fetch GET /api/share/:token on load. If 404: render NotFoundPage. Otherwise render public view.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Build public project header",
       "details": "Clean, minimal header: project name, type badge, status badge, level badge, progress bar (read-only), points total. No edit controls.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Render all public sections",
       "details": "Tabs or stacked sections: Timeline (using TimelineEventRenderer read-only), Milestones (static list), Todos (static list with checkboxes disabled), Journal (using RichTextViewer). Each section collapses if empty.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Add footer",
       "details": "Sticky or page-bottom footer: 'Built with GitShipDone · Track your projects →' with link to landing page.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 5,
       "description": "Verify in browser using Playwright",
       "details": "Enable sharing on a project. Open share URL in incognito. Verify all sections render. Verify no edit buttons visible. Verify attempting to interact with todos doesn't work.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-63", "TASK-101"],
