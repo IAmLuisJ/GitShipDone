@@ -240,7 +240,7 @@ function SidebarContent({
         </nav>
       </ScrollArea>
 
-      <NotificationBell collapsed={collapsed} />
+      <NotificationBell collapsed={collapsed} projects={projects} />
       <UserMenu collapsed={collapsed} />
     </div>
   );

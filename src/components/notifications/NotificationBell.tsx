@@ -1,8 +1,11 @@
-import { formatDistanceToNow } from "date-fns";
 import { Bell } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
+import {
+  NotificationItem,
+  type Notification,
+} from "@/components/notifications/NotificationItem";
 import {
   Popover,
   PopoverContent,
@@ -14,15 +17,7 @@ import { cn } from "@/lib/utils";
 
 type NotificationBellProps = {
   collapsed?: boolean;
-};
-
-type Notification = {
-  createdAt: string;
-  id: string;
-  isRead: boolean;
-  message: string;
-  projectId: string | null;
-  type: string;
+  projects?: Array<{ id: string; name: string }>;
 };
 
 type NotificationsResponse = {
@@ -32,29 +27,10 @@ type NotificationsResponse = {
 
 const notificationsQueryKey = ["notifications", "all"];
 
-function NotificationItem({ notification }: { notification: Notification }) {
-  return (
-    <div
-      data-testid="notification-item"
-      className={cn(
-        "grid gap-1 rounded-md border p-3",
-        !notification.isRead && "border-red-200 bg-red-50/70 dark:bg-red-950/20",
-      )}
-    >
-      <div className="flex items-start gap-2">
-        {!notification.isRead ? (
-          <span className="mt-1 size-2 rounded-full bg-red-500" aria-hidden="true" />
-        ) : null}
-        <p className="min-w-0 flex-1 text-sm leading-5">{notification.message}</p>
-      </div>
-      <div className="text-xs text-muted-foreground">
-        {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
-      </div>
-    </div>
-  );
-}
-
-export function NotificationBell({ collapsed = false }: NotificationBellProps) {
+export function NotificationBell({
+  collapsed = false,
+  projects = [],
+}: NotificationBellProps) {
   const queryClient = useQueryClient();
   const notificationsQuery = useQuery({
     queryKey: notificationsQueryKey,
@@ -68,7 +44,13 @@ export function NotificationBell({ collapsed = false }: NotificationBellProps) {
   });
 
   const data = notificationsQuery.data;
-  const notifications = (data?.notifications ?? []).slice(0, 20);
+  const projectNames = new Map(projects.map((project) => [project.id, project.name]));
+  const notifications = (data?.notifications ?? []).slice(0, 20).map((notification) => ({
+    ...notification,
+    projectName:
+      notification.projectName ??
+      (notification.projectId ? projectNames.get(notification.projectId) : null),
+  }));
   const unreadCount = data?.unreadCount ?? 0;
 
   async function handleMarkAllRead() {
@@ -87,6 +69,10 @@ export function NotificationBell({ collapsed = false }: NotificationBellProps) {
           : current,
     );
     await queryClient.invalidateQueries({ queryKey: notificationsQueryKey });
+  }
+
+  function handleNotificationChanged() {
+    void queryClient.invalidateQueries({ queryKey: notificationsQueryKey });
   }
 
   return (
@@ -136,6 +122,7 @@ export function NotificationBell({ collapsed = false }: NotificationBellProps) {
                 <NotificationItem
                   key={notification.id}
                   notification={notification}
+                  onChanged={handleNotificationChanged}
                 />
               ))}
             </div>
