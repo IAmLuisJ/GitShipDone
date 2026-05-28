@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 import api from "@/lib/api";
 import { useAuthStore } from "@/stores/authStore";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -239,6 +240,7 @@ function SidebarContent({
         </nav>
       </ScrollArea>
 
+      <NotificationBell collapsed={collapsed} />
       <UserMenu collapsed={collapsed} />
     </div>
   );

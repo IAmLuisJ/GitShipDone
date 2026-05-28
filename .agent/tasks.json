@@ -774,7 +774,7 @@
     "title": "Frontend: Notification bell — unread count badge and dropdown list",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-111.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-112",

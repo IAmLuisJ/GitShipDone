@@ -61,7 +61,15 @@ function renderLayout(initialPath = "/dashboard") {
 describe("AppLayout", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(api.get).mockResolvedValue({ data: mockProjects });
+    vi.mocked(api.get).mockImplementation((url) => {
+      if (url === "/projects") {
+        return Promise.resolve({ data: mockProjects });
+      }
+      if (url === "/notifications?unreadOnly=false") {
+        return Promise.resolve({ data: { notifications: [], unreadCount: 0 } });
+      }
+      return Promise.reject(new Error(`Unhandled GET ${url}`));
+    });
     vi.mocked(api.post).mockResolvedValue({ data: {} });
     useAuthStore.setState({
       user: {

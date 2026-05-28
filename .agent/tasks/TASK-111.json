@@ -18,25 +18,25 @@
       "step": 1,
       "description": "Create NotificationBell component",
       "details": "Create src/components/notifications/NotificationBell.tsx. Use shadcn/ui Popover. Bell icon with badge overlay showing unreadCount. useQuery to fetch /api/notifications?unreadOnly=false. Refetch every 60 seconds (refetchInterval: 60000).",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Build notification list in popover",
       "details": "ScrollArea inside popover (max height 400px). Header with 'Notifications' title + 'Mark all read' button. List of NotificationItem components. Empty state if no notifications.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Place bell in layout",
       "details": "Add NotificationBell to the AppLayout header or sidebar bottom area.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Create a milestone with a past due date (or manually insert a notification). Verify bell shows badge. Click bell — verify list appears. Click 'Mark all read' — verify count clears.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-64", "TASK-65", "TASK-81"],
