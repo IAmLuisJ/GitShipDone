@@ -105,7 +105,10 @@ describe("NotificationBell", () => {
 
     await user.click(await screen.findByRole("button", { name: /notifications/i }));
 
-    expect(screen.getByText(/no notifications yet/i)).toBeInTheDocument();
+    expect(screen.getByText("All caught up!")).toBeInTheDocument();
+    expect(
+      screen.getByText("No unread notifications need attention."),
+    ).toBeInTheDocument();
     expect(screen.queryByText("0")).not.toBeInTheDocument();
   });
 });

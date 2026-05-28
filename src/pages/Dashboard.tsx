@@ -6,6 +6,7 @@ import { CreateProjectModal } from "@/components/projects/CreateProjectModal";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import api from "@/lib/api";
 import type { Project } from "@/types/project";
@@ -68,21 +69,17 @@ export default function Dashboard() {
         </div>
       ) : (
         <Card className="border-dashed">
-          <CardContent className="grid justify-items-center gap-4 px-6 py-12 text-center">
-            <div className="grid size-12 place-items-center rounded-full bg-muted text-muted-foreground">
-              <FolderKanban />
-            </div>
-            <div className="grid gap-1">
-              <h2 className="text-lg font-semibold">No projects yet</h2>
-              <p className="max-w-md text-sm text-muted-foreground">
-                Create your first project to start tracking progress, points, and
-                milestones.
-              </p>
-            </div>
-            <Button type="button" onClick={() => setIsCreateOpen(true)}>
-              <Plus data-icon="inline-start" />
-              Create your first project
-            </Button>
+          <CardContent className="px-6 py-8">
+            <EmptyState
+              icon={FolderKanban}
+              title="No projects yet"
+              description="Create your first project to start tracking your work."
+              action={{
+                label: "Create your first project",
+                onClick: () => setIsCreateOpen(true),
+              }}
+              className="border-0 p-4"
+            />
           </CardContent>
         </Card>
       )}

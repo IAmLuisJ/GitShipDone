@@ -138,6 +138,7 @@ describe("TimelineTab", () => {
 
     renderTimelineTab();
 
-    expect(await screen.findByText(/no timeline events yet/i)).toBeVisible();
+    expect(await screen.findByText("No activity yet")).toBeVisible();
+    expect(screen.getByText("Start working on your project.")).toBeVisible();
   });
 });

@@ -809,7 +809,7 @@
     "title": "Frontend: Empty states for all major list views",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-116.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-117",

@@ -80,7 +80,10 @@ describe("Dashboard", () => {
 
     renderDashboard();
 
-    expect(await screen.findByText(/no projects yet/i)).toBeInTheDocument();
+    expect(await screen.findByText("No projects yet")).toBeInTheDocument();
+    expect(
+      screen.getByText("Create your first project to start tracking your work."),
+    ).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /create your first project/i }));
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByLabelText(/project name/i)).toBeInTheDocument();

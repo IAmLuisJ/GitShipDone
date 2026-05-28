@@ -143,4 +143,13 @@ describe("ParkingLotTab", () => {
       "/projects/project-1/parking-lot?includeArchived=true",
     );
   });
+
+  it("shows an empty state when there are no ideas", async () => {
+    vi.mocked(api.get).mockResolvedValue({ data: { items: [] } });
+
+    renderParkingLotTab();
+
+    expect(await screen.findByText("No ideas yet")).toBeVisible();
+    expect(screen.getByText("Add ideas you want to explore later.")).toBeVisible();
+  });
 });

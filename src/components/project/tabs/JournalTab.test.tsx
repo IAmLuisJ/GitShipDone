@@ -191,6 +191,7 @@ describe("JournalTab", () => {
     });
     renderJournal();
 
-    expect(await screen.findByText(/no journal entries yet/i)).toBeInTheDocument();
+    expect(await screen.findByText("No entries yet")).toBeInTheDocument();
+    expect(screen.getByText("Log your first update.")).toBeInTheDocument();
   });
 });

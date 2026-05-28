@@ -14,19 +14,19 @@
       "step": 1,
       "description": "Create EmptyState component",
       "details": "Create src/components/ui/EmptyState.tsx. Props: icon (Lucide React component), title, description, action?: { label, onClick }. Render centered with icon (large, muted), title (muted foreground), description, and optional Button.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Implement in each list view",
       "details": "Projects: 'No projects yet — Create your first project'. Milestones: 'No milestones — Add a milestone to track your goals'. Todos: 'No todos — Add tasks to track your work'. Journal: 'No entries yet — Log your first update'. Parking Lot: 'No ideas yet — Add ideas you want to explore later'. Timeline: 'No activity yet — Start working on your project'. Notifications: 'All caught up!'.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Verify in browser using Playwright",
       "details": "Create a project with no milestones/todos. Open each tab and verify appropriate empty state renders with correct message.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-81"],

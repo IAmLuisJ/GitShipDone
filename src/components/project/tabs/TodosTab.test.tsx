@@ -194,6 +194,7 @@ describe("TodosTab", () => {
 
     renderTodos();
 
-    expect(await screen.findByText(/no todos yet/i)).toBeInTheDocument();
+    expect(await screen.findByText("No todos")).toBeInTheDocument();
+    expect(screen.getByText("Add tasks to track your work.")).toBeInTheDocument();
   });
 });

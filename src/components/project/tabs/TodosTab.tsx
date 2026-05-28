@@ -1,8 +1,9 @@
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ListChecks } from "lucide-react";
 import { toast } from "sonner";
 
 import { TodoSortableList } from "@/components/project/TodoSortableList";
@@ -10,6 +11,7 @@ import type { Todo } from "@/components/project/TodoItem";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
@@ -55,6 +57,7 @@ function filterTodos(todos: Todo[], filter: Filter) {
 
 export function TodosTab({ projectId }: TodosTabProps) {
   const queryClient = useQueryClient();
+  const titleInputRef = useRef<HTMLInputElement>(null);
   const [filter, setFilter] = useState<Filter>("all");
   const [groupByMilestone, setGroupByMilestone] = useState(false);
   const [title, setTitle] = useState("");
@@ -207,16 +210,26 @@ export function TodosTab({ projectId }: TodosTabProps) {
             onToggle={handleToggle}
           />
         ) : (
-          <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            No todos yet. Add a task to start tracking your work.
-          </div>
+          <EmptyState
+            icon={ListChecks}
+            title="No todos"
+            description="Add tasks to track your work."
+            action={{
+              label: "Add task",
+              onClick: () => titleInputRef.current?.focus(),
+            }}
+          />
         )}
 
         <form className="grid gap-3 rounded-lg border bg-muted/30 p-3" onSubmit={handleCreate}>
           <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_12rem_auto_auto]">
             <label className="grid gap-1 text-sm font-medium">
               Todo title
-              <Input value={title} onChange={(event) => setTitle(event.target.value)} />
+              <Input
+                ref={titleInputRef}
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+              />
             </label>
             <label className="grid gap-1 text-sm font-medium">
               Due date

@@ -9,6 +9,7 @@ import {
 import { JournalEntryDialog } from "@/components/project/JournalEntryDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import {
   Dialog,
   DialogContent,
@@ -113,9 +114,12 @@ export function JournalTab({ projectId }: JournalTabProps) {
             />
           ))
         ) : (
-          <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            No journal entries yet. Log an update to capture project momentum.
-          </div>
+          <EmptyState
+            icon={NotebookPen}
+            title="No entries yet"
+            description="Log your first update."
+            action={{ label: "Log update", onClick: openCreateDialog }}
+          />
         )}
 
         {journalQuery.hasNextPage ? (

@@ -1,5 +1,5 @@
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Lightbulb } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -9,6 +9,7 @@ import {
 } from "@/components/project/ParkingLotItem";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,6 +31,7 @@ const parkingLotQueryRoot = (projectId: string) => [
 
 export function ParkingLotTab({ projectId }: ParkingLotTabProps) {
   const queryClient = useQueryClient();
+  const titleInputRef = useRef<HTMLInputElement>(null);
   const [includeArchived, setIncludeArchived] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -107,7 +109,11 @@ export function ParkingLotTab({ projectId }: ParkingLotTabProps) {
           <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
             <label className="grid gap-1 text-sm font-medium">
               Idea title
-              <Input value={title} onChange={(event) => setTitle(event.target.value)} />
+              <Input
+                ref={titleInputRef}
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+              />
             </label>
             <Button type="submit">
               <Lightbulb data-icon="inline-start" />
@@ -137,9 +143,15 @@ export function ParkingLotTab({ projectId }: ParkingLotTabProps) {
             ))}
           </div>
         ) : (
-          <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            No ideas yet. Add ideas you want to explore later.
-          </div>
+          <EmptyState
+            icon={Lightbulb}
+            title="No ideas yet"
+            description="Add ideas you want to explore later."
+            action={{
+              label: "Add idea",
+              onClick: () => titleInputRef.current?.focus(),
+            }}
+          />
         )}
       </CardContent>
     </Card>

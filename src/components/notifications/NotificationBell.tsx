@@ -1,7 +1,8 @@
-import { Bell } from "lucide-react";
+import { Bell, CircleCheck } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/EmptyState";
 import {
   NotificationItem,
   type Notification,
@@ -128,9 +129,12 @@ export function NotificationBell({
             </div>
           </ScrollArea>
         ) : (
-          <div className="p-6 text-center text-sm text-muted-foreground">
-            No notifications yet.
-          </div>
+          <EmptyState
+            icon={CircleCheck}
+            title="All caught up!"
+            description="No unread notifications need attention."
+            className="m-3 border-0 p-3"
+          />
         )}
       </PopoverContent>
     </Popover>

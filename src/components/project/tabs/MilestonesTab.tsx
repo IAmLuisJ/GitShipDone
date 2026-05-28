@@ -1,5 +1,5 @@
 import type { CSSProperties, FormEvent } from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   closestCenter,
   DndContext,
@@ -20,7 +20,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MilestoneItem, type Milestone } from "@/components/project/MilestoneItem";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Input } from "@/components/ui/input";
+import { Flag } from "lucide-react";
 import api from "@/lib/api";
 import { triggerLevelUpFromResponse } from "@/lib/levelUp";
 
@@ -77,6 +79,7 @@ function SortableMilestone({
 export function MilestonesTab({ projectId }: MilestonesTabProps) {
   const queryClient = useQueryClient();
   const sensors = useSensors(useSensor(PointerSensor));
+  const nameInputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState("");
   const [dueDate, setDueDate] = useState("");
   const milestoneQueryKey = ["project", projectId, "milestones"];
@@ -191,16 +194,26 @@ export function MilestonesTab({ projectId }: MilestonesTabProps) {
             </SortableContext>
           </DndContext>
         ) : (
-          <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            No milestones yet. Add one to give this project a visible finish line.
-          </div>
+          <EmptyState
+            icon={Flag}
+            title="No milestones"
+            description="Add a milestone to track your goals."
+            action={{
+              label: "Add milestone",
+              onClick: () => nameInputRef.current?.focus(),
+            }}
+          />
         )}
 
         <form className="grid gap-3 rounded-lg border bg-muted/30 p-3" onSubmit={handleCreate}>
           <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_12rem_auto]">
             <label className="grid gap-1 text-sm font-medium">
               Milestone name
-              <Input value={name} onChange={(event) => setName(event.target.value)} />
+              <Input
+                ref={nameInputRef}
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
             </label>
             <label className="grid gap-1 text-sm font-medium">
               Due date

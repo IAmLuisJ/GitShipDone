@@ -1,12 +1,14 @@
 import { useMemo, useState } from "react";
 import { format, formatDistanceToNow } from "date-fns";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { Activity } from "lucide-react";
 
 import { TimelineEventRenderer } from "@/components/project/timeline/TimelineEventRenderer";
 import type { TimelineEvent } from "@/components/project/timelineEvent";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import api from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -131,9 +133,11 @@ export function TimelineTab({ projectId }: TimelineTabProps) {
             ))}
           </ol>
         ) : (
-          <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            No timeline events yet. Project activity will appear here as the work moves.
-          </div>
+          <EmptyState
+            icon={Activity}
+            title="No activity yet"
+            description="Start working on your project."
+          />
         )}
 
         {timelineQuery.hasNextPage ? (

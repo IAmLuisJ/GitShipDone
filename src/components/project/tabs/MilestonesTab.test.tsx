@@ -122,6 +122,9 @@ describe("MilestonesTab", () => {
     vi.mocked(api.get).mockResolvedValue({ data: [] });
     renderMilestones();
 
-    expect(await screen.findByText(/no milestones yet/i)).toBeInTheDocument();
+    expect(await screen.findByText("No milestones")).toBeInTheDocument();
+    expect(
+      screen.getByText("Add a milestone to track your goals."),
+    ).toBeInTheDocument();
   });
 });
