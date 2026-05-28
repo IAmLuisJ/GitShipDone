@@ -767,7 +767,7 @@
     "title": "Frontend: Level-up celebration animation on points threshold crossed",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-110.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-111",

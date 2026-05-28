@@ -235,7 +235,7 @@ router.post(
         .returning();
 
       // Award 50 points
-      await awardPoints(
+      const pointsResult = await awardPoints(
         projectId,
         50,
         `Milestone completed: ${milestone.name}`,
@@ -257,7 +257,12 @@ router.post(
         .where(eq(projects.id, projectId))
         .limit(1);
 
-      res.status(200).json({ milestone: updatedMilestone, project: updatedProject });
+      res.status(200).json({
+        milestone: updatedMilestone,
+        project: updatedProject,
+        didLevelUp: pointsResult.didLevelUp,
+        newLevel: pointsResult.level,
+      });
     } catch (err) {
       next(err);
     }

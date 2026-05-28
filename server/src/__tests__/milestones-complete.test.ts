@@ -298,5 +298,33 @@ describe("POST /api/projects/:id/milestones/:mid/complete", () => {
     expect(res.status).toBe(200);
     expect(res.body.project.pointsTotal).toBe(50);
     expect(res.body.project.level).toBe("Seed");
+    expect(res.body.didLevelUp).toBe(false);
+    expect(res.body.newLevel).toBe("Seed");
+  });
+
+  it("returns level-up metadata when completion crosses a threshold", async () => {
+    const completedMilestone = {
+      ...fakeMilestone,
+      status: "completed",
+      completedAt: new Date(),
+    };
+    const updatedProject = { ...fakeProject, pointsTotal: 300, level: "Growing" };
+    mockAwardPoints.mockResolvedValueOnce({
+      newTotal: 300,
+      level: "Growing",
+      didLevelUp: true,
+    });
+
+    setupSelectMocks({ updatedProject });
+    setupUpdateMock(completedMilestone);
+    setupInsertMock();
+
+    const res = await request(app)
+      .post(URL)
+      .set("Authorization", "Bearer valid-token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.didLevelUp).toBe(true);
+    expect(res.body.newLevel).toBe("Growing");
   });
 });

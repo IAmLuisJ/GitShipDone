@@ -4,11 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import api from "@/lib/api";
+import { useLevelUpStore } from "@/stores/levelUpStore";
 import { MilestonesTab } from "./MilestonesTab";
-
-const { fireConfettiMock } = vi.hoisted(() => ({
-  fireConfettiMock: vi.fn(),
-}));
 
 vi.mock("@/lib/api", () => ({
   default: {
@@ -17,10 +14,6 @@ vi.mock("@/lib/api", () => ({
     patch: vi.fn(),
     post: vi.fn(),
   },
-}));
-
-vi.mock("@/hooks/useConfetti", () => ({
-  fireConfetti: fireConfettiMock,
 }));
 
 const milestones = [
@@ -64,8 +57,11 @@ function renderMilestones() {
 describe("MilestonesTab", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    useLevelUpStore.setState({ celebration: null });
     vi.mocked(api.get).mockResolvedValue({ data: milestones });
-    vi.mocked(api.post).mockResolvedValue({ data: milestones[0] });
+    vi.mocked(api.post).mockResolvedValue({
+      data: { milestone: milestones[0], didLevelUp: true, newLevel: "Shipping" },
+    });
     vi.mocked(api.patch).mockResolvedValue({ data: { milestones } });
     vi.mocked(api.delete).mockResolvedValue({ data: { message: "Milestone deleted" } });
   });
@@ -94,7 +90,9 @@ describe("MilestonesTab", () => {
         "/projects/project-1/milestones/m2/complete",
       ),
     );
-    expect(fireConfettiMock).toHaveBeenCalledTimes(1);
+    expect(useLevelUpStore.getState().celebration).toMatchObject({
+      level: "Shipping",
+    });
 
     await user.type(screen.getByLabelText(/milestone name/i), "Write docs");
     await user.type(screen.getByLabelText(/due date/i), "2026-06-20");

@@ -1,5 +1,6 @@
 import { LoaderCircle } from "lucide-react";
 
+import { LevelUpCelebration } from "@/components/LevelUpCelebration";
 import { Toaster } from "@/components/ui/sonner";
 import { useInitAuth } from "@/hooks/useInitAuth";
 import AppRoutes from "@/routes";
@@ -24,6 +25,7 @@ export default function App() {
   return (
     <>
       <AppRoutes />
+      <LevelUpCelebration />
       <Toaster />
     </>
   );

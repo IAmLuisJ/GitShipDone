@@ -238,13 +238,15 @@ router.patch(
       if (data.milestoneId !== undefined)
         updateFields.milestoneId = data.milestoneId;
 
+      let pointsResult: Awaited<ReturnType<typeof awardPoints>> | null = null;
+
       // Detect completion state change
       if (data.isCompleted !== undefined) {
         updateFields.isCompleted = data.isCompleted;
         if (data.isCompleted && !existing.isCompleted) {
           // Completing
           updateFields.completedAt = new Date();
-          await awardPoints(
+          pointsResult = await awardPoints(
             projectId,
             10,
             `Completed todo: ${existing.title}`,
@@ -253,7 +255,7 @@ router.patch(
         } else if (!data.isCompleted && existing.isCompleted) {
           // Uncompleting
           updateFields.completedAt = null;
-          await awardPoints(
+          pointsResult = await awardPoints(
             projectId,
             -10,
             `Unchecked todo: ${existing.title}`,
@@ -270,7 +272,12 @@ router.patch(
 
       const progress = await recalculateProgress(projectId);
 
-      res.status(200).json({ todo: updated, progress });
+      res.status(200).json({
+        todo: updated,
+        progress,
+        didLevelUp: pointsResult?.didLevelUp ?? false,
+        newLevel: pointsResult?.level,
+      });
     } catch (err) {
       next(err);
     }

@@ -15,6 +15,7 @@ import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import api from "@/lib/api";
+import { triggerLevelUpFromResponse } from "@/lib/levelUp";
 
 type TodosTabProps = {
   projectId: string;
@@ -29,6 +30,14 @@ type Milestone = {
 type ProjectSummary = {
   progressAuto: number;
   progressManual: number | null;
+};
+
+type TodoUpdateResponse = {
+  didLevelUp?: boolean;
+  level?: string;
+  newLevel?: string;
+  progress: number;
+  todo: Todo;
 };
 
 type Filter = "all" | "active" | "completed" | "urgent";
@@ -111,13 +120,14 @@ export function TodosTab({ projectId }: TodosTabProps) {
 
   async function handleToggle(todo: Todo) {
     const nextCompleted = !todo.isCompleted;
-    const response = await api.patch<{ todo: Todo; progress: number }>(
+    const response = await api.patch<TodoUpdateResponse>(
       `/projects/${projectId}/todos/${todo.id}`,
       { isCompleted: nextCompleted },
     );
     queryClient.setQueryData<ProjectSummary>(projectQueryKey, (current) =>
       current ? { ...current, progressAuto: response.data.progress } : current,
     );
+    triggerLevelUpFromResponse(response.data);
     toast.success(nextCompleted ? "+10 pts" : "-10 pts");
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: todosQueryKey }),

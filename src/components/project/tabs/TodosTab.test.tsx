@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import api from "@/lib/api";
+import { useLevelUpStore } from "@/stores/levelUpStore";
 import { TodosTab } from "./TodosTab";
 
 const { toastSuccessMock } = vi.hoisted(() => ({
@@ -83,6 +84,7 @@ function renderTodos() {
 describe("TodosTab", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    useLevelUpStore.setState({ celebration: null });
     vi.mocked(api.get).mockImplementation((url) => {
       if (url === "/projects/project-1/todos") {
         return Promise.resolve({ data: todos });
@@ -96,6 +98,8 @@ describe("TodosTab", () => {
       data: {
         todo: { ...todos[1], isCompleted: true },
         progress: 67,
+        didLevelUp: true,
+        newLevel: "Growing",
       },
     });
     vi.mocked(api.post).mockResolvedValue({
@@ -142,6 +146,9 @@ describe("TodosTab", () => {
     expect(toastSuccessMock).toHaveBeenCalledWith("+10 pts");
     expect(queryClient.getQueryData(["project", "project-1"])).toMatchObject({
       progressAuto: 67,
+    });
+    expect(useLevelUpStore.getState().celebration).toMatchObject({
+      level: "Growing",
     });
     expect(invalidateSpy).toHaveBeenCalledWith({
       queryKey: ["project", "project-1", "points-log"],

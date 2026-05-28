@@ -200,6 +200,11 @@ describe("PATCH /api/projects/:id/todos/:tid", () => {
 
   it("awards +10 points when completing a todo", async () => {
     setupMocks({ todoOverrides: { isCompleted: false } });
+    vi.mocked(awardPoints).mockResolvedValueOnce({
+      newTotal: 300,
+      level: "Growing",
+      didLevelUp: true,
+    });
     const res = await request(app)
       .patch(URL)
       .set("Authorization", "Bearer valid-token")
@@ -213,6 +218,8 @@ describe("PATCH /api/projects/:id/todos/:tid", () => {
       "todo",
     );
     expect(recalculateProgress).toHaveBeenCalledWith("project-uuid-1");
+    expect(res.body.didLevelUp).toBe(true);
+    expect(res.body.newLevel).toBe("Growing");
   });
 
   it("deducts -10 points when uncompleting a todo", async () => {
@@ -234,6 +241,8 @@ describe("PATCH /api/projects/:id/todos/:tid", () => {
       "Unchecked todo: Write tests",
       "todo",
     );
+    expect(res.body.didLevelUp).toBe(false);
+    expect(res.body.newLevel).toBe("Seed");
   });
 
   it("does not award points when already completed and isCompleted: true", async () => {

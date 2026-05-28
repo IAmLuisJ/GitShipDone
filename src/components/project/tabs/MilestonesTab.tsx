@@ -21,8 +21,8 @@ import { MilestoneItem, type Milestone } from "@/components/project/MilestoneIte
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { fireConfetti } from "@/hooks/useConfetti";
 import api from "@/lib/api";
+import { triggerLevelUpFromResponse } from "@/lib/levelUp";
 
 type MilestonesTabProps = {
   projectId: string;
@@ -33,6 +33,14 @@ type SortableMilestoneProps = {
   onComplete: (milestone: Milestone) => void;
   onDelete: (milestone: Milestone) => void;
   onMoveUp: (milestone: Milestone) => void;
+};
+
+type MilestoneCompleteResponse = {
+  didLevelUp?: boolean;
+  level?: string;
+  newLevel?: string;
+  milestone: Milestone;
+  project: unknown;
 };
 
 function sortMilestones(milestones: Milestone[]) {
@@ -118,8 +126,10 @@ export function MilestonesTab({ projectId }: MilestonesTabProps) {
   }
 
   async function handleComplete(milestone: Milestone) {
-    await api.post(`/projects/${projectId}/milestones/${milestone.id}/complete`);
-    fireConfetti();
+    const response = await api.post<MilestoneCompleteResponse>(
+      `/projects/${projectId}/milestones/${milestone.id}/complete`,
+    );
+    triggerLevelUpFromResponse(response.data);
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: milestoneQueryKey }),
       queryClient.invalidateQueries({ queryKey: ["project", projectId] }),
