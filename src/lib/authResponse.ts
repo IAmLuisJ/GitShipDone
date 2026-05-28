@@ -5,7 +5,13 @@ export type AuthResponse = {
     Partial<
       Pick<
         User,
-        "avatarUrl" | "aiProvider" | "createdAt" | "githubConnected" | "hasAiKey"
+        | "avatarUrl"
+        | "aiProvider"
+        | "createdAt"
+        | "githubConnected"
+        | "hasAiKey"
+        | "hasPassword"
+        | "emailNotificationsEnabled"
       >
     >;
   accessToken: string;
@@ -21,6 +27,8 @@ export function normalizeAuthUser(user: AuthResponse["user"]): User {
     createdAt: user.createdAt ?? new Date().toISOString(),
     githubConnected: user.githubConnected ?? false,
     hasAiKey: user.hasAiKey ?? false,
+    hasPassword: user.hasPassword ?? true,
+    emailNotificationsEnabled: user.emailNotificationsEnabled ?? true,
   };
 }
 

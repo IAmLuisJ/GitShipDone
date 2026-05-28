@@ -9,6 +9,8 @@ export interface User {
   createdAt: string;
   githubConnected?: boolean;
   hasAiKey?: boolean;
+  hasPassword?: boolean;
+  emailNotificationsEnabled?: boolean;
 }
 
 interface AuthState {

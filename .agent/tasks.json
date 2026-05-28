@@ -788,7 +788,7 @@
     "title": "Frontend: User settings page — profile, password, AI config, notification preferences",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-113.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-114",

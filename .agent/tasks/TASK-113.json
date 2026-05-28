@@ -17,31 +17,31 @@
       "step": 1,
       "description": "Create SettingsPage",
       "details": "Create src/pages/SettingsPage.tsx. Card sections layout: Profile, Security, AI Settings, Notifications, Account. Each section is a separate Card with its own Save action.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Build profile section",
       "details": "Pre-fill name and avatarUrl from authStore user. Submit: PATCH /api/users/me. On success: update authStore user, show success toast.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Build security section",
       "details": "If user has no password (OAuth-only), show 'Password login is not available for OAuth accounts'. Otherwise, show currentPassword + newPassword fields. Submit: PATCH /api/users/me/password.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Build notifications section",
       "details": "Switch for emailNotificationsEnabled. On toggle: PATCH /api/users/me with { emailNotificationsEnabled }.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 5,
       "description": "Verify in browser using Playwright",
       "details": "Navigate to /settings. Update name — verify saved. Toggle email notifications — verify state persists on reload. Try delete account (cancel) — verify not deleted.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-69", "TASK-70", "TASK-71", "TASK-114"],

@@ -109,6 +109,7 @@ describe("GET /api/users/me", () => {
       avatarUrl: "https://example.com/avatar.png",
       aiProvider: "openai",
       hasAiKey: true,
+      hasPassword: true,
       emailNotificationsEnabled: true,
       githubConnected: true,
       createdAt: fakeUser.createdAt.toISOString(),
@@ -274,6 +275,32 @@ describe("PATCH /api/users/me", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.avatarUrl).toBe("https://example.com/new-avatar.png");
+  });
+
+  it("updates email notification preference", async () => {
+    const updatedUser = {
+      ...fakeUser,
+      emailNotificationsEnabled: false,
+    };
+    const mockSet = vi.fn().mockReturnThis();
+    const mockWhere = vi.fn().mockReturnThis();
+    const mockReturning = vi.fn().mockResolvedValue([updatedUser]);
+    mockUpdate.mockReturnValue({
+      set: mockSet,
+      where: mockWhere,
+      returning: mockReturning,
+    } as any);
+
+    const res = await request(app)
+      .patch("/api/users/me")
+      .set("Authorization", "Bearer valid-token")
+      .send({ emailNotificationsEnabled: false });
+
+    expect(res.status).toBe(200);
+    expect(mockSet).toHaveBeenCalledWith(
+      expect.objectContaining({ emailNotificationsEnabled: false }),
+    );
+    expect(res.body.emailNotificationsEnabled).toBe(false);
   });
 
   it("returns 400 if email is included in body", async () => {

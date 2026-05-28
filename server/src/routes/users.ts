@@ -24,6 +24,7 @@ const aiSettingsSchema = z.object({
 const updateProfileSchema = z.object({
   name: z.string().min(1).max(255).optional(),
   avatarUrl: z.string().url().max(2000).optional(),
+  emailNotificationsEnabled: z.boolean().optional(),
 });
 
 const router = Router();
@@ -55,6 +56,7 @@ router.get("/me", async (req: Request, res: Response, next: NextFunction) => {
       avatarUrl: user.avatarUrl,
       aiProvider: user.aiProvider,
       hasAiKey: !!user.aiApiKey,
+      hasPassword: !!user.passwordHash,
       emailNotificationsEnabled: user.emailNotificationsEnabled,
       githubConnected: !!user.githubAccessToken,
       createdAt: user.createdAt,
@@ -66,7 +68,7 @@ router.get("/me", async (req: Request, res: Response, next: NextFunction) => {
 
 /**
  * PATCH /api/users/me
- * Update the authenticated user's profile (name and/or avatarUrl).
+ * Update the authenticated user's profile and preferences.
  * Email changes are not supported in MVP.
  */
 router.patch("/me", async (req: Request, res: Response, next: NextFunction) => {
@@ -86,7 +88,11 @@ router.patch("/me", async (req: Request, res: Response, next: NextFunction) => {
     const updates = parsed.data;
 
     // Nothing to update
-    if (!updates.name && !updates.avatarUrl) {
+    if (
+      !updates.name &&
+      !updates.avatarUrl &&
+      updates.emailNotificationsEnabled === undefined
+    ) {
       return res.status(400).json({ error: "No valid fields to update" });
     }
 
@@ -109,6 +115,7 @@ router.patch("/me", async (req: Request, res: Response, next: NextFunction) => {
       avatarUrl: user.avatarUrl,
       aiProvider: user.aiProvider,
       hasAiKey: !!user.aiApiKey,
+      hasPassword: !!user.passwordHash,
       emailNotificationsEnabled: user.emailNotificationsEnabled,
       githubConnected: !!user.githubAccessToken,
       createdAt: user.createdAt,
