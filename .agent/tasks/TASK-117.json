@@ -15,25 +15,25 @@
       "step": 1,
       "description": "Create ProjectCardSkeleton component",
       "details": "Create src/components/projects/ProjectCardSkeleton.tsx. Mirror the shape of ProjectCard using Skeleton components: a tall card with skeleton lines for name, badge, progress bar, and metadata. Render 6 skeletons in the dashboard grid while loading.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Create TimelineEventSkeleton component",
       "details": "Create src/components/project/timeline/TimelineEventSkeleton.tsx. A row with a skeleton circle (dot), skeleton line for icon, and two skeleton text lines. Render 5 skeletons while loading.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Implement in dashboard and timeline",
       "details": "In DashboardPage: if isLoading, render 6x ProjectCardSkeleton. In TimelineTab: if isLoading, render 5x TimelineEventSkeleton.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser using Playwright",
       "details": "Throttle network in DevTools to Slow 3G. Navigate to dashboard — verify skeleton shows before cards load. Navigate to timeline tab — verify skeleton shows.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-81"],

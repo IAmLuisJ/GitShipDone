@@ -4,29 +4,12 @@ import { FolderKanban, Plus } from "lucide-react";
 
 import { CreateProjectModal } from "@/components/projects/CreateProjectModal";
 import { ProjectCard } from "@/components/projects/ProjectCard";
+import { ProjectCardSkeleton } from "@/components/projects/ProjectCardSkeleton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { Skeleton } from "@/components/ui/skeleton";
 import api from "@/lib/api";
 import type { Project } from "@/types/project";
-
-function ProjectCardSkeleton() {
-  return (
-    <Card data-testid="project-card-skeleton">
-      <CardContent className="grid gap-4 p-6">
-        <Skeleton className="h-5 w-2/3" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-3/4" />
-        <Skeleton className="h-2 w-full" />
-        <div className="flex justify-between">
-          <Skeleton className="h-4 w-16" />
-          <Skeleton className="h-4 w-24" />
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
 
 export default function Dashboard() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);

@@ -81,6 +81,14 @@ describe("TimelineTab", () => {
     expect(api.get).toHaveBeenCalledWith("/projects/project-1/timeline?page=1&limit=50");
   });
 
+  it("shows timeline skeleton rows while events load", () => {
+    vi.mocked(api.get).mockImplementation(() => new Promise(() => undefined));
+
+    renderTimelineTab();
+
+    expect(screen.getAllByTestId("timeline-event-skeleton")).toHaveLength(5);
+  });
+
   it("filters by event family and loads more timeline events", async () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
 

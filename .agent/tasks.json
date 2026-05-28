@@ -816,7 +816,7 @@
     "title": "Frontend: Skeleton loaders for dashboard and timeline",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-117.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-118",

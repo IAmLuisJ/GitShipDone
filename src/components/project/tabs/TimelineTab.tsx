@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { Activity } from "lucide-react";
 
 import { TimelineEventRenderer } from "@/components/project/timeline/TimelineEventRenderer";
+import { TimelineEventSkeleton } from "@/components/project/timeline/TimelineEventSkeleton";
 import type { TimelineEvent } from "@/components/project/timelineEvent";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -126,7 +127,13 @@ export function TimelineTab({ projectId }: TimelineTabProps) {
         </div>
       </CardHeader>
       <CardContent className="grid gap-4">
-        {events.length > 0 ? (
+        {timelineQuery.isLoading ? (
+          <ol className="relative ml-4 border-l border-muted" data-testid="timeline-list">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <TimelineEventSkeleton key={index} />
+            ))}
+          </ol>
+        ) : events.length > 0 ? (
           <ol className="relative ml-4 border-l border-muted" data-testid="timeline-list">
             {events.map((event) => (
               <TimelineItem key={event.id} event={event} />
