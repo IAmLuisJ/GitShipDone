@@ -107,6 +107,7 @@ describe("TodosTab", () => {
   it("lists, filters, groups, toggles, creates, deletes, and reorders todos", async () => {
     const user = userEvent.setup();
     const queryClient = renderTodos();
+    const invalidateSpy = vi.spyOn(queryClient, "invalidateQueries");
 
     const items = await screen.findAllByTestId("todo-item");
     expect(items.map((item) => item.textContent)).toEqual([
@@ -141,6 +142,9 @@ describe("TodosTab", () => {
     expect(toastSuccessMock).toHaveBeenCalledWith("+10 pts");
     expect(queryClient.getQueryData(["project", "project-1"])).toMatchObject({
       progressAuto: 67,
+    });
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: ["project", "project-1", "points-log"],
     });
 
     await user.type(screen.getByLabelText(/^todo title$/i), "Write docs");

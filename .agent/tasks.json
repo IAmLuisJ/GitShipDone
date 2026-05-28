@@ -760,7 +760,7 @@
     "title": "Frontend: Points display and level badge component with points history tooltip",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-109.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-110",

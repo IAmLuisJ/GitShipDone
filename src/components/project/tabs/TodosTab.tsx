@@ -53,6 +53,7 @@ export function TodosTab({ projectId }: TodosTabProps) {
   const [isUrgent, setIsUrgent] = useState(false);
   const todosQueryKey = ["project", projectId, "todos"];
   const projectQueryKey = ["project", projectId];
+  const pointsLogQueryKey = ["project", projectId, "points-log"];
 
   const todosQuery = useQuery({
     queryKey: todosQueryKey,
@@ -121,6 +122,7 @@ export function TodosTab({ projectId }: TodosTabProps) {
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: todosQueryKey }),
       queryClient.invalidateQueries({ queryKey: projectQueryKey }),
+      queryClient.invalidateQueries({ queryKey: pointsLogQueryKey }),
     ]);
   }
 

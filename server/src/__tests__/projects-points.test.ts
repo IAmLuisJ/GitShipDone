@@ -67,6 +67,25 @@ const fakeProject = {
   deletedAt: null,
 };
 
+const fakePointsLog = [
+  {
+    id: "log-1",
+    projectId: "project-uuid-1",
+    delta: 10,
+    reason: "Completed todo: Wire OAuth",
+    source: "todo",
+    createdAt: new Date("2026-05-24T12:00:00.000Z"),
+  },
+  {
+    id: "log-2",
+    projectId: "project-uuid-1",
+    delta: -5,
+    reason: "Unchecked todo: Polish copy",
+    source: "todo",
+    createdAt: new Date("2026-05-24T11:00:00.000Z"),
+  },
+];
+
 function setupOwnershipMock(project: any | null) {
   mockSelect.mockImplementation(
     () =>
@@ -79,6 +98,71 @@ function setupOwnershipMock(project: any | null) {
       }) as any,
   );
 }
+
+function setupPointsLogMock(project: any | null, logRows = fakePointsLog) {
+  let callCount = 0;
+  mockSelect.mockImplementation(() => {
+    callCount++;
+    if (callCount === 1) {
+      return {
+        from: vi.fn().mockReturnValue({
+          where: vi.fn().mockReturnValue({
+            limit: vi.fn().mockResolvedValue(project ? [project] : []),
+          }),
+        }),
+      } as any;
+    }
+
+    return {
+      from: vi.fn().mockReturnValue({
+        where: vi.fn().mockReturnValue({
+          orderBy: vi.fn().mockReturnValue({
+            limit: vi.fn().mockResolvedValue(logRows),
+          }),
+        }),
+      }),
+    } as any;
+  });
+}
+
+describe("GET /api/projects/:id/points-log", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns 401 without auth token", async () => {
+    const res = await request(app).get("/api/projects/project-uuid-1/points-log");
+    expect(res.status).toBe(401);
+  });
+
+  it("returns 404 for non-existent project", async () => {
+    setupPointsLogMock(null);
+
+    const res = await request(app)
+      .get("/api/projects/nonexistent-id/points-log")
+      .set("Authorization", "Bearer valid-token");
+
+    expect(res.status).toBe(404);
+    expect(res.body.error).toBe("Project not found");
+  });
+
+  it("returns the last five point transactions", async () => {
+    setupPointsLogMock(fakeProject);
+
+    const res = await request(app)
+      .get("/api/projects/project-uuid-1/points-log")
+      .set("Authorization", "Bearer valid-token");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(2);
+    expect(res.body[0]).toMatchObject({
+      id: "log-1",
+      delta: 10,
+      reason: "Completed todo: Wire OAuth",
+      source: "todo",
+    });
+  });
+});
 
 describe("POST /api/projects/:id/points", () => {
   beforeEach(() => {

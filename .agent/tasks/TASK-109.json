@@ -15,25 +15,25 @@
       "step": 1,
       "description": "Create PointsDisplay component",
       "details": "Create src/components/project/PointsDisplay.tsx. Shows level badge (Star icon + level name) and points count. Use shadcn/ui Tooltip to show recent points log on hover.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Add points log tooltip",
       "details": "Add GET /api/projects/:id/points-log endpoint (add to server — query last 5 points_log entries ORDER BY created_at DESC). Display in tooltip: each row shows delta (green/red), reason, time ago.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Level badge colors",
       "details": "Seed=gray, Sprout=green, Growing=blue, Shipping=orange, Launched=purple. Apply as Tailwind classes based on level string.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify in browser",
       "details": "Complete a todo — verify points increment in real time. Hover over points — verify log shows recent transactions.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-81", "TASK-43"],

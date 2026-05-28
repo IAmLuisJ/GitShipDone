@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import { eq, and, isNull, desc, count } from "drizzle-orm";
 
 import { db } from "../db";
-import { projects, milestones, todos, githubCommits } from "../db/schema";
+import { projects, milestones, todos, githubCommits, pointsLog } from "../db/schema";
 import {
   createProjectSchema,
   updateProjectSchema,
@@ -173,6 +173,37 @@ router.patch(
       }
 
       res.status(200).json(updated);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
+
+/**
+ * GET /api/projects/:id/points-log
+ * Return the five most recent points transactions for tooltip display.
+ */
+router.get(
+  "/:id/points-log",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projectId = req.params.id as string;
+      const project = await getOwnedProject(projectId, req.userId!);
+
+      const result = await db
+        .select({
+          id: pointsLog.id,
+          delta: pointsLog.delta,
+          reason: pointsLog.reason,
+          source: pointsLog.source,
+          createdAt: pointsLog.createdAt,
+        })
+        .from(pointsLog)
+        .where(eq(pointsLog.projectId, project.id))
+        .orderBy(desc(pointsLog.createdAt))
+        .limit(5);
+
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }

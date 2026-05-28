@@ -2,6 +2,7 @@ import { Bot, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { AiChatPanel } from "@/components/project/AiChatPanel";
+import { PointsDisplay } from "@/components/project/PointsDisplay";
 import { ProjectProgressBar } from "@/components/project/ProjectProgressBar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -34,7 +35,6 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="secondary">{formatLabel(project.type)}</Badge>
             <Badge variant="outline">{formatLabel(project.status)}</Badge>
-            <Badge variant="outline">{project.level}</Badge>
           </div>
           <div>
             <h1 className="text-2xl font-semibold tracking-normal sm:text-3xl">
@@ -49,10 +49,7 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
-          <div className="rounded-lg border px-3 py-2 text-right">
-            <div className="text-lg font-semibold">{project.pointsTotal} pts</div>
-            <div className="text-xs text-muted-foreground">total points</div>
-          </div>
+          <PointsDisplay project={project} />
           <Button type="button" onClick={() => setIsAiPanelOpen(true)}>
             <Bot data-icon="inline-start" />
             AI PM
