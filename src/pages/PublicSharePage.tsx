@@ -149,7 +149,7 @@ export default function PublicSharePage() {
               <span className="font-medium">Progress</span>
               <span className="text-muted-foreground">{progress}% complete</span>
             </div>
-            <Progress value={progress} />
+            <Progress value={progress} aria-label={`${project.name} public progress`} />
           </div>
         </section>
 

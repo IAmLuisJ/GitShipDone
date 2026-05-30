@@ -15,7 +15,6 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import api from "@/lib/api";
 import { triggerLevelUpFromResponse } from "@/lib/levelUp";
 
@@ -43,6 +42,13 @@ type TodoUpdateResponse = {
 };
 
 type Filter = "all" | "active" | "completed" | "urgent";
+
+const filterOptions: { label: string; value: Filter }[] = [
+  { label: "All", value: "all" },
+  { label: "Active", value: "active" },
+  { label: "Completed", value: "completed" },
+  { label: "Urgent", value: "urgent" },
+];
 
 function sortTodos(todos: Todo[]) {
   return [...todos].sort((a, b) => a.sortOrder - b.sortOrder);
@@ -176,18 +182,30 @@ export function TodosTab({ projectId }: TodosTabProps) {
             <span className="font-medium">Progress</span>
             <span className="text-muted-foreground">{progress}% complete</span>
           </div>
-          <Progress value={progress} />
+          <Progress value={progress} aria-label="Todo completion progress" />
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <Tabs value={filter} onValueChange={(value) => setFilter(value as Filter)}>
-            <TabsList>
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="active">Active</TabsTrigger>
-              <TabsTrigger value="completed">Completed</TabsTrigger>
-              <TabsTrigger value="urgent">Urgent</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <div
+            aria-label="Todo filters"
+            className="inline-flex h-8 w-fit items-center justify-center rounded-lg bg-muted p-[3px]"
+          >
+            {filterOptions.map((option) => {
+              const isSelected = filter === option.value;
+
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  aria-pressed={isSelected}
+                  className="inline-flex h-full flex-1 items-center justify-center rounded-md border border-transparent px-1.5 py-0.5 text-sm font-medium whitespace-nowrap text-foreground/60 transition-all hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring aria-pressed:bg-background aria-pressed:text-foreground aria-pressed:shadow-sm dark:text-muted-foreground dark:hover:text-foreground"
+                  onClick={() => setFilter(option.value)}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
           <label className="flex items-center gap-2 text-sm font-medium">
             <Switch
               aria-label="Group by milestone"

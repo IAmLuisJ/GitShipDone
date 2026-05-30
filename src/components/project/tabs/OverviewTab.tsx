@@ -71,7 +71,7 @@ export function OverviewTab({ project, onSelectTab }: OverviewTabProps) {
                     : ""}
                 </span>
               </div>
-              <Progress value={progress} />
+              <Progress value={progress} aria-label="Project progress" />
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div className="rounded-lg border p-3">

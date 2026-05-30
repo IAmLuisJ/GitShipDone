@@ -123,15 +123,15 @@ describe("TodosTab", () => {
     expect(screen.getByText(/due jun 6, 2026/i)).toBeInTheDocument();
     expect(screen.getByText("33% complete")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("tab", { name: /active/i }));
+    await user.click(screen.getByRole("button", { name: /active/i }));
     expect(screen.queryByText("Sketch launch")).not.toBeInTheDocument();
     expect(screen.getByText("Write tests")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("tab", { name: /urgent/i }));
+    await user.click(screen.getByRole("button", { name: /urgent/i }));
     expect(screen.getByText("Write tests")).toBeInTheDocument();
     expect(screen.queryByText("Ship copy")).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("tab", { name: /all/i }));
+    await user.click(screen.getByRole("button", { name: /all/i }));
     await user.click(screen.getByLabelText(/group by milestone/i));
     expect(screen.getByText("Beta milestone")).toBeInTheDocument();
     expect(screen.getByText("Launch milestone")).toBeInTheDocument();

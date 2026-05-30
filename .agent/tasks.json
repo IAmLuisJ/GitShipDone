@@ -837,6 +837,6 @@
     "title": "WCAG 2.1 AA — keyboard navigation, ARIA labels, and color contrast audit",
     "category": "functional",
     "specFilePath": ".agent/tasks/TASK-120.json",
-    "passes": false
+    "passes": true
   }
 ]

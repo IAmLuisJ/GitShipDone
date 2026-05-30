@@ -18,31 +18,31 @@
       "step": 1,
       "description": "Run automated accessibility audit",
       "details": "Install axe-playwright or axe-core. Run axe audit on main pages: landing, login, register, dashboard, project detail (each tab), settings, public share page. Log all violations.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 2,
       "description": "Fix keyboard navigation issues",
       "details": "Tab through the app. Fix any: missing tabindex, focus jumping to wrong element, focus not returning to trigger after dialog closes. Ensure drag-and-drop list items have keyboard alternatives (arrow key reorder).",
-      "pass": false
+      "pass": true
     },
     {
       "step": 3,
       "description": "Fix ARIA labels",
       "details": "Add aria-label to: icon-only buttons (e.g., delete, drag handle, close), the notification bell, the theme toggle, the progress bar (aria-valuenow, aria-valuemin, aria-valuemax). Add role='list' and role='listitem' to custom lists.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 4,
       "description": "Verify color contrast",
       "details": "Use browser DevTools accessibility panel or a contrast checker tool. Check all muted text colors against their backgrounds. Fix any failures — usually by darkening text or lightening background.",
-      "pass": false
+      "pass": true
     },
     {
       "step": 5,
       "description": "Test with keyboard only",
       "details": "Complete the main user flow using only keyboard: login, create project, add milestone, complete todo, log journal entry. Verify all actions are achievable without a mouse.",
-      "pass": false
+      "pass": true
     }
   ],
   "dependencies": ["TASK-82", "TASK-89", "TASK-93"],
