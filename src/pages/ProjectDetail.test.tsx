@@ -90,6 +90,10 @@ describe("ProjectDetail", () => {
     expect(screen.getAllByText("Sprout")).not.toHaveLength(0);
     expect(screen.getAllByText("420 pts")).not.toHaveLength(0);
     expect(screen.getByText(/64% complete/i)).toBeInTheDocument();
+    expect(screen.getByTestId("project-tabs-scroll")).toHaveClass(
+      "overflow-x-auto",
+      "whitespace-nowrap",
+    );
     expect(screen.getAllByRole("tab")).toHaveLength(7);
     expect(screen.getByTestId("overview-tab")).toBeInTheDocument();
 

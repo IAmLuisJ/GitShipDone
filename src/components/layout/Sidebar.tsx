@@ -253,7 +253,10 @@ export function Sidebar() {
 
   return (
     <>
-      <div className="fixed left-3 top-3 z-10 md:hidden">
+      <div
+        data-testid="mobile-shell-header"
+        className="fixed inset-x-0 top-0 z-10 flex h-14 items-center gap-3 border-b bg-background/95 px-3 backdrop-blur md:hidden"
+      >
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" aria-label="Open navigation">
@@ -265,6 +268,10 @@ export function Sidebar() {
             <SidebarContent collapsed={false} />
           </SheetContent>
         </Sheet>
+        <div className="flex min-w-0 items-center gap-2 font-semibold">
+          <ShipWheel data-icon="inline-start" />
+          <span className="truncate">GitShipDone</span>
+        </div>
       </div>
       <aside
         data-testid="app-sidebar"

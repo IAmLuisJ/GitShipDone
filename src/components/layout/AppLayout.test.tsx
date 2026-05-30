@@ -87,6 +87,8 @@ describe("AppLayout", () => {
   it("renders authenticated content inside the global layout", async () => {
     renderLayout();
 
+    expect(screen.getByTestId("mobile-shell-header")).toHaveClass("md:hidden");
+    expect(screen.getByTestId("app-main")).toHaveClass("pt-16", "md:pt-6");
     expect(screen.getByTestId("dashboard-page")).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /GitShipDone/i }),

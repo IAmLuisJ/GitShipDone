@@ -830,7 +830,7 @@
     "title": "Frontend: Mobile-responsive layout for all pages",
     "category": "ui-ux",
     "specFilePath": ".agent/tasks/TASK-119.json",
-    "passes": false
+    "passes": true
   },
   {
     "id": "TASK-120",

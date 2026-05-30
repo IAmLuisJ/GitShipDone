@@ -121,7 +121,7 @@ export function CreateProjectModal({
         }
       }}
     >
-      <DialogContent>
+      <DialogContent className="h-dvh max-h-dvh max-w-full rounded-none sm:h-auto sm:max-h-[90vh] sm:max-w-sm sm:rounded-xl">
         <DialogHeader>
           <DialogTitle>New project</DialogTitle>
           <DialogDescription>

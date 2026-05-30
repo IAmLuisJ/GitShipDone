@@ -69,7 +69,11 @@ describe("CreateProjectModal", () => {
     vi.mocked(api.post).mockResolvedValue({ data: createdProject });
     const { invalidateSpy, onOpenChange } = renderModal();
 
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toHaveClass(
+      "h-dvh",
+      "max-w-full",
+      "rounded-none",
+    );
     expect(screen.getByLabelText(/project name/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /^software$/i })).toBeInTheDocument();
 

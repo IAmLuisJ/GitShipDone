@@ -123,8 +123,11 @@ export default function ProjectDetailPage() {
       <ProjectHeader project={project} />
 
       <Tabs value={activeTab} onValueChange={handleTabChange}>
-        <div className="overflow-x-auto pb-1">
-          <TabsList variant="line" className="min-w-max">
+        <div
+          data-testid="project-tabs-scroll"
+          className="overflow-x-auto whitespace-nowrap pb-1"
+        >
+          <TabsList variant="line" className="min-w-max flex-nowrap">
             {projectTabs.map((tab) => (
               <TabsTrigger key={tab.value} value={tab.value}>
                 {tab.label}
