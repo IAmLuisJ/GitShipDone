@@ -1,0 +1,15 @@
+node_modules
+server/node_modules
+src/node_modules
+dist
+server/dist
+.git
+.claude
+.agent
+.codex
+.env
+server/.env
+playwright-report
+test-results
+generated_documents
+docs

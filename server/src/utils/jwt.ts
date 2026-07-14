@@ -1,8 +1,23 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-jwt-secret';
-const JWT_REFRESH_SECRET =
-  process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret';
+/**
+ * Resolve a signing secret from the environment. Development falls back
+ * to a well-known value; production must provide a real secret.
+ */
+function resolveSecret(name: string, devFallback: string): string {
+  const value = process.env[name];
+  if (value) return value;
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(`${name} must be set in production`);
+  }
+  return devFallback;
+}
+
+const JWT_SECRET = resolveSecret('JWT_SECRET', 'dev-jwt-secret');
+const JWT_REFRESH_SECRET = resolveSecret(
+  'JWT_REFRESH_SECRET',
+  'dev-refresh-secret',
+);
 
 interface TokenPayload {
   sub: string;
