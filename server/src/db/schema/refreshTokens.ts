@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { pgTable, uuid, text, timestamp, index } from "drizzle-orm/pg-core";
 import { users } from "./users";
 
@@ -8,7 +9,7 @@ import { users } from "./users";
 export const refreshTokens = pgTable(
   "refresh_tokens",
   {
-    id: uuid("id").primaryKey().defaultRandom(),
+    id: uuid("id").primaryKey().$defaultFn(() => randomUUID()),
     userId: uuid("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),

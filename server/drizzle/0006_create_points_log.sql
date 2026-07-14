@@ -1,7 +1,7 @@
 CREATE TYPE "point_source" AS ENUM ('todo', 'milestone', 'journal', 'github_commit', 'github_release', 'manual');
 
 CREATE TABLE "points_log" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  "id" uuid PRIMARY KEY NOT NULL,
   "project_id" uuid NOT NULL REFERENCES "projects"("id") ON DELETE CASCADE,
   "delta" integer NOT NULL,
   "reason" varchar(255) NOT NULL,

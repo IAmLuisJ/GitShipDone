@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import {
   pgTable,
   uuid,
@@ -15,7 +16,7 @@ import {
 export const users = pgTable(
   'users',
   {
-    id: uuid('id').primaryKey().defaultRandom(),
+    id: uuid('id').primaryKey().$defaultFn(() => randomUUID()),
     email: varchar('email', { length: 255 }).notNull().unique(),
     name: varchar('name', { length: 255 }).notNull(),
     avatarUrl: text('avatar_url'),

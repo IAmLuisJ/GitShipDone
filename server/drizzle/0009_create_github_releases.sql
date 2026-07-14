@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS "github_releases" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  "id" uuid PRIMARY KEY NOT NULL,
   "project_id" uuid NOT NULL REFERENCES "projects"("id") ON DELETE CASCADE,
   "tag_name" varchar(255) NOT NULL,
   "name" varchar(255),

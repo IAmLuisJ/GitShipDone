@@ -1,6 +1,8 @@
 services:
   db:
-    image: postgres:15-alpine
+    # Pinned to 10 to match the Namecheap shared-hosting deployment target;
+    # everything the app uses must work on this floor.
+    image: postgres:10-alpine
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-gitshipdone}

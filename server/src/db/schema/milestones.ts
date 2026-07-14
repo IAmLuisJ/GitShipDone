@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   pgTable,
   pgEnum,
@@ -24,7 +25,7 @@ export const milestoneStatusEnum = pgEnum("milestone_status", [
 export const milestones = pgTable(
   "milestones",
   {
-    id: uuid("id").primaryKey().defaultRandom(),
+    id: uuid("id").primaryKey().$defaultFn(() => randomUUID()),
     projectId: uuid("project_id")
       .notNull()
       .references(() => projects.id, { onDelete: "cascade" }),

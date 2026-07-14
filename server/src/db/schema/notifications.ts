@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   pgTable,
   pgEnum,
@@ -24,7 +25,7 @@ export const notificationTypeEnum = pgEnum("notification_type", [
 export const notifications = pgTable(
   "notifications",
   {
-    id: uuid("id").primaryKey().defaultRandom(),
+    id: uuid("id").primaryKey().$defaultFn(() => randomUUID()),
     userId: uuid("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),

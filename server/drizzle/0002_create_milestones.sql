@@ -4,7 +4,7 @@ EXCEPTION WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 CREATE TABLE "milestones" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"project_id" uuid NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"description" text,

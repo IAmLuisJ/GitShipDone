@@ -1,7 +1,7 @@
 CREATE TYPE "public"."journal_mood" AS ENUM('excited', 'blocked', 'steady', 'win', 'learning');
 
 CREATE TABLE IF NOT EXISTS "journal_entries" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  "id" uuid PRIMARY KEY NOT NULL,
   "project_id" uuid NOT NULL,
   "title" varchar(500) NOT NULL,
   "body" text NOT NULL,

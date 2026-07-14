@@ -1,5 +1,5 @@
 CREATE TABLE "parking_lot_items" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  "id" uuid PRIMARY KEY NOT NULL,
   "project_id" uuid NOT NULL REFERENCES "projects"("id") ON DELETE CASCADE,
   "title" varchar(500) NOT NULL,
   "description" text,

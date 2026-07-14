@@ -1,7 +1,7 @@
 CREATE TYPE "notification_type" AS ENUM ('milestone_due', 'todo_due', 'milestone_completed', 'system');
 
 CREATE TABLE IF NOT EXISTS "notifications" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  "id" uuid PRIMARY KEY NOT NULL,
   "user_id" uuid NOT NULL REFERENCES "users"("id") ON DELETE CASCADE,
   "project_id" uuid REFERENCES "projects"("id") ON DELETE SET NULL,
   "type" "notification_type" NOT NULL,

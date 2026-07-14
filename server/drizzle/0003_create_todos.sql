@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS "todos" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  "id" uuid PRIMARY KEY NOT NULL,
   "project_id" uuid NOT NULL,
   "milestone_id" uuid,
   "title" varchar(500) NOT NULL,

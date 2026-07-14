@@ -1,7 +1,7 @@
 CREATE TYPE "public"."timeline_event_type" AS ENUM('journal', 'milestone_completed', 'todo_batch', 'github_commit', 'github_release', 'progress_change', 'points_change', 'status_change');
 
 CREATE TABLE IF NOT EXISTS "timeline_events" (
-  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  "id" uuid PRIMARY KEY NOT NULL,
   "project_id" uuid NOT NULL,
   "type" "timeline_event_type" NOT NULL,
   "ref_id" uuid,

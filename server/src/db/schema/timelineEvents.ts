@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   pgTable,
   pgEnum,
@@ -27,7 +28,7 @@ export const timelineEventTypeEnum = pgEnum("timeline_event_type", [
 export const timelineEvents = pgTable(
   "timeline_events",
   {
-    id: uuid("id").primaryKey().defaultRandom(),
+    id: uuid("id").primaryKey().$defaultFn(() => randomUUID()),
     projectId: uuid("project_id")
       .notNull()
       .references(() => projects.id, { onDelete: "cascade" }),

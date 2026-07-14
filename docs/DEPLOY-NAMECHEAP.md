@@ -12,7 +12,7 @@ frontend via `STATIC_DIR`, exactly like the production container does.
 
 | Constraint | Impact |
 |---|---|
-| PostgreSQL is version **10** | Our schema defaults every PK to `gen_random_uuid()`, built-in only since PG13. On PG10 it requires the `pgcrypto` extension — step 2 below. |
+| PostgreSQL is version **10** | Supported: UUIDs are generated app-side (`crypto.randomUUID()`), so no database extensions are needed. Local dev pins `postgres:10` in Docker Compose to keep parity. |
 | Passenger idle-stops the process | Fine for the MVP (no cron). Before enabling `FEATURE_REMINDERS`/`FEATURE_GITHUB`, replace in-process cron with cPanel Cron Jobs hitting an endpoint. |
 | No Docker, LVE resource caps | Deploy compiled JS, not containers; keep memory modest. |
 | Node selector | Choose **22.x** (matches `engines` in package.json). |
@@ -24,21 +24,7 @@ frontend via `STATIC_DIR`, exactly like the production container does.
 2. Note the credentials. The connection string is:
    `postgresql://<cpuser>_<dbuser>:<password>@localhost:5432/<cpuser>_gitshipdone`
 
-## 2. Enable pgcrypto (required on PG < 13)
-
-In cPanel → **phpPgAdmin** (or `psql` over SSH), run against your database:
-
-```sql
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-SELECT gen_random_uuid();  -- must return a UUID
-```
-
-If this fails with a permission error, open a Namecheap support ticket asking them to
-enable `pgcrypto` on your database. If they won't, use a free external Postgres instead
-(e.g. Neon) and set `DATABASE_URL` to it with `?sslmode=require` — everything else below
-stays the same.
-
-## 3. Build locally
+## 2. Build locally
 
 ```bash
 npm ci && npm run build                # frontend → dist/
@@ -48,7 +34,7 @@ cd server && npm ci && npm run build   # server  → server/dist/
 Frontend feature flags default off — exactly what the MVP wants — so no `VITE_*` vars
 are needed at build time.
 
-## 4. Assemble the upload bundle
+## 3. Assemble the upload bundle
 
 Create this layout locally and zip it:
 
@@ -61,7 +47,7 @@ gitshipdone/
 └── package-lock.json  # copy of server/package-lock.json
 ```
 
-## 5. Upload
+## 4. Upload
 
 cPanel → **File Manager** → create `~/gitshipdone` (in your home directory, **not** under
 `public_html`) → upload the zip → extract.
@@ -82,7 +68,7 @@ STATIC_DIR=/home/<cpuser>/gitshipdone/client
 Do **not** set `PORT` — Passenger assigns it. Both the app and the migration script load
 this file automatically (`dotenv/config`).
 
-## 6. Create the Node.js app
+## 5. Create the Node.js app
 
 cPanel → **Setup Node.js App** → Create Application:
 
@@ -95,7 +81,7 @@ cPanel → **Setup Node.js App** → Create Application:
 Then click **Run NPM Install** (installs the server's runtime deps — all pure JS, no
 native builds, so this works within shared-hosting limits).
 
-## 7. Run migrations (SSH)
+## 6. Run migrations (SSH)
 
 Enable SSH in cPanel (**SSH Access**) if needed, then:
 
@@ -108,7 +94,7 @@ node dist/db/migrate.js     # reads .env; must print "[migrate] Migrations compl
 
 Re-run this step after every deploy that adds migrations.
 
-## 8. Start and verify
+## 7. Start and verify
 
 1. Setup Node.js App → **Restart** the application.
 2. `https://yourdomain.com/api/health` → `{"status":"ok", ...}`
