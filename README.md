@@ -115,6 +115,18 @@ deployment once the corresponding phase is verified (see
 Disabled server routes return 404. Both sides of a flag must be enabled for
 the feature to work end to end.
 
+**Reminders on hosts without reliable in-process cron** (e.g. Passenger on
+shared hosting): set `CRON_SECRET` alongside `FEATURE_REMINDERS=true`. This
+disables the in-process scheduler; trigger the run externally instead:
+
+```bash
+curl -X POST -H "Authorization: Bearer $CRON_SECRET" \
+  https://yourdomain.com/api/jobs/reminders/run
+```
+
+The run is duplicate-safe: notifications deduplicate per item per day, and
+overlapping invocations are skipped.
+
 ---
 
 ## End-to-End Tests

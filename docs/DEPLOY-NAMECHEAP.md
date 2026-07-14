@@ -127,8 +127,24 @@ npm run build && (cd server && npm run build)
 # cPanel: Restart the app
 ```
 
-## Phase 2 note (before flipping FEATURE_REMINDERS / FEATURE_GITHUB)
+## Enabling email reminders (Phase 2)
 
-In-process `node-cron` is unreliable under Passenger because idle processes are stopped.
-Add authenticated trigger endpoints (or standalone scripts) and schedule them with
-cPanel → **Cron Jobs** instead.
+In-process `node-cron` is unreliable under Passenger because idle processes are
+stopped, so reminders use an external trigger here:
+
+1. Add to `~/gitshipdone/.env`:
+   ```env
+   FEATURE_REMINDERS=true
+   CRON_SECRET=<long random string>
+   RESEND_API_KEY=<key>
+   ```
+   Setting `CRON_SECRET` automatically disables the in-process scheduler.
+2. Restart the app in Setup Node.js App.
+3. cPanel → **Cron Jobs** → add a daily job (e.g. 8:00):
+   ```bash
+   curl -s -X POST -H "Authorization: Bearer <CRON_SECRET>" https://yourdomain.com/api/jobs/reminders/run
+   ```
+
+The endpoint is duplicate-safe (per-day dedupe + overlap guard), returns a JSON
+summary of how many reminders were created, and 404s entirely when
+`FEATURE_REMINDERS` or `CRON_SECRET` is unset.

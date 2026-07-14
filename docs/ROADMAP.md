@@ -67,9 +67,19 @@ Work items:
 
 Exit criteria: production URL where the full core loop works; e2e suite green against a production build.
 
-## Phase 2 — Engagement layer (already built — unhide & verify)
+## Phase 2 — Engagement layer — ✅ code-complete (2026-07-13)
 
-Points & levels (+ level-up celebration) · public share pages (read-only URL) · notification bell · email milestone reminders (Resend + cron). Each: enable flag → verify with e2e → ship. Harden cron jobs against duplicate execution.
+Points & levels (+ level-up celebration) · public share pages (read-only URL) · notification bell · email milestone reminders (Resend + cron).
+
+> Status: points/levels, sharing, and notifications were never gated (no external
+> deps) and are now covered by `tests/engagement.spec.ts` (5 e2e tests: points on
+> milestone completion, bell empty state, public share page read-only, revoke).
+> Reminders hardened: per-day dedupe was already present; added an overlap guard,
+> run-count reporting, and a `CRON_SECRET`-authenticated trigger
+> (`POST /api/jobs/reminders/run`) for hosts where in-process cron is unreliable
+> (Passenger/shared hosting — see docs/DEPLOY-NAMECHEAP.md). Setting `CRON_SECRET`
+> disables the in-process scheduler. To turn reminders on in production:
+> `FEATURE_REMINDERS=true` (+ `CRON_SECRET` + cPanel cron on Namecheap).
 
 ## Phase 3 — GitHub integration
 
