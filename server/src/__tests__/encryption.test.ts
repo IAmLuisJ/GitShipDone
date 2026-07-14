@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 
 // Set encryption key before importing module
 const TEST_KEY = "12345678901234567890123456789012"; // exactly 32 chars

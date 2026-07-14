@@ -65,11 +65,12 @@ router.post(
       }
 
       return res.status(200).json({ response });
-    } catch (err: any) {
-      if (err.status === 404 || err.statusCode === 404) {
+    } catch (err) {
+      const error = err as Error & { status?: number; statusCode?: number };
+      if (error.status === 404 || error.statusCode === 404) {
         return next(err);
       }
-      console.error("[AI Chat] Error:", err.message);
+      console.error("[AI Chat] Error:", error.message);
       return res
         .status(500)
         .json({ error: "AI service unavailable" });

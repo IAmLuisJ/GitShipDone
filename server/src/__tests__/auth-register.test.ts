@@ -36,15 +36,6 @@ function setupSelectMock(rows: unknown[]) {
   return chain;
 }
 
-function setupInsertMock(returning: unknown[]) {
-  const chain = {
-    values: vi.fn().mockReturnThis(),
-    returning: vi.fn().mockResolvedValue(returning),
-  };
-  mockInsert.mockReturnValue(chain as any);
-  return chain;
-}
-
 describe('POST /api/auth/register', () => {
   beforeEach(() => {
     vi.clearAllMocks();

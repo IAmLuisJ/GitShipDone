@@ -19,6 +19,10 @@ const user = {
   avatarUrl: null,
   aiProvider: null,
   createdAt: "2026-01-01",
+  githubConnected: false,
+  hasAiKey: false,
+  hasPassword: true,
+  emailNotificationsEnabled: true,
 };
 
 describe("useInitAuth", () => {

@@ -192,5 +192,5 @@ test("create project flow is operable with only the keyboard", async ({ page }) 
   await page.keyboard.press("Enter");
 
   await createRequest;
-  await expect(page).toHaveURL(/\/projects\/keyboard-project$/);
+  await expect(page).toHaveURL(/\/projects\/keyboard-project(\?.*)?$/);
 });

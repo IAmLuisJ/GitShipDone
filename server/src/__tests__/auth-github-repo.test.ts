@@ -18,7 +18,6 @@ vi.mock("../utils/encryption", () => ({
   decrypt: vi.fn((val: string) => val.replace("encrypted:", "")),
 }));
 
-import { db } from "../db";
 import app from "../app";
 
 describe("GET /api/auth/github/repo", () => {

@@ -15,19 +15,7 @@ vi.mock("../db", () => ({
 import { db } from "../db";
 import app from "../app";
 
-const mockSelect = vi.mocked(db.select);
 const mockInsert = vi.mocked(db.insert);
-const mockUpdate = vi.mocked((db as any).update);
-
-function setupSelectMock(rows: unknown[]) {
-  const chain = {
-    from: vi.fn().mockReturnThis(),
-    where: vi.fn().mockReturnThis(),
-    limit: vi.fn().mockResolvedValue(rows),
-  };
-  mockSelect.mockReturnValue(chain as any);
-  return chain;
-}
 
 function setupInsertMock(returnRows: unknown[] = []) {
   const chain = {
@@ -35,15 +23,6 @@ function setupInsertMock(returnRows: unknown[] = []) {
     returning: vi.fn().mockResolvedValue(returnRows),
   };
   mockInsert.mockReturnValue(chain as any);
-  return chain;
-}
-
-function setupUpdateMock() {
-  const chain = {
-    set: vi.fn().mockReturnThis(),
-    where: vi.fn().mockResolvedValue(undefined),
-  };
-  mockUpdate.mockReturnValue(chain as any);
   return chain;
 }
 

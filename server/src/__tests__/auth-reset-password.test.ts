@@ -75,7 +75,7 @@ describe("POST /api/auth/reset-password", () => {
         usedAt: null,
       },
     ]);
-    const updateChain = setupUpdateMock();
+    setupUpdateMock();
     setupDeleteMock();
 
     const res = await request(app).post("/api/auth/reset-password").send({
@@ -160,7 +160,7 @@ describe("POST /api/auth/reset-password", () => {
       },
     ]);
     setupUpdateMock();
-    const deleteChain = setupDeleteMock();
+    setupDeleteMock();
 
     await request(app).post("/api/auth/reset-password").send({
       token: validToken,

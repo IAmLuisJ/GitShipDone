@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import request from "supertest";
 
@@ -89,7 +89,7 @@ const URL = "/api/notifications";
  */
 function setupSelect(rows: any[], unreadCount: number) {
   let callIndex = 0;
-  mockSelect.mockImplementation((...args: any[]) => {
+  mockSelect.mockImplementation(() => {
     const idx = callIndex++;
     if (idx === 0) {
       // Notification list query

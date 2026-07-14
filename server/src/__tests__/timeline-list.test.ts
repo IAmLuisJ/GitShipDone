@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import request from "supertest";
 
@@ -83,7 +83,7 @@ function setupMocks(opts: {
   const { projectFound = true, events = [], total = 0 } = opts;
   let callCount = 0;
 
-  mockSelect.mockImplementation((...args: any[]) => {
+  mockSelect.mockImplementation(() => {
     callCount++;
     if (callCount === 1) {
       // Project ownership check

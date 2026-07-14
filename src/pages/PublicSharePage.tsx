@@ -71,10 +71,12 @@ function formatDate(value: string | null) {
 
 function PublicShareSkeleton() {
   return (
-    <div className="mx-auto grid max-w-5xl gap-5 p-5 md:p-8">
-      <Skeleton className="h-40 w-full" />
-      <Skeleton className="h-72 w-full" />
-    </div>
+    <main data-testid="public-share-page" className="min-h-screen bg-background">
+      <div className="mx-auto grid max-w-5xl gap-5 p-5 md:p-8">
+        <Skeleton className="h-40 w-full" />
+        <Skeleton className="h-72 w-full" />
+      </div>
+    </main>
   );
 }
 
