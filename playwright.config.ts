@@ -33,6 +33,11 @@ export default defineConfig({
       url: 'http://localhost:3001/api/health',
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,
+      env: {
+        // Specs log in repeatedly from one IP; production defaults would 429
+        LOGIN_RATE_LIMIT: '1000',
+        REGISTER_RATE_LIMIT: '1000',
+      },
     },
     {
       command: 'npm run dev',
