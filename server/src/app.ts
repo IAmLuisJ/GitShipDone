@@ -20,6 +20,7 @@ import notificationsRouter from "./routes/notifications";
 import usersRouter from "./routes/users";
 import usersGithubRouter from "./routes/usersGithub";
 import aiRouter from "./routes/ai";
+import jobsRouter from "./routes/jobs";
 import { configurePassport } from "./config/passport";
 import { requireAuth } from "./middleware/requireAuth";
 import { requireFeature } from "./middleware/features";
@@ -46,6 +47,8 @@ configurePassport();
 app.use("/api/health", healthRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/share", publicShareRouter);
+/* Authenticated by CRON_SECRET, not JWT — see routes/jobs.ts */
+app.use("/api/jobs", requireFeature("reminders"), jobsRouter);
 
 /* Disabled features 404 before auth so they are indistinguishable
    from unknown routes. */

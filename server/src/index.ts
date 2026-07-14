@@ -16,7 +16,10 @@ pool
     if (isFeatureEnabled('github')) {
       startGithubSyncJob();
     }
-    if (process.env.FEATURE_REMINDERS === 'true') {
+    // With CRON_SECRET set, an external scheduler triggers reminders via
+    // POST /api/jobs/reminders/run instead of in-process cron (needed on
+    // hosts like Passenger that stop idle processes).
+    if (isFeatureEnabled('reminders') && !process.env.CRON_SECRET) {
       startReminderJob();
     }
     app.listen(PORT, () => {

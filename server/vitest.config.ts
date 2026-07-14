@@ -10,6 +10,7 @@ export default defineConfig({
       FEATURE_AI: 'true',
       FEATURE_GITHUB: 'true',
       FEATURE_OAUTH: 'true',
+      FEATURE_REMINDERS: 'true',
     },
   },
 });

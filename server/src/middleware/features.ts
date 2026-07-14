@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "./errorHandler";
 
-export type FeatureName = "ai" | "github" | "oauth";
+export type FeatureName = "ai" | "github" | "oauth" | "reminders";
 
 /**
  * Deployment feature flags for post-MVP surfaces (see docs/ROADMAP.md).

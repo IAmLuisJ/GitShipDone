@@ -12,12 +12,37 @@ import { sendEmail } from "../services/email";
 import { milestoneReminderEmail } from "../emails/milestoneReminder";
 import { todoReminderEmail } from "../emails/todoReminder";
 
+export type ReminderRunResult = {
+  skipped: boolean;
+  milestoneReminders: number;
+  todoReminders: number;
+};
+
+let isRunning = false;
+
 /**
- * Check for milestones and todos due within 3 days,
- * create in-app notifications (deduplicated per day),
- * and send reminder emails if the user has opted in.
+ * Check for milestones and todos due within 3 days, create in-app
+ * notifications, and send reminder emails if the user has opted in.
+ *
+ * Safe against duplicate execution: notifications are deduplicated per
+ * day per item, and concurrent invocations (in-process cron overlapping
+ * an external trigger) are skipped via an overlap guard.
  */
-export async function runReminderCheck(): Promise<void> {
+export async function runReminderCheck(): Promise<ReminderRunResult> {
+  if (isRunning) {
+    return { skipped: true, milestoneReminders: 0, todoReminders: 0 };
+  }
+  isRunning = true;
+  try {
+    return await executeReminderCheck();
+  } finally {
+    isRunning = false;
+  }
+}
+
+async function executeReminderCheck(): Promise<ReminderRunResult> {
+  let milestoneReminders = 0;
+  let todoReminders = 0;
   const today = new Date();
   const todayStr = today.toISOString().split("T")[0];
   const threeDaysLater = new Date(today);
@@ -80,6 +105,7 @@ export async function runReminderCheck(): Promise<void> {
         type: "milestone_due",
         message,
       });
+      milestoneReminders++;
 
       if (m.emailNotificationsEnabled) {
         await sendEmail({
@@ -153,6 +179,7 @@ export async function runReminderCheck(): Promise<void> {
         type: "todo_due",
         message,
       });
+      todoReminders++;
 
       if (t.emailNotificationsEnabled) {
         await sendEmail({
@@ -173,6 +200,8 @@ export async function runReminderCheck(): Promise<void> {
       );
     }
   }
+
+  return { skipped: false, milestoneReminders, todoReminders };
 }
 
 /**

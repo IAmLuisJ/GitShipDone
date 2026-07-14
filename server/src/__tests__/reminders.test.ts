@@ -146,6 +146,30 @@ describe("Reminder Cron Job", () => {
       expect(mockSelect).toHaveBeenCalledTimes(2);
     });
 
+    it("reports how many reminders were created", async () => {
+      selectResults = [[milestoneItem], [{ count: 0 }], []];
+
+      const result = await runReminderCheck();
+
+      expect(result).toEqual({
+        skipped: false,
+        milestoneReminders: 1,
+        todoReminders: 0,
+      });
+    });
+
+    it("skips overlapping runs instead of double-processing", async () => {
+      const [first, second] = await Promise.all([
+        runReminderCheck(),
+        runReminderCheck(),
+      ]);
+
+      expect(first.skipped).toBe(false);
+      expect(second.skipped).toBe(true);
+      // Only the first run queried the database
+      expect(mockSelect).toHaveBeenCalledTimes(2);
+    });
+
     it("creates notification for due milestone", async () => {
       // milestones query -> dedup check -> todos query
       selectResults = [[milestoneItem], [{ count: 0 }], []];
