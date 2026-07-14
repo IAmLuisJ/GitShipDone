@@ -59,27 +59,17 @@ cd server && npm install && cd ..
 
 ### 2. Configure environment
 
+The example env file lives at the repo root. The server reads `server/.env`;
+Docker Compose reads the root `.env`:
+
 ```bash
-cp server/.env.example server/.env
+cp .env.example .env
+cp .env.example server/.env
 ```
 
-Fill in `server/.env`:
-
-```env
-DATABASE_URL=postgresql://gitshipdone:gitshipdone@localhost:5432/gitshipdone
-JWT_SECRET=your-jwt-secret
-JWT_REFRESH_SECRET=your-refresh-secret
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-GITHUB_REPO_CLIENT_ID=
-GITHUB_REPO_CLIENT_SECRET=
-RESEND_API_KEY=
-ENCRYPTION_KEY=                 # exactly 32 characters
-FRONTEND_URL=http://localhost:5173
-PORT=3000
-```
+Only the variables in the **Required (MVP)** section of `.env.example` are
+needed for local development — OAuth, GitHub, and AI settings only matter
+when the matching feature flag is enabled (see Feature Flags below).
 
 ### 3. Start the database
 
@@ -98,14 +88,69 @@ cd server && npm run db:migrate
 In two terminals:
 
 ```bash
-# Terminal 1 — backend
+# Terminal 1 — backend (port 3001)
 cd server && npm run dev
 
-# Terminal 2 — frontend
+# Terminal 2 — frontend (port 3000, proxies /api to the backend)
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173).
+Open [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Feature Flags
+
+Post-MVP surfaces ship feature-flagged **off** by default. Enable them per
+deployment once the corresponding phase is verified (see
+[docs/ROADMAP.md](docs/ROADMAP.md)):
+
+| Flag | Server env | Frontend env (build-time) | Gates |
+|---|---|---|---|
+| AI | `FEATURE_AI=true` | `VITE_FEATURE_AI=true` | AI PM chat, parking-lot pathways, AI settings |
+| GitHub | `FEATURE_GITHUB=true` | `VITE_FEATURE_GITHUB=true` | Repo connect, commit/release sync |
+| OAuth | `FEATURE_OAUTH=true` | `VITE_FEATURE_OAUTH=true` | Google/GitHub login buttons and routes |
+| Reminders | `FEATURE_REMINDERS=true` | — | Milestone reminder email cron job |
+
+Disabled server routes return 404. Both sides of a flag must be enabled for
+the feature to work end to end.
+
+---
+
+## End-to-End Tests
+
+The core-loop e2e suite (signup → create project → todos/journal/milestones
+→ timeline) boots both dev servers itself, but needs Postgres up and
+migrated first:
+
+```bash
+npm run db:up
+npm --prefix server run db:migrate
+npx playwright test
+```
+
+---
+
+## Production Deployment
+
+A multi-stage [Dockerfile](Dockerfile) builds the frontend, compiles the
+server, and serves both from a single container (Express serves the static
+frontend with an SPA fallback):
+
+```bash
+docker build -t gitshipdone .
+docker run --env-file .env.production -p 3001:3001 gitshipdone
+```
+
+Requirements:
+
+- `NODE_ENV=production` refuses to boot without `DATABASE_URL`,
+  `JWT_SECRET`, `JWT_REFRESH_SECRET`, and `ENCRYPTION_KEY`.
+- Run migrations once per deploy before starting the app:
+  `node dist/db/migrate.js` (from `/app/server` in the container).
+- Point `DATABASE_URL` at managed Postgres (Neon, Supabase, Railway, RDS).
+  The bundled Docker Compose file is for local development.
+- Health check endpoint: `GET /api/health`.
 
 ---
 
