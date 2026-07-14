@@ -1,5 +1,6 @@
 import axios from "axios";
 import { refreshAuthSession } from "@/lib/authSession";
+import { apiBase } from "@/lib/basePath";
 import { useAuthStore } from "@/stores/authStore";
 
 type RefreshableRequestConfig = {
@@ -16,7 +17,7 @@ type RefreshableError = {
 };
 
 const api = axios.create({
-  baseURL: "/api",
+  baseURL: apiBase,
 });
 
 api.interceptors.request.use((config) => {

@@ -6,6 +6,9 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Subpath deploys (e.g. mydomain.com/gitshipdone) build with
+  // BASE_PATH=/gitshipdone/ — see docs/DEPLOY-NAMECHEAP.md
+  base: process.env.BASE_PATH || "/",
   plugins: [react(), tailwindcss()],
   test: {
     globals: true,

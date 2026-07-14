@@ -1,6 +1,7 @@
 import { Github } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { apiBase } from "@/lib/basePath";
 import { isFeatureEnabled } from "@/lib/features";
 
 type OAuthButtonsProps = {
@@ -36,13 +37,13 @@ export function OAuthButtons({ className }: OAuthButtonsProps) {
   return (
     <div className={["grid gap-3", className].filter(Boolean).join(" ")}>
       <Button asChild variant="outline">
-        <a href="/api/auth/google">
+        <a href={`${apiBase}/auth/google`}>
           <GoogleIcon />
           Continue with Google
         </a>
       </Button>
       <Button asChild variant="outline">
-        <a href="/api/auth/github">
+        <a href={`${apiBase}/auth/github`}>
           <Github data-icon="inline-start" />
           Continue with GitHub
         </a>

@@ -93,7 +93,7 @@ test.describe.serial("MVP core loop", () => {
     await openProject(page);
 
     await openProjectTab(page, /timeline/i);
-    await expect(page.getByText("First update")).toBeVisible();
+    await expect(page.getByText("First update", { exact: true })).toBeVisible();
     await expect(page.getByText(/milestone/i).first()).toBeVisible();
 
     // The dashboard card for the project is present

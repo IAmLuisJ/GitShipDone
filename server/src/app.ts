@@ -30,9 +30,14 @@ import { serveFrontend } from "./middleware/staticFrontend";
 const app = express();
 
 app.use(morgan("dev"));
+// FRONTEND_URL may include a base path on subpath deploys; CORS matches
+// on origin only.
+const frontendOrigin = new URL(
+  process.env.FRONTEND_URL || "http://localhost:3000",
+).origin;
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: frontendOrigin,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

@@ -34,6 +34,19 @@ cd server && npm ci && npm run build   # server  → server/dist/
 Frontend feature flags default off — exactly what the MVP wants — so no `VITE_*` vars
 are needed at build time.
 
+**Deploying under a subpath** (e.g. `mydomain.com/gitshipdone` instead of a domain or
+subdomain root)? The frontend must be built with that base path — asset URLs, API
+calls, and routing are all derived from it:
+
+```bash
+BASE_PATH=/gitshipdone/ npm run build          # note both slashes
+# or for the bundle script:
+BASE_PATH=/gitshipdone/ ./scripts/package-namecheap.sh
+```
+
+A root build served from a subpath fails with browser MIME-type errors, because the
+page requests `/assets/...` from the domain root and receives HTML.
+
 ## 3. Assemble the upload bundle
 
 Create this layout locally and zip it:
@@ -60,10 +73,13 @@ DATABASE_URL=postgresql://<cpuser>_<dbuser>:<password>@localhost:5432/<cpuser>_g
 JWT_SECRET=<long random string>
 JWT_REFRESH_SECRET=<different long random string>
 ENCRYPTION_KEY=<exactly 32 characters>
-FRONTEND_URL=https://yourdomain.com
+FRONTEND_URL=https://yourdomain.com          # subpath deploys: https://yourdomain.com/gitshipdone
 RESEND_API_KEY=<key, or omit to log emails instead>
 STATIC_DIR=/home/<cpuser>/gitshipdone/client
 ```
+
+On subpath deploys, `FRONTEND_URL` must include the subpath — share links and
+password-reset emails are built from it.
 
 Do **not** set `PORT` — Passenger assigns it. Both the app and the migration script load
 this file automatically (`dotenv/config`).
@@ -75,7 +91,9 @@ cPanel → **Setup Node.js App** → Create Application:
 - **Node.js version**: 22.x
 - **Application mode**: Production
 - **Application root**: `gitshipdone`
-- **Application URL**: your domain or subdomain
+- **Application URL**: your domain, subdomain, or subpath (e.g.
+  `yourdomain.com/gitshipdone` — must match the `BASE_PATH` the frontend
+  was built with)
 - **Application startup file**: `dist/index.js`
 
 Then click **Run NPM Install** (installs the server's runtime deps — all pure JS, no

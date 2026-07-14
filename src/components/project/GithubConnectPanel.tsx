@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import api from "@/lib/api";
+import { apiBase } from "@/lib/basePath";
 import { useAuthStore } from "@/stores/authStore";
 import type { Project } from "@/types/project";
 
@@ -146,7 +147,7 @@ export function GithubConnectPanel({ project }: GithubConnectPanelProps) {
         </CardHeader>
         <CardFooter className="justify-end">
           <Button asChild>
-            <a href="/api/auth/github/repo">Connect GitHub Account</a>
+            <a href={`${apiBase}/auth/github/repo`}>Connect GitHub Account</a>
           </Button>
         </CardFooter>
       </Card>
