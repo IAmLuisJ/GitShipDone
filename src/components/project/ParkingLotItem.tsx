@@ -12,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { isFeatureEnabled } from "@/lib/features";
 
 export type ParkingLotIdea = {
   id: string;
@@ -80,15 +81,17 @@ export function ParkingLotItem({
           ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={handlePathway}
-          >
-            <Route data-icon="inline-start" />
-            {item.aiPathway ? "View Pathway" : "Generate Pathway"}
-          </Button>
+          {isFeatureEnabled("ai") ? (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handlePathway}
+            >
+              <Route data-icon="inline-start" />
+              {item.aiPathway ? "View Pathway" : "Generate Pathway"}
+            </Button>
+          ) : null}
           <Button type="button" variant="outline" size="sm" onClick={() => setIsPromoteOpen(true)}>
             <Send data-icon="inline-start" />
             Promote
@@ -106,7 +109,7 @@ export function ParkingLotItem({
         </div>
       </div>
 
-      {isPathwayOpen ? (
+      {isPathwayOpen && isFeatureEnabled("ai") ? (
         <AiPathwayPanel
           existingPathway={item.aiPathway}
           generationRequest={generationRequest}

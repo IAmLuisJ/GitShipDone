@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import api from "@/lib/api";
+import { isFeatureEnabled } from "@/lib/features";
 import { useAuthStore, type User } from "@/stores/authStore";
 
 type ProfileResponse = User;
@@ -139,14 +140,16 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>AI Settings</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <AiSettingsForm />
-        </CardContent>
-      </Card>
+      {isFeatureEnabled("ai") ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>AI Settings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AiSettingsForm />
+          </CardContent>
+        </Card>
+      ) : null}
 
       <Card>
         <CardHeader>

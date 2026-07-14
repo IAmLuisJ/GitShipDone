@@ -22,7 +22,9 @@ import usersGithubRouter from "./routes/usersGithub";
 import aiRouter from "./routes/ai";
 import { configurePassport } from "./config/passport";
 import { requireAuth } from "./middleware/requireAuth";
+import { requireFeature } from "./middleware/features";
 import { errorHandler, AppError } from "./middleware/errorHandler";
+import { serveFrontend } from "./middleware/staticFrontend";
 
 const app = express();
 
@@ -36,7 +38,7 @@ app.use(
   }),
 );
 app.use(helmet());
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 app.use(passport.initialize());
 configurePassport();
@@ -44,6 +46,12 @@ configurePassport();
 app.use("/api/health", healthRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/share", publicShareRouter);
+
+/* Disabled features 404 before auth so they are indistinguishable
+   from unknown routes. */
+app.use("/api/projects/:id/ai", requireFeature("ai"));
+app.use("/api/projects/:id/github", requireFeature("github"));
+app.use("/api/users/me/github", requireFeature("github"));
 
 /* --- Protected routes below this line --- */
 app.use("/api", requireAuth);
@@ -60,6 +68,8 @@ app.use("/api/projects/:id/ai", aiRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/users/me/github", usersGithubRouter);
 app.use("/api/users", usersRouter);
+
+serveFrontend(app);
 
 /** Catch-all for unmatched routes */
 app.use((_req, _res, next) => {

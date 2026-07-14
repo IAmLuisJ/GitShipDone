@@ -17,6 +17,7 @@ import {
   verifyRefreshToken,
 } from "../utils/jwt";
 import { requireAuth } from "../middleware/requireAuth";
+import { requireFeature } from "../middleware/features";
 import { AppError } from "../middleware/errorHandler";
 import {
   loginLimiter,
@@ -458,6 +459,7 @@ router.post(
  */
 router.get(
   "/google",
+  requireFeature("oauth"),
   passport.authenticate("google", {
     scope: ["profile", "email"],
     session: false,
@@ -470,6 +472,7 @@ router.get(
  */
 router.get(
   "/google/callback",
+  requireFeature("oauth"),
   (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate(
       "google",
@@ -521,6 +524,7 @@ router.get(
  */
 router.get(
   "/github",
+  requireFeature("oauth"),
   passport.authenticate("github", {
     scope: ["user:email"],
     session: false,
@@ -533,6 +537,7 @@ router.get(
  */
 router.get(
   "/github/callback",
+  requireFeature("oauth"),
   (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate(
       "github",
@@ -584,6 +589,7 @@ router.get(
  */
 router.get(
   "/github/repo",
+  requireFeature("github"),
   requireAuth,
   passport.authenticate("github-repo", {
     session: false,
@@ -596,6 +602,7 @@ router.get(
  */
 router.get(
   "/github/repo/callback",
+  requireFeature("github"),
   (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate(
       "github-repo",

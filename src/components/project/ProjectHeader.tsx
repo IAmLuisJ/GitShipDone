@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { isFeatureEnabled } from "@/lib/features";
 import type { Project } from "@/types/project";
 
 type ProjectHeaderProps = {
@@ -50,10 +51,12 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
 
         <div className="flex shrink-0 items-center gap-2">
           <PointsDisplay project={project} />
-          <Button type="button" onClick={() => setIsAiPanelOpen(true)}>
-            <Bot data-icon="inline-start" />
-            AI PM
-          </Button>
+          {isFeatureEnabled("ai") ? (
+            <Button type="button" onClick={() => setIsAiPanelOpen(true)}>
+              <Bot data-icon="inline-start" />
+              AI PM
+            </Button>
+          ) : null}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button type="button" variant="outline" size="icon" aria-label="Project options">
@@ -76,11 +79,13 @@ export function ProjectHeader({ project }: ProjectHeaderProps) {
 
       <ProjectProgressBar project={project} />
 
-      <AiChatPanel
-        open={isAiPanelOpen}
-        onOpenChange={setIsAiPanelOpen}
-        project={project}
-      />
+      {isFeatureEnabled("ai") ? (
+        <AiChatPanel
+          open={isAiPanelOpen}
+          onOpenChange={setIsAiPanelOpen}
+          project={project}
+        />
+      ) : null}
     </section>
   );
 }

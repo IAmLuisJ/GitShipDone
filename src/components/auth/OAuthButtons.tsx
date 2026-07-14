@@ -1,6 +1,7 @@
 import { Github } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { isFeatureEnabled } from "@/lib/features";
 
 type OAuthButtonsProps = {
   className?: string;
@@ -30,6 +31,8 @@ function GoogleIcon() {
 }
 
 export function OAuthButtons({ className }: OAuthButtonsProps) {
+  if (!isFeatureEnabled("oauth")) return null;
+
   return (
     <div className={["grid gap-3", className].filter(Boolean).join(" ")}>
       <Button asChild variant="outline">

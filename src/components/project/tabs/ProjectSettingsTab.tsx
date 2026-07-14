@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import api from "@/lib/api";
+import { isFeatureEnabled } from "@/lib/features";
 import type { Project, ProjectStatus, ProjectType } from "@/types/project";
 import { GithubConnectPanel } from "../GithubConnectPanel";
 import { SharingPanel } from "../SharingPanel";
@@ -206,7 +207,7 @@ export function ProjectSettingsTab({ project }: ProjectSettingsTabProps) {
 
       <SharingPanel project={project} />
 
-      <GithubConnectPanel project={project} />
+      {isFeatureEnabled("github") ? <GithubConnectPanel project={project} /> : null}
 
       <Card className="border border-destructive/30 bg-destructive/5 ring-destructive/20">
         <CardHeader>
