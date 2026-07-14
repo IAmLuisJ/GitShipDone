@@ -17,6 +17,13 @@ export function serveFrontend(app: Express): void {
       next();
       return;
     }
+    // Only client-side routes fall back to index.html. Paths with a file
+    // extension are missing assets — serving HTML for those causes opaque
+    // MIME-type errors in the browser; a 404 names the real problem.
+    if (path.extname(req.path) !== "") {
+      next();
+      return;
+    }
     res.sendFile(path.join(resolved, "index.html"));
   });
 }
